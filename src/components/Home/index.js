@@ -4,17 +4,32 @@ import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-nati
 import { useState } from 'react';
 
 export default function Home() {
+
     const [open, setOpen] = useState(false);
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
-        PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf")
-
-      });
+        PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf"),
+        PoppinsSemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf")
+        
+    });
     
-      if (!loaded) {
+    if (!loaded) {
         return null;
-      }
+    }
+    let cards = []
+    for(let i = 0; i< 5;i++){
+        cards.push(
+            <Card key={i} containerStyle={{padding:0, width:250, height:150, border: 0,borderWidth: 0, marginTop:15, marginEnd: 30, margin:0, borderRadius: 10}}>
+                <Card.Image source={require('../../assets/images/predio.jpg')} style={{flexDirection: 'column-reverse', borderRadius: 10}}>
+                    <View backgroundColor="#EFF3FF" style={{borderBottomEndRadius:10,borderBottomStartRadius:10}}>
+                        <Text style={{fontSize: 18, fontFamily:"PoppinsExtraBold", paddingStart: 5}}>Condomínio {i}</Text>
+                        <Text style={{marginTop: 5, marginBottom:15, paddingStart: 5, color: "#ADADAD"}}>{(i+1)*10} moradores</Text>
+                    </View>
+                </Card.Image>
+            </Card> 
+        )
+    }
     return (
         <>
             <View style={styles.container}>
@@ -45,37 +60,27 @@ export default function Home() {
                         style={{alignSelf:"center"}}
                     />
                 </View>
-
-                <View>
-                    <Text  style={{fontSize: 20, fontFamily:"PoppinsExtraBold"}}>Condomínios que gerencio</Text>
-                    {/* <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}> */}
-                    <View>
-                        <Card containerStyle={{padding:0, width:250, height:150, border: 0, marginTop:15, marginEnd: 20, margin:0, borderRadius: 10}}>
-                            <Card.Image source={require('../../assets/images/predio.jpg')} style={{flexDirection: 'column-reverse', borderRadius: 10}}>
-                                <View backgroundColor="#EFF3FF" style={{borderBottomEndRadius:10,borderBottomStartRadius:10}}>
-                                    <Text style={{fontSize: 18, fontFamily:"PoppinsExtraBold", paddingStart: 5}}>condomínio 01</Text>
-                                    <Text style={{marginTop: 5, marginBottom:15, paddingStart: 5, color: "#ADADAD"}}>25 moradores</Text>
-                                </View>
-                            </Card.Image>
-                        </Card>
+                <View style={{margin: 0}}>
+                    <Text  style={{fontSize: 20, fontFamily:"PoppinsExtraBold", paddingHorizontal:20}}>Condomínios que gerencio</Text>
+                    <View style={{height:200}}>
+                        <ScrollView contentContainerStyle={{paddingHorizontal:20}} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
+                            {cards} 
+                        </ScrollView>
                     </View>
-                </View>
-                <View>
-                    <Text  style={{fontSize: 20, fontFamily:"PoppinsExtraBold"}}>Condomínios que faço parte</Text>
+
                     <View>
-                    <Card containerStyle={{padding:0, width:250, height:150, border: 0, marginTop:15, marginEnd: 20, margin:0, borderRadius: 10}}>
-                        <Card.Image source={require('../../assets/images/predio.jpg')} style={{flexDirection: 'column-reverse', borderRadius: 10}}>
-                            <View backgroundColor="#EFF3FF" style={{borderBottomEndRadius:10,borderBottomStartRadius:10}}>
-                                <Text style={{fontSize: 18, fontFamily:"PoppinsExtraBold", paddingStart: 5}}>condomínio 01</Text>
-                                <Text style={{marginTop: 5, marginBottom:15, paddingStart: 5, color: "#ADADAD"}}>25 moradores</Text>
-                            </View>
-                        </Card.Image>
-                    </Card>
+                        <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold",  paddingHorizontal:20}}>Condomínios que faço parte</Text>
+                        <View style={{height:200, paddingHorizontal:5}}>
+                            <ScrollView contentContainerStyle={{paddingHorizontal:20}} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
+                                {cards}
+                            </ScrollView>
+                        </View>
                     </View>
                 </View>
 
                 
             </View>
+
         {/* Speed Dial */}
 
             <SpeedDial
@@ -111,7 +116,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'flex-start',
-        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
     },
 });
