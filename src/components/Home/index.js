@@ -3,7 +3,7 @@ import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
 import { useState } from 'react';
 
-export default function Home() {
+export default function Home({navigation}) {
 
     const [open, setOpen] = useState(false);
     const [loaded] = useFonts({
@@ -17,11 +17,23 @@ export default function Home() {
     if (!loaded) {
         return null;
     }
-    let cards = []
+    let cardsGerencio = []
+    let cardsFacoParte = []
     for(let i = 0; i< 5;i++){
-        cards.push(
+        cardsGerencio.push(
             <Card key={i} containerStyle={{padding:0, width:250, height:150, border: 0,borderWidth: 0, marginTop:15, marginEnd: 30, margin:0, borderRadius: 10}}>
-                <Card.Image source={require('../../assets/images/predio.jpg')} style={{flexDirection: 'column-reverse', borderRadius: 10}}>
+                <Card.Image  onPress={()=>{navigation.navigate("AdmCondominio")}} source={require('../../assets/images/predio.jpg')} style={{flexDirection: 'column-reverse', borderRadius: 10}}>
+                    <View backgroundColor="#EFF3FF" style={{borderBottomEndRadius:10,borderBottomStartRadius:10}}>
+                        <Text style={{fontSize: 18, fontFamily:"PoppinsExtraBold", paddingStart: 5}}>Condomínio {i}</Text>
+                        <Text style={{marginTop: 5, marginBottom:15, paddingStart: 5, color: "#ADADAD"}}>{(i+1)*10} moradores</Text>
+                    </View>
+                </Card.Image>
+            </Card> 
+        )
+
+        cardsFacoParte.push(
+            <Card key={i} containerStyle={{padding:0, width:250, height:150, border: 0,borderWidth: 0, marginTop:15, marginEnd: 30, margin:0, borderRadius: 10}}>
+                <Card.Image onPress={()=>{navigation.navigate("CondominioMorador")}} source={require('../../assets/images/predio.jpg')} style={{flexDirection: 'column-reverse', borderRadius: 10}}>
                     <View backgroundColor="#EFF3FF" style={{borderBottomEndRadius:10,borderBottomStartRadius:10}}>
                         <Text style={{fontSize: 18, fontFamily:"PoppinsExtraBold", paddingStart: 5}}>Condomínio {i}</Text>
                         <Text style={{marginTop: 5, marginBottom:15, paddingStart: 5, color: "#ADADAD"}}>{(i+1)*10} moradores</Text>
@@ -43,8 +55,9 @@ export default function Home() {
                         <Text  style={{fontSize: 18, fontFamily:"PoppinsExtraBold"}}>Ola Usuario logado</Text>
                     </View>
                     <Icon
-                        name='settings'
-                        type='ionicon'
+                        onPress={()=>{navigation.navigate("Index")}}
+                        name='logout'
+                        type='material'
                         color='#000'
                         size={24}
                     />
@@ -64,7 +77,7 @@ export default function Home() {
                     <Text  style={{fontSize: 20, fontFamily:"PoppinsExtraBold", paddingHorizontal:20}}>Condomínios que gerencio</Text>
                     <View style={{height:200}}>
                         <ScrollView contentContainerStyle={{paddingHorizontal:20}} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
-                            {cards} 
+                            {cardsGerencio} 
                         </ScrollView>
                     </View>
 
@@ -72,7 +85,7 @@ export default function Home() {
                         <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold",  paddingHorizontal:20}}>Condomínios que faço parte</Text>
                         <View style={{height:200, paddingHorizontal:5}}>
                             <ScrollView contentContainerStyle={{paddingHorizontal:20}} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
-                                {cards}
+                                {cardsFacoParte}
                             </ScrollView>
                         </View>
                     </View>
@@ -94,10 +107,10 @@ export default function Home() {
                 <SpeedDial.Action
                     style={{width:40}}
                     buttonStyle={{width:55, height: 55,backgroundColor:"#1DB954"}}
-                    icon={{ name: 'house', color: '#fff', size:35  }}
-                    iconContainerStyle= {{backgroundColor:"#1DB954",width:55, height: 55,}}
-                    title="Meu apartamento"
-                    onPress={() => console.log('Add Something')}
+                    icon={{ name: 'house', color: '#fff', size:35 }}
+                    iconContainerStyle= {{backgroundColor:"#1DB954", width:55, height: 55}}
+                    title="Condominíos registrados" 
+                    onPress={() => navigation.navigate('ListaCondominios')}
                 />
                 <SpeedDial.Action
                     style={{width:40}}
@@ -105,7 +118,7 @@ export default function Home() {
                     icon={{ name: 'add', color: '#fff', size:35 }}
                     iconContainerStyle= {{backgroundColor:"#1DB954", width:55, height: 55}}
                     title="Novo condomínio" 
-                    onPress={() => console.log('Delete Something')}
+                    onPress={() => navigation.navigate('NovoCondominio')}
                 />
             </SpeedDial>
     </>

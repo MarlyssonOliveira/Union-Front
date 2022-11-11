@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
 
-export default function Confirmacao() {
+export default function Confirmacao({navigation}) {
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -35,6 +35,7 @@ export default function Confirmacao() {
                     }}
                     style={{alignSelf:"center"}}
                     title="Confirmar"
+                    onPress={()=>navigation.navigate("Home")}
                     raised="true"
                     containerStyle={{
                         borderRadius:10
@@ -55,6 +56,7 @@ export default function Confirmacao() {
                         borderRadius:10,
                         width: 340
                     }}
+                    onPress={()=>navigation.goBack()}
                     title="Cancelar"
                     titleStyle={{color:"#1DB954", fontFamily:"PoppinsExtraBold"}}
                 />

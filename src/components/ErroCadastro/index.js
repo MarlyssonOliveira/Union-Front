@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
 
-export default function ErroCadastro() {
+export default function ErroCadastro({navigation}) {
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -34,6 +34,7 @@ export default function ErroCadastro() {
                 style={{alignSelf:"center"}}
                 title="Tentar novamente"
                 raised="true"
+                onPress={()=>{navigation.navigate("Index")}}
                 containerStyle={{
                     borderRadius:10
                 }}

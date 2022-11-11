@@ -2,11 +2,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Image, Input } from 'react-native-elements';
 
-export default function CadastroSeguranca() {
+export default function CadastroSeguranca({navigation}) {
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
-        PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf")
+        PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf"),
+        PoppinsSemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf")
 
       });
     
@@ -15,7 +16,7 @@ export default function CadastroSeguranca() {
       }
     return (
         <View style={styles.container}>
-            <View>
+            <View style={{alignSelf:'flex-start', paddingStart:25}}>
                 <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Cadastro</Text>
                 <Text  style={{fontSize: 16, fontFamily:"PoppinsMedium"}}>informações de segurança</Text>
             </View>
@@ -50,6 +51,7 @@ export default function CadastroSeguranca() {
                     }}
                     title="Finalizar cadastro"
                     raised="true"
+                    onPress={()=>{navigation.navigate("CodigoVerificacao")}}
                     containerStyle={{
                         borderRadius:10
                     }}
@@ -69,6 +71,7 @@ export default function CadastroSeguranca() {
                         borderRadius:10,
                         width: 340
                     }}
+                    onPress={() => {navigation.navigate("CadastroDados")}}
                     title="Etapa anterior"
                     titleStyle={{color:"#1DB954", fontFamily:"PoppinsExtraBold"}}
                 />
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'space-evenly',
     },
 });

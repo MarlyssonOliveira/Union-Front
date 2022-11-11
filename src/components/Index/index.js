@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Image } from 'react-native-elements';
 
-export default function Index() {
+export default function Index({navigation}) {
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf")
       });
@@ -25,6 +25,7 @@ export default function Index() {
                     }}
                     title="Entrar"
                     raised="true"
+                    onPress={()=>{navigation.navigate("Login")}}
                     containerStyle={{
                         borderRadius:10
                     }}
@@ -42,6 +43,7 @@ export default function Index() {
                         width: 340
                     }}
                     title="Cadastre-se"
+                    onPress={() => {navigation.navigate("CadastroDados")}}
                     titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
                 />
             </View>

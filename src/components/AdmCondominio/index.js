@@ -3,7 +3,7 @@ import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
 import { useState } from 'react';
 
-export default function CondominioMorador({navigation}) {
+export default function AdmCondominio({navigation}) {
 
     const [open, setOpen] = useState(false);
     const [loaded] = useFonts({
@@ -40,54 +40,44 @@ export default function CondominioMorador({navigation}) {
     return (
         <>
             <View style={styles.container}>
-                <View style={{alignSelf:'flex-start', paddingStart:25}}>
-                    <View style={{flexDirection:'row', justifyContent: 'space-between', width: 275}}>
+                <View style={{alignSelf: 'flex-start', paddingStart: 25}}>
+                    <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
                         <Image
                             source={require('../../assets/images/predio.jpg')}
                             style={{width: 110, height: 110, borderRadius:10}}
+                            
                         />
-                        <View>
+                        <View style={{paddingStart:15}}>
                             <Text style={{fontSize: 24, fontFamily:"PoppinsExtraBold"}}>Bloco 24</Text>
                             <Text style={{fontSize: 16, fontFamily:"PoppinsMedium", color:"#ADADAD"}}>Avenida um, 230</Text>
-                        
                             <Button
                                 buttonStyle= {{
                                     backgroundColor: "#1DB954",
                                     borderRadius:10,
-                                    height:35,
-                                    width:140,
-                                    alignItems: 'center',
-                                    padding:0,
-                                    margin:0
+                                    alignItems: 'center'
                                 }}
-                                title="Joana Muniz"
+                                icon={
+                                    <Icon
+                                        name="pencil"
+                                        type='material-community'
+                                        size={25}
+                                        color="#FFF"  
+                                    />
+                                }
+                                title="Alterar Imagem"
+                                raised="true"
                                 containerStyle={{
-                                    borderRadius:10,
-                                    height:35,
-                                    width:140,
-                                    alignItems: 'center',
-                                    padding:0,
-                                    margin:0
+                                    borderRadius:10
                                 }}
-                                titleStyle={{color:"#FFF", fontFamily:"PoppinsRegular",fontSize:18}}
+                                titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold", paddingStart:5}}
                             />
-                        </View>
-                    </View>
-                    <View style={{width:345, height:73, backgroundColor:"#EFF3FF",borderRadius:10, marginTop:18, flexDirection: 'row', justifyContent: 'space-evenly', alignItems:'center'}}>
-                        <View style={{alignItems:'center', justifyContent: 'center', height:30}}>
-                            <Text style={{fontSize: 25, fontFamily:"PoppinsExtraBold"}}>25</Text>
-                            <Text style={{fontSize: 18, fontFamily:"PoppinsRegular"}}>Moradores</Text>
-                        </View>
-                        <View style={{alignItems:'center', justifyContent: 'center', height:30}}>
-                            <Text style={{fontSize: 25, fontFamily:"PoppinsExtraBold"}}>36</Text>
-                            <Text style={{fontSize: 18, fontFamily:"PoppinsRegular"}}>Publicações</Text>
                         </View>
                     </View>
                 </View>
 
                 <View style={{marginTop:30}}>
                     <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold"}}>Últimas atualizações</Text>
-                    <View style={{height:300, paddingVertical:10}}>
+                    <View style={{height:450, paddingVertical:10}}>
                         <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
                             {cards}
                         </ScrollView>
@@ -110,17 +100,25 @@ export default function CondominioMorador({navigation}) {
                 <SpeedDial.Action
                     style={{width:40}}
                     buttonStyle={{width:55, height: 55,backgroundColor:"#1DB954"}}
+                    icon={{ name: 'message', color: '#fff', size:35 }}
+                    iconContainerStyle= {{backgroundColor:"#1DB954", width:55, height: 55}}
+                    title="Nova mensagem" 
+                    onPress={() => navigation.navigate('NovaMensagem')}
+                />
+                <SpeedDial.Action
+                    style={{width:40}}
+                    buttonStyle={{width:55, height: 55,backgroundColor:"#1DB954"}}
                     icon={{ name: 'currency-usd', color: '#fff', size:35, type:"material-community"  }}
                     iconContainerStyle= {{backgroundColor:"#1DB954",width:55, height: 55,}}
-                    title="Débitos"
-                    onPress={() => navigation.navigate('Debitos')}
+                    title="Nova taxa"
+                    onPress={() => navigation.navigate('NovaTaxa')}
                 />
                 <SpeedDial.Action
                     style={{width:40}}
                     buttonStyle={{width:55, height: 55,backgroundColor:"#1DB954"}}
                     icon={{ name: 'delete', color: '#fff', size:35 }}
                     iconContainerStyle= {{backgroundColor:"#E91429", width:55, height: 55}}
-                    title="Sair do condomínio" 
+                    title="Excluir condomínio" 
                     onPress={() => navigation.navigate('Confirmacao')}
                 />
             </SpeedDial>
@@ -132,6 +130,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+        width: "100%",
         alignItems: 'flex-end',
         justifyContent: 'center'
     },

@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
-import { Button, Image, Input } from 'react-native-elements';
+import { Button, Icon, Image, Input } from 'react-native-elements';
 
-export default function CadastroDados({navigation}) {
+export default function NovaMensagem({navigation}) {
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -16,39 +16,36 @@ export default function CadastroDados({navigation}) {
     return (
         <View style={styles.container}>
             <View style={{alignSelf:'flex-start', paddingStart:25}}>
-                <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Cadastro</Text>
-                <Text  style={{fontSize: 16, fontFamily:"PoppinsMedium"}}>informações pessoais e de contato</Text>
+                <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Nova mensagem</Text>
             </View>
             
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>nome completo</Text>
+                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>mensagem</Text>
                 <Input
-                    placeholder='Digite seu nome'
+                    placeholder='Sua mensagem...'
                     inputContainerStyle={{borderBottomWidth: 0}}
-                    inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
+                    inputStyle={{fontFamily:"PoppinsRegular"}}
+                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 150}}
                     style={{alignSelf:"center"}}
                 />
             </View>
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>e-mail</Text>
+                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>anexo</Text>
                 <Input
-                    placeholder='Digite seu e-mail'
-                    inputStyle={{fontFamily:"PoppinsRegular", height: 55}}
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10,height: 50}}
-                    style={{alignSelf:"center"}}
-
-                />
-            </View>
-            <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>telefone</Text>
-                <Input
-                    placeholder='(xx)x.xxxx-xxxx'
-                    inputContainerStyle={{borderBottomWidth: 0}}
+                    placeholder='anexar um arquivo'
+                    inputContainerStyle={{borderBottomWidth: 0, alignItems: 'center'}}
                     inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
                     containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
                     style={{alignSelf:"center"}}
+                    rightIcon={
+                        <Icon
+                            name="upload"
+                            size={25}
+                            type="font-awesome"
+                            color="#1DB954"
+                            
+                        />
+                    }
                 />
             </View>
             <Button
@@ -58,9 +55,9 @@ export default function CadastroDados({navigation}) {
                     width: 350
                 }}
                 style={{alignSelf:"center"}}
-                title="Próxima etapa"
+                title="Publicar"
                 raised="true"
-                onPress={()=>{navigation.navigate("CadastroSeguranca")}}
+                onPress={()=>navigation.navigate("AdmCondominio")}
                 containerStyle={{
                     borderRadius:10
                 }}

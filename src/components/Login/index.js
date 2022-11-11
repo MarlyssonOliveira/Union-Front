@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Image, Input } from 'react-native-elements';
 
-export default function Login() {
+export default function Login({navigation}) {
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsSemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf")
@@ -13,7 +13,7 @@ export default function Login() {
       }
     return (
         <View style={styles.container}>
-            <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Entrar</Text>
+            <Text style={{alignSelf:'flex-start', paddingStart:25, fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Entrar</Text>
             <View>
                 <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>e-mail</Text>
                 <Input
@@ -44,13 +44,14 @@ export default function Login() {
                 style={{alignSelf:"center"}}
                 title="Entrar"
                 raised="true"
+                onPress={()=>{navigation.navigate("Home")}}
                 containerStyle={{
                     borderRadius:10
                 }}
                 titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
             />
 
-            <Text style={{fontSize: 18, fontFamily:"PoppinsExtraBold", alignSelf:"center"}}>Esqueci minha senha</Text>
+            <Text onPress={() =>{navigation.navigate("CodigoVerificacao")}} style={{fontSize: 18, fontFamily:"PoppinsExtraBold", alignSelf:"center"}}>Esqueci minha senha</Text>
         </View>
     );
 }
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'space-evenly',
     },
 });

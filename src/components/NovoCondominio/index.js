@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
-import { Button, Image, Input } from 'react-native-elements';
+import { Button, Icon, Image, Input } from 'react-native-elements';
 
-export default function CadastroDados({navigation}) {
+export default function NovoCondominio({navigation}) {
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -15,40 +15,49 @@ export default function CadastroDados({navigation}) {
       }
     return (
         <View style={styles.container}>
-            <View style={{alignSelf:'flex-start', paddingStart:25}}>
-                <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Cadastro</Text>
-                <Text  style={{fontSize: 16, fontFamily:"PoppinsMedium"}}>informações pessoais e de contato</Text>
+            <View style={{paddingStart:25, alignSelf:'flex-start'}}>
+                <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Novo Condomínio</Text>
             </View>
             
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>nome completo</Text>
+                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>nome</Text>
                 <Input
-                    placeholder='Digite seu nome'
-                    inputContainerStyle={{borderBottomWidth: 0}}
+                    placeholder='Digite o nome'
+                    inputContainerStyle={{borderBottomWidth: 0, alignItems: 'center'}}
                     inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
                     containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
                     style={{alignSelf:"center"}}
                 />
             </View>
-            <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>e-mail</Text>
-                <Input
-                    placeholder='Digite seu e-mail'
-                    inputStyle={{fontFamily:"PoppinsRegular", height: 55}}
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10,height: 50}}
-                    style={{alignSelf:"center"}}
 
-                />
-            </View>
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>telefone</Text>
+                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>endereço</Text>
                 <Input
-                    placeholder='(xx)x.xxxx-xxxx'
-                    inputContainerStyle={{borderBottomWidth: 0}}
+                    placeholder='Digite o endereço'
+                    inputContainerStyle={{borderBottomWidth: 0, alignItems: 'center'}}
                     inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
                     containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
                     style={{alignSelf:"center"}}
+                />
+            </View>
+
+            <View>
+                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>CSV dos moradores</Text>
+                <Input
+                    placeholder='selecione um arquivo'
+                    inputContainerStyle={{borderBottomWidth: 0, alignItems: 'center'}}
+                    inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
+                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
+                    style={{alignSelf:"center"}}
+                    rightIcon={
+                        <Icon
+                            name="upload"
+                            size={25}
+                            type="font-awesome"
+                            color="#1DB954"
+                            
+                        />
+                    }
                 />
             </View>
             <Button
@@ -58,9 +67,9 @@ export default function CadastroDados({navigation}) {
                     width: 350
                 }}
                 style={{alignSelf:"center"}}
-                title="Próxima etapa"
+                title="Salvar"
                 raised="true"
-                onPress={()=>{navigation.navigate("CadastroSeguranca")}}
+                onPress={()=>navigation.navigate("Home")}
                 containerStyle={{
                     borderRadius:10
                 }}
