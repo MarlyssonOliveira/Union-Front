@@ -15,7 +15,7 @@ export default function ErroCadastro({navigation}) {
       }
     return (
         <View style={styles.container}>
-            <View style={{alignItems:'center'}}>
+            <View style={styles.alignConteudo}>
             <Icon
                 name="close-circle-outline"
                 type='material-community'
@@ -23,22 +23,16 @@ export default function ErroCadastro({navigation}) {
                 size={200}
             />
             
-                <Text style={{fontSize: 30,marginTop:50, fontFamily:"PoppinsExtraBold", textAlign: 'center'}}>Erro na solicitação de cadastro :(</Text>
+                <Text style={styles.tituloErro}>Erro na solicitação de cadastro :(</Text>
             </View>
             <Button
-                buttonStyle= {{
-                    backgroundColor: "#1DB954",
-                    borderRadius:10,
-                    width: 350
-                }}
-                style={{alignSelf:"center"}}
+                buttonStyle= {styles.button.buttonStyle}
+                style={styles.button.style}
                 title="Tentar novamente"
                 raised="true"
                 onPress={()=>{navigation.navigate("Index")}}
-                containerStyle={{
-                    borderRadius:10
-                }}
-                titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                containerStyle={styles.button.containerStyle}
+                titleStyle={styles.button.titleStyle}
             />
         </View>
     );
@@ -51,4 +45,30 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
+    alignConteudo:{
+        alignItems:'center'
+    },
+    tituloErro:{
+        fontSize: 30,
+        marginTop:50, 
+        fontFamily:"PoppinsExtraBold", 
+        textAlign: 'center'
+    },
+    button:{
+        buttonStyle:{
+            backgroundColor: "#1DB954",
+            borderRadius:10,
+            width: 350
+        },
+        style:{
+            alignSelf:"center"
+        },
+        containerStyle:{
+            borderRadius:10
+        },
+        titleStyle:{
+            color:"#FFF", 
+            fontFamily:"PoppinsExtraBold"
+        }
+    }
 });

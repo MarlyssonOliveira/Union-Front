@@ -16,64 +16,50 @@ export default function CadastroSeguranca({navigation}) {
       }
     return (
         <View style={styles.container}>
-            <View style={{alignSelf:'flex-start', paddingStart:25}}>
-                <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Cadastro</Text>
-                <Text  style={{fontSize: 16, fontFamily:"PoppinsMedium"}}>informações de segurança</Text>
+            <View style={styles.cabecalho.flex}>
+                <Text style={styles.cabecalho.titulo1}>Cadastro</Text>
+                <Text  style={styles.cabecalho.titulo2}>Informações de segurança</Text>
             </View>
             
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>senha</Text>
+                <Text style={styles.input.label}>Senha</Text>
                 <Input
                     secureTextEntry={true}
                     placeholder='Digite sua senha'
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                    inputStyle={{fontFamily:"PoppinsSemiBold",height: 50}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    inputStyle={styles.input.inputStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
                 />
             </View>
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>confirme sua senha</Text>
+                <Text style={styles.input.label}>Confirme sua senha</Text>
                 <Input
                     secureTextEntry={true}
                     placeholder='Digite a confirmação de senha'
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                    inputStyle={{fontFamily:"PoppinsSemiBold",height: 50}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    inputStyle={styles.input.inputStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
                 />
             </View>
             <View style={{flexBasis: 150, justifyContent: "space-evenly"}}>
                 <Button
-                    buttonStyle= {{
-                        backgroundColor: "#1DB954",
-                        borderRadius:10
-                    }}
+                    buttonStyle= {styles.button.buttonFinalizarStyle}
                     title="Finalizar cadastro"
                     raised="true"
                     onPress={()=>{navigation.navigate("CodigoVerificacao")}}
-                    containerStyle={{
-                        borderRadius:10
-                    }}
-                    titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                    containerStyle={styles.button.containerStyle}
+                    titleStyle={styles.button.titleFinalizarStyle}
                 />
                 <Button
-                    buttonStyle= {{
-                        backgroundColor: "#fff",
-                        borderRadius:10,
-                        width: 340,
-                        borderColor:"#1DB954",
-                        borderWidth: 1
-                    }}
+                    buttonStyle= {styles.button.buttonAnteriorStyle}
                     type="outline"
                     raised="true"
-                    containerStyle={{
-                        borderRadius:10,
-                        width: 340
-                    }}
+                    containerStyle={styles.button.containerStyle}
                     onPress={() => {navigation.navigate("CadastroDados")}}
                     title="Etapa anterior"
-                    titleStyle={{color:"#1DB954", fontFamily:"PoppinsExtraBold"}}
+                    titleStyle={styles.button.titleAnteriorStyle}
                 />
             </View>
         </View>
@@ -87,4 +73,67 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
+    cabecalho:{
+        flex:{
+            alignSelf:'flex-start', 
+            paddingStart:25
+        },
+        titulo1:{
+            fontSize: 30, 
+            fontFamily:"PoppinsExtraBold"
+        },
+        titulo2:{
+            fontSize: 16, 
+            fontFamily:"PoppinsMedium"
+        }
+    },
+
+    input:{
+        label:{
+            fontSize: 20, 
+            fontFamily:"PoppinsExtraBold", 
+            color:"#000000"
+        },
+        inputStyle:{
+            fontFamily:"PoppinsRegular", 
+            height: 55
+        },
+        inputContainerStyle:{
+            borderBottomWidth: 0
+        },
+        containerStyle:{
+            width: 350, 
+            backgroundColor:"#F0F1F5", 
+            borderRadius: 10,
+            height: 50
+        },
+        style:{
+            alignSelf:"center" 
+        }
+    },
+
+    button:{
+        buttonFinalizarStyle:{
+            backgroundColor: "#1DB954",
+            borderRadius:10
+        },
+        buttonAnteriorStyle:{
+            backgroundColor: "#fff",
+            borderRadius:10,
+            width: 340,
+            borderColor:"#1DB954",
+            borderWidth: 1
+        },
+        containerStyle:{
+            borderRadius:10
+        },
+        titleFinalizarStyle:{
+            color:"#FFF", 
+            fontFamily:"PoppinsExtraBold"
+        },
+        titleAnteriorStyle:{
+            color:"#1DB954", 
+            fontFamily:"PoppinsExtraBold"
+        }
+    }
 });

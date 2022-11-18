@@ -12,39 +12,27 @@ export default function Index({navigation}) {
       }
     return (
         <View style={styles.container}>
-            <Text style={{fontSize: 40, fontFamily:"PoppinsExtraBold",flexShrink:3}}>union</Text>
+            <Text style={styles.titulo}>union</Text>
             <Image
                 source={require('../../assets/images/teste.jpg')}
-                style={{width: 350, height: 300}}
+                style={styles.imageStyle}
             />
-            <View style={{flexBasis: 150, justifyContent: "space-evenly"}}>
+            <View style={styles.botoes}>
                 <Button
-                    buttonStyle= {{
-                        backgroundColor: "#1DB954",
-                        borderRadius:10
-                    }}
+                    buttonStyle= {styles.botaoEntrar.buttonStyle}
                     title="Entrar"
                     raised="true"
                     onPress={()=>{navigation.navigate("Login")}}
-                    containerStyle={{
-                        borderRadius:10
-                    }}
-                    titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                    containerStyle={styles.botaoEntrar.containerStyle}
+                    titleStyle={styles.botaoEntrar.tituloStyle}
                 />
                 <Button
-                    buttonStyle= {{
-                        backgroundColor: "#191414",
-                        borderRadius:10,
-                        width: 340
-                    }}
+                    buttonStyle= {styles.botaoCadastro.buttonStyle}
                     raised="true"
-                    containerStyle={{
-                        borderRadius:10,
-                        width: 340
-                    }}
+                    containerStyle={styles.botaoCadastro.containerStyle}
                     title="Cadastre-se"
                     onPress={() => {navigation.navigate("CadastroDados")}}
-                    titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                    titleStyle={styles.botaoEntrar.tituloStyle}
                 />
             </View>
 
@@ -59,4 +47,41 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
+    botoes:{
+        flexBasis: 150, 
+        justifyContent: "space-evenly"
+    },
+    titulo:{
+        fontSize: 40, 
+        fontFamily:"PoppinsExtraBold",
+        flexShrink:3
+    },
+    imageStyle:{
+        width: 350, 
+        height: 300
+    },
+    botaoEntrar:{
+        buttonStyle:{
+            backgroundColor: "#1DB954",
+            borderRadius:10
+        },
+        containerStyle:{
+            borderRadius:10
+        },
+        tituloStyle:{
+            color:"#FFF", 
+            fontFamily:"PoppinsExtraBold"
+        }
+    },
+    botaoCadastro:{
+        buttonStyle:{
+            backgroundColor: "#191414",
+            borderRadius:10,
+            width: 340
+        },
+        containerStyle:{
+            borderRadius:10,
+            width: 340
+        }
+    }
 });

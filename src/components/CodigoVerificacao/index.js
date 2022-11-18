@@ -24,53 +24,38 @@ export default function CodigoVerificacao({navigation}) {
                 />
 
                 <View style={{alignItems:'center',justifyContent:'center'}}>
-                    <Text style={{fontSize: 25,marginTop:50, fontFamily:"PoppinsExtraBold", textAlign: 'center'}}>Um código foi enviado para o email informado</Text>
-                    <Text style={{fontSize: 14, fontFamily:"PoppinsRegular", color:"#ADADAD", textAlign: 'center'}}>Para continuar informe o codigo abaixo</Text>
+                    <Text style={styles.titulos.titulo}>Um código foi enviado para o email informado</Text>
+                    <Text style={styles.titulos.subtitulo}>Para continuar informe o codigo abaixo</Text>
                 </View>
-                <View style={{alignSelf:'center', marginTop:15}}>
+                <View style={styles.divInput.align}>
                     <Input
                         secureTextEntry={true}
                         placeholder='00-00-00-00'
-                        inputContainerStyle={{borderBottomWidth: 0}}
-                        inputStyle={{fontFamily:"PoppinsSemiBold",height: 50}}
-                        containerStyle={{width: 250, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                        style={{alignSelf:"center", textAlign: 'center'}}
+                        inputContainerStyle={styles.divInput.inputcontainerStyle}
+                        inputStyle={styles.divInput.inputStyle}
+                        containerStyle={styles.divInput.ContainerStyle}
+                        style={styles.divInput.style}
                     />
                 </View>
             </View>
 
-            <View style={{height:120, justifyContent: 'space-between'}}>
+            <View style={styles.divButtons.alignment}>
                 <Button
-                    buttonStyle= {{
-                        backgroundColor: "#1DB954",
-                        borderRadius:10,
-                        width: 350
-                    }}
-                    style={{alignSelf:"center"}}
+                    buttonStyle= {styles.divButtons.buttonVerificarStyle}
+                    style={styles.divButtons.style}
                     title="Verificar código"
                     onPress={()=>{navigation.navigate("SucessoCadastro")}}
                     raised="true"
-                    containerStyle={{
-                        borderRadius:10
-                    }}
-                    titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                    containerStyle={styles.divButtons.containerStyle}
+                    titleStyle={styles.divButtons.titleVerificarStyle}
                     />
                 <Button
-                    buttonStyle= {{
-                        backgroundColor: "#fff",
-                        borderRadius:10,
-                        width: 340,
-                        borderColor:"#ADADAD",
-                        borderWidth: 1
-                    }}
+                    buttonStyle= {styles.divButtons.buttonReenviarStyle}
                     type="outline"
                     raised="true"
-                    containerStyle={{
-                        borderRadius:10,
-                        width: 340
-                    }}
+                    containerStyle={styles.divButtons.containerStyle}
                     title="Reenviar código"
-                    titleStyle={{color:"#ADADAD", fontFamily:"PoppinsExtraBold"}}
+                    titleStyle={styles.divButtons.titleReenviarStyle}
                 />
             </View>
         </View>
@@ -84,4 +69,81 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
+    conteudo:{
+        paddingHorizontal: 15
+    },
+
+    titulos:{
+        titulo:{
+            fontSize: 25,
+            marginTop:50, 
+            fontFamily:"PoppinsExtraBold", 
+            textAlign: 'center'
+        },
+        subtitulo:{
+            fontSize: 14, 
+            fontFamily:"PoppinsRegular", 
+            color:"#ADADAD", 
+            textAlign: 'center'
+        }
+    },
+
+    divInput:{
+        align:{
+            alignSelf:'center', 
+            marginTop:15
+        },
+
+        inputStyle:{
+            fontFamily:"PoppinsSemiBold",
+            height: 50
+        },
+        inputcontainerStyle:{
+            borderBottomWidth: 0
+        },
+        ContainerStyle:{
+            width: 250, 
+            backgroundColor:"#F0F1F5", 
+            borderRadius: 10, 
+            height: 50
+        },
+        style:{
+            alignSelf:"center", 
+            textAlign: 'center'
+        }
+    },
+
+    divButtons:{
+        alignment:{
+            height:120, 
+            justifyContent: 'space-between'
+        },
+        style:{
+            alignSelf:"center"
+        },
+        buttonVerificarStyle:{
+            backgroundColor: "#1DB954",
+            borderRadius:10,
+            width: 350
+        },
+        buttonReenviarStyle:{
+            backgroundColor: "#fff",
+            borderRadius:10,
+            width: 340,
+            borderColor:"#ADADAD",
+            borderWidth: 1
+        },
+        containerStyle:{
+            borderRadius:10,
+            width: 340
+        },
+        titleVerificarStyle:{
+            color:"#FFF", 
+            fontFamily:"PoppinsExtraBold"
+        },
+        titleReenviarStyle:{
+            color:"#ADADAD", 
+            fontFamily:"PoppinsExtraBold"
+        }
+    }
 });

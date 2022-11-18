@@ -15,29 +15,29 @@ export default function NovaTaxa({navigation}) {
       }
     return (
         <View style={styles.container}>
-            <View style={{alignSelf:'flex-start',paddingStart:25}}>
-                <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Cadastro de Taxa</Text>
+            <View style={styles.divTitulo}>
+                <Text style={styles.titulo}>Cadastro de Taxa</Text>
             </View>
             
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>título</Text>
+                <Text style={styles.labelInput}>Título</Text>
                 <Input
                     placeholder='Defina um título'
-                    inputContainerStyle={{borderBottomWidth: 0, alignItems: 'center'}}
-                    inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    inputStyle={styles.input.inputStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
                 />
             </View>
 
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>data de vencimento</Text>
+                <Text style={styles.labelInput}>Data de vencimento</Text>
                 <Input
                     placeholder='DD/MM/AAAA'
-                    inputContainerStyle={{borderBottomWidth: 0, alignItems: 'center'}}
-                    inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    inputStyle={styles.input.inputStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
                     rightIcon={
                         <Icon
                             name="calendar"
@@ -51,29 +51,23 @@ export default function NovaTaxa({navigation}) {
             </View>
 
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>valor</Text>
+                <Text style={styles.labelInput}>Valor</Text>
                 <Input
                     placeholder='Valor em reais(R$)'
-                    inputContainerStyle={{borderBottomWidth: 0, alignItems: 'center'}}
-                    inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    inputStyle={styles.input.inputStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
                 />
             </View>
             <Button
-                buttonStyle= {{
-                    backgroundColor: "#1DB954",
-                    borderRadius:10,
-                    width: 350
-                }}
-                style={{alignSelf:"center"}}
+                buttonStyle= {styles.button.buttonStyle}
+                style={styles.input.style}
                 title="Salvar"
                 raised="true"
                 onPress={()=>{navigation.navigate("AdmCondominio")}}
-                containerStyle={{
-                    borderRadius:10
-                }}
-                titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                containerStyle={styles.button.containerStyle}
+                titleStyle={styles.button.titleStyle}
             />
         </View>
     );
@@ -86,4 +80,51 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
+    divTitulo:{
+        alignSelf:'flex-start',
+        paddingStart:25
+    },
+    titulo:{
+        fontSize: 30, 
+        fontFamily:"PoppinsExtraBold"
+    },
+    labelInput:{
+        fontSize: 20, 
+        fontFamily:"PoppinsExtraBold", 
+        color:"#000000"
+    },
+    input:{
+        inputContainerStyle:{
+            borderBottomWidth: 0, 
+            alignItems: 'center'
+        },
+        inputStyle:{
+            fontFamily:"PoppinsRegular",
+            height: 55
+        },
+        containerStyle:{
+            width: 350, 
+            backgroundColor:"#F0F1F5", 
+            borderRadius: 10, 
+            height: 50
+        },
+        style:{
+            alignSelf:"center"
+        }
+    },
+    button:{
+        buttonStyle:{
+            backgroundColor: "#1DB954",
+            borderRadius:10,
+            width: 350
+        },
+        containerStyle:{
+            borderRadius:10
+        },
+        titleStyle:{
+            color:"#FFF", 
+            fontFamily:"PoppinsExtraBold"
+        }
+        
+    }
 });

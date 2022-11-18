@@ -15,7 +15,7 @@ export default function SucessoCadastro({navigation}) {
       }
     return (
         <View style={styles.container}>
-            <View style={{alignItems:'center'}}>
+            <View style={styles.iconStyle}>
             <Icon
                 name="check-circle-outline"
                 type='material-community'
@@ -23,22 +23,16 @@ export default function SucessoCadastro({navigation}) {
                 size={200}
             />
             
-                <Text style={{fontSize: 30,marginTop:50, fontFamily:"PoppinsExtraBold", textAlign: 'center'}}>Cadastro realizado com sucesso!</Text>
+                <Text style={styles.titleStyle}>Cadastro realizado com sucesso!</Text>
             </View>
             <Button
-                buttonStyle= {{
-                    backgroundColor: "#1DB954",
-                    borderRadius:10,
-                    width: 350
-                }}
-                style={{alignSelf:"center"}}
+                buttonStyle= {styles.button.buttonStyle}
+                style={styles.button.style}
                 title="Ir para o login"
                 raised="true"
                 onPress={()=>{navigation.navigate("Login")}}
-                containerStyle={{
-                    borderRadius:10
-                }}
-                titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                containerStyle={styles.button.containerStyle}
+                titleStyle={styles.button.titleStyle}
             />
         </View>
     );
@@ -51,4 +45,30 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
+    iconStyle:{
+        alignItems:'center'
+    },
+    titleStyle:{
+        fontSize: 30,
+        marginTop:50, 
+        fontFamily:"PoppinsExtraBold", 
+        textAlign: 'center'
+    },
+    button:{
+        buttonStyle:{
+            backgroundColor: "#1DB954",
+            borderRadius:10,
+            width: 350
+        },
+        style:{
+            alignSelf:"center"
+        },
+        containerStyle:{
+            borderRadius:10
+        },
+        titleStyle:{
+            color:"#FFF", 
+            fontFamily:"PoppinsExtraBold"
+        }
+    }
 });

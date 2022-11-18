@@ -23,42 +23,27 @@ export default function Confirmacao({navigation}) {
                 size={200}
             />
             
-                <Text style={{fontSize: 30,marginTop:50, fontFamily:"PoppinsExtraBold", textAlign: 'center'}}>Tem certeza?</Text>
-                <Text style={{fontSize: 15, fontFamily:"PoppinsMedium"}}>Ao confirmar o --- será confirmado</Text>
+                <Text style={styles.icon.titulo}>Tem certeza?</Text>
+                <Text style={styles.icon.subtitulo}>Ao confirmar o --- será confirmado</Text>
             </View>
-            <View style={{height:125, justifyContent:'space-between'}}>
+            <View style={styles.buttons.flex}>
                 <Button
-                    buttonStyle= {{
-                        backgroundColor: "#E91429",
-                        borderRadius:10,
-                        width: 350
-                    }}
+                    buttonStyle= {styles.buttons.buttonConfirmarStyle}
                     style={{alignSelf:"center"}}
                     title="Confirmar"
                     onPress={()=>navigation.navigate("Home")}
                     raised="true"
-                    containerStyle={{
-                        borderRadius:10
-                    }}
-                    titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                    containerStyle={styles.buttons.containerStyle}
+                    titleStyle={{}}
                 />
                 <Button
-                    buttonStyle= {{
-                        backgroundColor: "#fff",
-                        borderRadius:10,
-                        width: 340,
-                        borderColor:"#1DB954",
-                        borderWidth: 1
-                    }}
+                    buttonStyle= {styles.buttons.buttonCancelarStyle}
                     type="outline"
                     raised="true"
-                    containerStyle={{
-                        borderRadius:10,
-                        width: 340
-                    }}
+                    containerStyle={styles.buttons.containerStyle}
                     onPress={()=>navigation.goBack()}
                     title="Cancelar"
-                    titleStyle={{color:"#1DB954", fontFamily:"PoppinsExtraBold"}}
+                    titleStyle={styles.buttons.titleCancelarStyle}
                 />
             </View>
 
@@ -73,4 +58,47 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
+    icon:{
+        titulo:{
+            fontSize: 30,
+            marginTop:50, 
+            fontFamily:"PoppinsExtraBold", 
+            textAlign: 'center'
+        },
+        subtitulo:{
+            fontSize: 15, 
+            fontFamily:"PoppinsMedium"
+        },
+        
+    },
+    buttons:{
+        flex:{
+            height:125, 
+            justifyContent:'space-between'
+        },
+        buttonConfirmarStyle:{
+            backgroundColor: "#E91429",
+            borderRadius:10,
+            width: 350
+        },
+        containerStyle:{
+            borderRadius:10,
+            width: 340
+        },
+        titleConfirmarStyle:{
+            color:"#FFF", 
+            fontFamily:"PoppinsExtraBold"
+        },
+        buttonCancelarStyle:{
+            backgroundColor: "#fff",
+            borderRadius:10,
+            width: 340,
+            borderColor:"#1DB954",
+            borderWidth: 1
+        },
+        titleCancelarStyle:{
+            color:"#1DB954", 
+            fontFamily:"PoppinsExtraBold"
+        }
+    }
 });

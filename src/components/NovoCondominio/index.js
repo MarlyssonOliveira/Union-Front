@@ -15,40 +15,40 @@ export default function NovoCondominio({navigation}) {
       }
     return (
         <View style={styles.container}>
-            <View style={{paddingStart:25, alignSelf:'flex-start'}}>
-                <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Novo Condomínio</Text>
+            <View style={styles.flexTitle}>
+                <Text style={styles.title}>Novo Condomínio</Text>
             </View>
             
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>nome</Text>
+                <Text style={styles.input.label}>Nome</Text>
                 <Input
                     placeholder='Digite o nome'
-                    inputContainerStyle={{borderBottomWidth: 0, alignItems: 'center'}}
-                    inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    inputStyle={styles.input.inputStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
                 />
             </View>
 
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>endereço</Text>
+                <Text style={styles.input.label}>Endereço</Text>
                 <Input
                     placeholder='Digite o endereço'
-                    inputContainerStyle={{borderBottomWidth: 0, alignItems: 'center'}}
-                    inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    inputStyle={styles.input.inputStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
                 />
             </View>
 
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>CSV dos moradores</Text>
+                <Text style={styles.input.label}>CSV dos moradores</Text>
                 <Input
                     placeholder='selecione um arquivo'
-                    inputContainerStyle={{borderBottomWidth: 0, alignItems: 'center'}}
-                    inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    inputStyle={styles.input.inputStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
                     rightIcon={
                         <Icon
                             name="upload"
@@ -61,19 +61,13 @@ export default function NovoCondominio({navigation}) {
                 />
             </View>
             <Button
-                buttonStyle= {{
-                    backgroundColor: "#1DB954",
-                    borderRadius:10,
-                    width: 350
-                }}
-                style={{alignSelf:"center"}}
+                buttonStyle= {styles.button.buttonStyle}
+                style={styles.input.style}
                 title="Salvar"
                 raised="true"
                 onPress={()=>navigation.navigate("Home")}
-                containerStyle={{
-                    borderRadius:10
-                }}
-                titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                containerStyle={styles.button.containerStyle}
+                titleStyle={styles.button.titleStyle}
             />
         </View>
     );
@@ -86,4 +80,50 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
+    flexTitle:{
+        paddingStart:25, 
+        alignSelf:'flex-start'
+    },
+    title:{
+        fontSize: 30, 
+        fontFamily:"PoppinsExtraBold"
+    },
+    input:{
+        label:{
+            fontSize: 20, 
+            fontFamily:"PoppinsExtraBold", 
+            color:"#000000"
+        },
+        inputContainerStyle:{
+            borderBottomWidth: 0, 
+            alignItems: 'center'
+        },
+        inputStyle:{
+            fontFamily:"PoppinsRegular",
+            height: 55
+        },
+        containerStyle:{
+            width: 350, 
+            backgroundColor:"#F0F1F5", 
+            borderRadius: 10, 
+            height: 50
+        },
+        style:{
+            alignSelf:"center"
+        }
+    },
+    button:{
+        buttonStyle:{
+            backgroundColor: "#1DB954",
+            borderRadius:10,
+            width: 350
+        },
+        containerStyle:{
+            borderRadius:10
+        },
+        titleStyle:{
+            color:"#FFF", 
+            fontFamily:"PoppinsExtraBold"
+        }
+    }
 });

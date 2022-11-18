@@ -15,56 +15,50 @@ export default function CadastroDados({navigation}) {
       }
     return (
         <View style={styles.container}>
-            <View style={{alignSelf:'flex-start', paddingStart:25}}>
-                <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Cadastro</Text>
-                <Text  style={{fontSize: 16, fontFamily:"PoppinsMedium"}}>informações pessoais e de contato</Text>
+            <View style={styles.cabecalho.flex}>
+                <Text style={styles.cabecalho.titulo1}>Cadastro</Text>
+                <Text  style={styles.cabecalho.titulo2}>informações pessoais e de contato</Text>
             </View>
             
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>nome completo</Text>
+                <Text style={styles.input.label}>nome completo</Text>
                 <Input
                     placeholder='Digite seu nome'
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                    inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputStyle={styles.input.inputStyle}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
                 />
             </View>
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>e-mail</Text>
+                <Text style={styles.input.label}>e-mail</Text>
                 <Input
                     placeholder='Digite seu e-mail'
-                    inputStyle={{fontFamily:"PoppinsRegular", height: 55}}
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10,height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputStyle={styles.input.inputStyle}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
 
                 />
             </View>
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>telefone</Text>
+                <Text style={styles.input.label}>telefone</Text>
                 <Input
                     placeholder='(xx)x.xxxx-xxxx'
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                    inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputStyle={styles.input.inputStyle}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
                 />
             </View>
             <Button
-                buttonStyle= {{
-                    backgroundColor: "#1DB954",
-                    borderRadius:10,
-                    width: 350
-                }}
-                style={{alignSelf:"center"}}
+                buttonStyle= {styles.button.buttonStyle}
+                style={styles.button.style}
                 title="Próxima etapa"
                 raised="true"
                 onPress={()=>{navigation.navigate("CadastroSeguranca")}}
-                containerStyle={{
-                    borderRadius:10
-                }}
-                titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                containerStyle={styles.button.containerStyle}
+                titleStyle={styles.button.titleStyle}
             />
         </View>
     );
@@ -77,4 +71,61 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
+
+    cabecalho:{
+        flex:{
+            alignSelf:'flex-start', 
+            paddingStart:25
+        },
+        titulo1:{
+            fontSize: 30, 
+            fontFamily:"PoppinsExtraBold"
+        },
+        titulo2:{
+            fontSize: 16, 
+            fontFamily:"PoppinsMedium"
+        }
+    },
+
+    input:{
+        label:{
+            fontSize: 20, 
+            fontFamily:"PoppinsExtraBold", 
+            color:"#000000"
+        },
+        inputStyle:{
+            fontFamily:"PoppinsRegular", 
+            height: 55
+        },
+        inputContainerStyle:{
+            borderBottomWidth: 0
+        },
+        containerStyle:{
+            width: 350, 
+            backgroundColor:"#F0F1F5", 
+            borderRadius: 10,
+            height: 50
+        },
+        style:{
+            alignSelf:"center" 
+        }
+    },
+
+    button:{
+        buttonStyle:{
+            backgroundColor: "#1DB954",
+            borderRadius:10,
+            width: 350
+        },
+        style:{
+            alignSelf:"center"
+        },
+        containerStyle:{
+            borderRadius:10
+        },
+        titleStyle:{
+            color:"#FFF", 
+            fontFamily:"PoppinsExtraBold"
+        }
+    }
 });

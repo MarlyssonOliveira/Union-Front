@@ -26,11 +26,11 @@ export default function ListaCondominios() {
     let cards = []
     for(let i = 0; i< 5;i++){
         cards.push(
-            <Card key={i} containerStyle={{padding:0, width:345, height:150, border: 0,borderWidth: 0, marginTop:15, marginEnd: 30, margin:0, borderRadius: 10}}>
-                <Card.Image onPress={toggleOverlay} source={require('../../assets/images/predio.jpg')} style={{flexDirection: 'column-reverse', borderRadius: 10}}>
-                    <View backgroundColor="#EFF3FF" style={{borderBottomEndRadius:10,borderBottomStartRadius:10}}>
-                        <Text style={{fontSize: 18, fontFamily:"PoppinsExtraBold", paddingStart: 5}}>Condomínio {i}</Text>
-                        <Text style={{marginTop: 5, marginBottom:15, paddingStart: 5, color: "#ADADAD"}}>{(i+1)*10} moradores</Text>
+            <Card key={i} containerStyle={styles.card.containerStyle}>
+                <Card.Image onPress={toggleOverlay} source={require('../../assets/images/predio.jpg')} style={styles.card.cardImage}>
+                    <View backgroundColor="#EFF3FF" style={styles.card.divTitulos}>
+                        <Text style={styles.card.titulo}>Condomínio {i}</Text>
+                        <Text style={styles.card.subtitulo}>{(i+1)*10} moradores</Text>
                     </View>
                 </Card.Image>
             </Card> 
@@ -42,41 +42,34 @@ export default function ListaCondominios() {
                 
                 <View>
                     <Input
-                        leftIcon={{ type: 'ionicon', name: 'search' }}
+                        leftIcon={styles.input.leftIcon}
                         placeholder='Pesquisar condomínios...'
-                        inputContainerStyle={{borderBottomWidth: 0}}
-                        inputStyle={{fontFamily:"PoppinsSemiBold",height: 50}}
-                        containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                        style={{alignSelf:"center"}}
+                        inputContainerStyle={styles.input.inputContainerStyle}
+                        inputStyle={styles.input.inputStyle}
+                        containerStyle={styles.input.containerStyle}
+                        style={styles.input.style}
                     />
                 </View>
-                <View style={{margin: 0}}>
-                    <Text  style={{fontSize: 20, fontFamily:"PoppinsExtraBold", paddingHorizontal:20}}>Condomínios disponíveis</Text>
-                    <View style={{height:500}}>
-                        <ScrollView contentContainerStyle={{paddingHorizontal:20}} showsVerticalScrollIndicator={false} >
+                <View style={styles.divLista.flex}>
+                    <Text  style={styles.divLista.titulo}>Condomínios disponíveis</Text>
+                    <View style={styles.divLista.divScroll}>
+                        <ScrollView contentContainerStyle={styles.divLista.scroll} showsVerticalScrollIndicator={false} >
                             {cards} 
                         </ScrollView>
                     </View>
                 </View>
 
-                <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.overlay}>
+                <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.overlay.style}>
                     <View>
-                        <Text style={{fontSize: 25, fontFamily:"PoppinsSemiBold"}}>Condomínio 01</Text>
+                        <Text style={styles.overlay.titulo}>Condomínio 01</Text>
                     </View>
 
                     <Button
-                        buttonStyle= {{
-                            backgroundColor: "#1DB954",
-                            borderRadius:10,
-                            width:350,
-                            height:50
-                        }}
+                        buttonStyle= {styles.overlay.button.buttonStyle}
                         title="Ingressar"
                         raised="true"
-                        containerStyle={{
-                            borderRadius:10
-                        }}
-                        titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold", paddingStart:5}}
+                        containerStyle={styles.overlay.button.containerStyle}
+                        titleStyle={styles.overlay.button.titleStyle}
                     />
                 </Overlay>
             </View>
@@ -92,14 +85,107 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly'
     },
     overlay:{
-        width:'100%',
-        height:260,
-        borderTopRightRadius:20,
-        borderTopLeftRadius:20,
-        position:'absolute',
-        bottom:0,
-        justifyContent: 'space-evenly',
-        alignItems:'flex-start',
-        paddingStart: 15
+        style:{
+            width:'100%',
+            height:260,
+            borderTopRightRadius:20,
+            borderTopLeftRadius:20,
+            position:'absolute',
+            bottom:0,
+            justifyContent: 'space-evenly',
+            alignItems:'flex-start',
+            paddingStart: 15
+        },
+        titulo:{
+            fontSize: 25, 
+            fontFamily:"PoppinsSemiBold"
+        },
+        button:{
+            buttonStyle:{
+                backgroundColor: "#1DB954",
+                borderRadius:10,
+                width:350,
+                height:50
+            },
+            containerStyle:{
+                borderRadius:10
+            },
+            titleStyle:{
+                color:"#FFF", 
+                fontFamily:"PoppinsExtraBold", 
+                paddingStart:5
+            }
+        }
+        
+    },
+    card:{
+        containerStyle:{
+            padding:0, 
+            width:345, 
+            height:150, 
+            border: 0,
+            borderWidth: 0, 
+            marginTop:15, 
+            marginEnd: 30, 
+            margin:0, 
+            borderRadius: 10
+        },
+        cardImage:{
+            flexDirection: 'column-reverse', 
+            borderRadius: 10
+        },
+        divTitulos:{
+            borderBottomEndRadius:10,
+            borderBottomStartRadius:10
+        },
+        titulo:{
+            fontSize: 18, 
+            fontFamily:"PoppinsExtraBold", 
+            paddingStart: 5
+        },
+        subtitulo:{
+            marginTop: 5, 
+            marginBottom:15, 
+            paddingStart: 5, 
+            color: "#ADADAD"
+        }
+    },
+    input:{
+        leftIcon:{
+            type: 'ionicon', 
+            name: 'search'
+        },
+        inputContainerStyle:{
+            borderBottomWidth: 0
+        },
+        inputStyle:{
+            fontFamily:"PoppinsSemiBold",
+            height: 50
+        },
+        containerStyle:{
+            width: 350, 
+            backgroundColor:"#F0F1F5", 
+            borderRadius: 10, 
+            height: 50
+        },
+        style:{
+            alignSelf:"center"
+        }
+    },
+    divLista:{
+        flex:{
+            margin: 0
+        },
+        titulo:{
+            fontSize: 20, 
+            fontFamily:"PoppinsExtraBold", 
+            paddingHorizontal:20
+        },
+        divScroll:{
+            height:500
+        },
+        scroll:{
+            paddingHorizontal:20
+        }
     }
 });

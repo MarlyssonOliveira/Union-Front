@@ -21,17 +21,17 @@ export default function AdmCondominio({navigation}) {
     let cards = []
     for(let i = 0; i< 5;i++){
         cards.push(
-            <Card key={i} containerStyle={{padding:0, width:345, border: 0,borderWidth: 0, marginTop:15, marginEnd: 30, margin:0, borderRadius: 10}}>
-                <View backgroundColor="#EFF3FF" style={{borderRadius:10, padding:15}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+            <Card key={i} containerStyle={styles.card.containerStyle}>
+                <View backgroundColor="#EFF3FF" style={styles.card.background}>
+                    <View style={styles.card.topoCard}>
                         <Avatar
                             rounded
                             size="medium"
                             source={require('../../assets/images/user.jpg')}
                         />
-                        <Text  style={{fontSize: 14, fontFamily:"PoppinsExtraBold", paddingHorizontal:15}}>Usuario</Text>
+                        <Text  style={styles.card.titulo}>Usuario</Text>
                     </View>
-                    <Text style={{fontSize: 12,color: "#000", fontFamily:"PoppinsRegular", paddingTop:10}}>Esse ipsum qui ipsum ea. Lorem labore minim occaecat sint cillum qui voluptate. Dolore aliqua adipisicing occaecat magna pariatur fugiat tempor irure pariatur tempor mollit excepteur eiusmod proident. Id do ea tempor commodo labore anim ea elit aliquip occaecat aliquip sit eu.dolor do anim deserunt ut eiusmod labore sint minim. Non mollit qui magna aliquip.</Text>
+                    <Text style={styles.card.subtitulo}>Esse ipsum qui ipsum ea. Lorem labore minim occaecat sint cillum qui voluptate. Dolore aliqua adipisicing occaecat magna pariatur fugiat tempor irure pariatur tempor mollit excepteur eiusmod proident. Id do ea tempor commodo labore anim ea elit aliquip occaecat aliquip sit eu.dolor do anim deserunt ut eiusmod labore sint minim. Non mollit qui magna aliquip.</Text>
                 </View>
             </Card> 
         )
@@ -40,22 +40,18 @@ export default function AdmCondominio({navigation}) {
     return (
         <>
             <View style={styles.container}>
-                <View style={{alignSelf: 'flex-start', paddingStart: 25}}>
-                    <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
+                <View style={styles.detalhesCondominio.flexConteudo}>
+                    <View style={styles.detalhesCondominio.conteudo}>
                         <Image
                             source={require('../../assets/images/predio.jpg')}
-                            style={{width: 110, height: 110, borderRadius:10}}
+                            style={styles.detalhesCondominio.imagem}
                             
                         />
                         <View style={{paddingStart:15}}>
-                            <Text style={{fontSize: 24, fontFamily:"PoppinsExtraBold"}}>Bloco 24</Text>
-                            <Text style={{fontSize: 16, fontFamily:"PoppinsMedium", color:"#ADADAD"}}>Avenida um, 230</Text>
+                            <Text style={styles.detalhesCondominio.nome}>Bloco 24</Text>
+                            <Text style={styles.detalhesCondominio.endereco}>Avenida um, 230</Text>
                             <Button
-                                buttonStyle= {{
-                                    backgroundColor: "#1DB954",
-                                    borderRadius:10,
-                                    alignItems: 'center'
-                                }}
+                                buttonStyle= {styles.detalhesCondominio.buttonStyle}
                                 icon={
                                     <Icon
                                         name="pencil"
@@ -66,18 +62,16 @@ export default function AdmCondominio({navigation}) {
                                 }
                                 title="Alterar Imagem"
                                 raised="true"
-                                containerStyle={{
-                                    borderRadius:10
-                                }}
-                                titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold", paddingStart:5}}
+                                containerStyle={styles.detalhesCondominio.containerStyle}
+                                titleStyle={styles.detalhesCondominio.titleStyle}
                             />
                         </View>
                     </View>
                 </View>
 
-                <View style={{marginTop:30}}>
-                    <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold"}}>Últimas atualizações</Text>
-                    <View style={{height:450, paddingVertical:10}}>
+                <View style={styles.feed.conteudo}>
+                    <Text style={styles.feed.titulo}>Últimas atualizações</Text>
+                    <View style={styles.feed.post}>
                         <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
                             {cards}
                         </ScrollView>
@@ -98,26 +92,26 @@ export default function AdmCondominio({navigation}) {
             onClose={() => setOpen(!open)}
             >
                 <SpeedDial.Action
-                    style={{width:40}}
-                    buttonStyle={{width:55, height: 55,backgroundColor:"#1DB954"}}
+                    style={styles.SpeedDial.width}
+                    buttonStyle={styles.SpeedDial.buttonStyle}
                     icon={{ name: 'message', color: '#fff', size:35 }}
-                    iconContainerStyle= {{backgroundColor:"#1DB954", width:55, height: 55}}
+                    iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
                     title="Nova mensagem" 
                     onPress={() => navigation.navigate('NovaMensagem')}
                 />
                 <SpeedDial.Action
-                    style={{width:40}}
-                    buttonStyle={{width:55, height: 55,backgroundColor:"#1DB954"}}
+                    style={styles.SpeedDial.width}
+                    buttonStyle={styles.SpeedDial.buttonStyle}
                     icon={{ name: 'currency-usd', color: '#fff', size:35, type:"material-community"  }}
-                    iconContainerStyle= {{backgroundColor:"#1DB954",width:55, height: 55,}}
+                    iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
                     title="Nova taxa"
                     onPress={() => navigation.navigate('NovaTaxa')}
                 />
                 <SpeedDial.Action
-                    style={{width:40}}
-                    buttonStyle={{width:55, height: 55,backgroundColor:"#1DB954"}}
+                    style={styles.SpeedDial.width}
+                    buttonStyle={styles.SpeedDial.buttonStyle}
                     icon={{ name: 'delete', color: '#fff', size:35 }}
-                    iconContainerStyle= {{backgroundColor:"#E91429", width:55, height: 55}}
+                    iconContainerStyle= {styles.SpeedDial.iconRedContainetStyle}
                     title="Excluir condomínio" 
                     onPress={() => navigation.navigate('Confirmacao')}
                 />
@@ -134,4 +128,108 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'center'
     },
+    card:{
+        containerStyle:{
+            padding:0, 
+            width:345, 
+            border: 0,
+            borderWidth: 0, 
+            marginTop:15, 
+            marginEnd: 30, 
+            margin:0, 
+            borderRadius: 10
+        },
+        background:{
+            borderRadius:10, 
+            padding:15
+        },
+        topoCard:{
+            flexDirection: 'row', 
+            justifyContent: 'flex-start', 
+            alignItems: 'center'
+        },
+        titulo:{
+            fontSize: 14, 
+            fontFamily:"PoppinsExtraBold", 
+            paddingHorizontal:15
+        },
+        subtitulo:{
+            fontSize: 12,
+            color: "#000", 
+            fontFamily:"PoppinsRegular", 
+            paddingTop:10
+        }
+    },
+
+    detalhesCondominio:{
+        flexConteudo:{
+            alignSelf: 'flex-start', 
+            paddingStart: 25
+        },
+        conteudo:{
+            flexDirection:'row', 
+            justifyContent: 'space-between'
+        },
+        imagem:{
+            width: 110, 
+            height: 110, 
+            borderRadius:10
+        },
+        nome:{
+            fontSize: 24, 
+            fontFamily:"PoppinsExtraBold"
+        },
+        endereco:{
+            fontSize: 16, 
+            fontFamily:"PoppinsMedium", 
+            color:"#ADADAD"
+        },
+        buttonStyle:{
+            backgroundColor: "#1DB954",
+            borderRadius:10,
+            alignItems: 'center'
+        },
+        containerStyle:{
+            borderRadius:10
+        },
+        titleStyle:{
+            color:"#FFF", 
+            fontFamily:"PoppinsExtraBold", 
+            paddingStart:5}
+    },
+
+    feed:{
+        conteudo:{
+            marginTop:30
+        },
+        titulo:{
+            fontSize: 20, 
+            fontFamily:"PoppinsExtraBold"
+        },
+        post:{
+            height:450, 
+            paddingVertical:10
+        }
+    },
+
+    SpeedDial:{
+        width:{
+            width:40
+        },
+        buttonStyle:{
+            width:55, 
+            height: 55,
+            backgroundColor:"#1DB954"
+        },
+        iconGreenContainerStyle:{
+            backgroundColor:"#1DB954", 
+            width:55, 
+            height: 55
+        },
+        iconRedContainetStyle:{
+            backgroundColor:"#E91429", 
+            width:55, 
+            height: 55
+        }
+    }
 });

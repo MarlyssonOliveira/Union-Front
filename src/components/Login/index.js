@@ -13,45 +13,39 @@ export default function Login({navigation}) {
       }
     return (
         <View style={styles.container}>
-            <Text style={{alignSelf:'flex-start', paddingStart:25, fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Entrar</Text>
+            <Text style={styles.textEntrar}>Entrar</Text>
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>e-mail</Text>
+                <Text style={styles.textEmail}>E-mail</Text>
                 <Input
                     placeholder='Digite seu e-mail'
-                    inputStyle={{fontFamily:"PoppinsSemiBold", height: 50}}
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10,height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputStyle={styles.inputs.inputStyle}
+                    inputContainerStyle={styles.inputs.inputContainerStyle}
+                    containerStyle={styles.inputs.containerStyle}
+                    style={styles.inputs.alignment}
                 />
             </View>
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>senha</Text>
+                <Text style={styles.textEmail}>Senha</Text>
                 <Input
                     secureTextEntry={true}
                     placeholder='Digite sua senha'
-                    inputContainerStyle={{borderBottomWidth: 0}}
-                    inputStyle={{fontFamily:"PoppinsSemiBold",height: 50}}
-                    containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
-                    style={{alignSelf:"center"}}
+                    inputContainerStyle={styles.inputs.inputContainerStyle}
+                    inputStyle={styles.inputs.inputStyle}
+                    containerStyle={styles.inputs.containerStyle}
+                    style={styles.inputs.alignment}
                 />
             </View>
             <Button
-                buttonStyle= {{
-                    backgroundColor: "#1DB954",
-                    borderRadius:10,
-                    width: 350
-                }}
-                style={{alignSelf:"center"}}
+                buttonStyle= {styles.buttonLogin.buttonStyle}
+                style={styles.buttonLogin.buttonAlignment}
                 title="Entrar"
                 raised="true"
                 onPress={()=>{navigation.navigate("Home")}}
-                containerStyle={{
-                    borderRadius:10
-                }}
-                titleStyle={{color:"#FFF", fontFamily:"PoppinsExtraBold"}}
+                containerStyle={styles.buttonLogin.containerStyle}
+                titleStyle={styles.buttonEntrar}
             />
 
-            <Text onPress={() =>{navigation.navigate("CodigoVerificacao")}} style={{fontSize: 18, fontFamily:"PoppinsExtraBold", alignSelf:"center"}}>Esqueci minha senha</Text>
+            <Text onPress={() =>{navigation.navigate("CodigoVerificacao")}} style={styles.EsqueciSenha}>Esqueci minha senha</Text>
         </View>
     );
 }
@@ -63,4 +57,57 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
     },
+    textEntrar:{
+        alignSelf:'flex-start', 
+        paddingStart:25, 
+        fontSize: 30, 
+        fontFamily:"PoppinsExtraBold"
+    },
+    textEmail:{
+        fontSize: 20, 
+        fontFamily:"PoppinsExtraBold", 
+        color:"#000000"
+    },
+    inputs:{
+        inputStyle:{
+            fontFamily:"PoppinsSemiBold", 
+            height: 50
+        },
+        containerStyle:{
+            width: 350, 
+            backgroundColor:"#F0F1F5", 
+            borderRadius: 10,
+            height: 50
+        },
+        inputContainerStyle:{
+            borderBottomWidth: 0
+        },
+        alignment:{
+            alignSelf:"center"
+        }
+
+    },
+    buttonEntrar:{
+        color:"#FFF", 
+        fontFamily:"PoppinsExtraBold"
+    },
+    
+    buttonLogin: {
+        buttonStyle:{
+            backgroundColor: "#1DB954",
+            borderRadius:10,
+            width: 350
+        },
+        buttonAlignment:{
+            alignSelf:"center"
+        },
+        containerStyle:{
+            borderRadius:10
+        }
+    },
+    EsqueciSenha:{
+        fontSize: 18, 
+        fontFamily:"PoppinsExtraBold", 
+        alignSelf:"center",
+    }
 });
