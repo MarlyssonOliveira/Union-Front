@@ -2,14 +2,26 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Image, Input } from 'react-native-elements';
 import { useState } from 'react';
+import axios from "axios";
 
 export default function NovaSenha({navigation}) {
 
     const [Email,setEmail] = useState();
     const [Senha,setSenha] = useState();
-    const [Telefone,setTelefone] = useState();
+    const [Codigo,setCodigo] = useState();
     function RedefinirSenha(){
-        console.log("requisição axios para redefinir")
+        var novaSenhaObj = {
+            "email": Email,
+            "password": Senha,
+            "code": Codigo
+        }
+        axios.put("http://192.168.0.107:8080/union/user/new-password",novaSenhaObj,{headers:{'Content-Type': 'application/json'}})
+        .then((response) => {
+            navigation.navigate("SucessoRedefinicaoSenha")
+        }).catch((err) =>{
+            console.log(err)
+        })
+
     }
 
     const [loaded] = useFonts({
@@ -59,7 +71,7 @@ export default function NovaSenha({navigation}) {
                 <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>Código de redefinição</Text>
                 <Input
                     placeholder='Digite o código'
-                    onChangeText={(telefone) => setTelefone(telefone)}
+                    onChangeText={(codigo) => setCodigo(codigo)}
                     inputContainerStyle={{borderBottomWidth: 0}}
                     inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
                     containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}

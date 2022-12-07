@@ -28,6 +28,7 @@ export default function StackNavigator() {
     <Stack.Screen name="CadastroSeguranca" component={CadastroSeguranca} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="CodigoVerificacao" component={CodigoVerificacao} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="SucessoCadastro" component={SucessoCadastro} options={{headerShown:false, headerTitle:""}}/>
+    <Stack.Screen name="SucessoRedefinicaoSenha" component={SucessoCadastro} options={{headerShown:false, headerTitle:""}}/>
     <Stack.Screen name="ErroCadastro" component={ErroCadastro} options={{headerShown:false, headerTitle:""}}/>
     <Stack.Screen name="Login" component={Login} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="Home" component={Home} options={{headerShown:false, headerTitle:""}}/>
