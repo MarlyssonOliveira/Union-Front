@@ -16,14 +16,12 @@ export default function EmailRecuperacaoSenha({navigation}) {
       });
     
       function EnviaEmail(){
-        navigation.navigate("NovaSenha")
-
-        // axios.post("http://192.168.0.107:8080/union/user/request-new-password","marlysson.2000.mendes@gmail.com",{headers:{'Content-Type': 'application/json'}})
-        // .then((response)=>{
-        //     console.log(response)
-        // }).catch((err)=>{
-        //     console.log(err)
-        // })
+        axios.post("http://192.168.0.107:8080/union/user/request-new-password",Email,{headers:{'Content-Type': 'text/html'}})
+        .then((response)=>{
+            navigation.navigate("NovaSenha")
+        }).catch((err)=>{
+            console.log(err)
+        })
       }
       if (!loaded) {
         return null;
@@ -32,15 +30,15 @@ export default function EmailRecuperacaoSenha({navigation}) {
         <View style={styles.container}>
             <View style={{paddingHorizontal:15}}>
                 <Icon
-                    name="email-fast"
+                    name="email-alert"
                     type='material-community'
                     color="#1DB954"
                     size={200}
                 />
 
                 <View style={{alignItems:'center',justifyContent:'center'}}>
-                    <Text style={styles.titulos.titulo}>Já vamos redefinir sua senha.</Text>
-                    <Text style={styles.titulos.subtitulo}>Mas para isso digite o email vinculado a sua conta.</Text>
+                    <Text style={styles.titulos.titulo}>Para redefinir sua senha, informe seu email.</Text>
+                    <Text style={styles.titulos.subtitulo}>enviaremos um codigo de confirmação para prosseguir.</Text>
                 </View>
                 <View style={styles.divInput.align}>
                     <Input
