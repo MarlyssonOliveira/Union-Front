@@ -1,19 +1,48 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Image, Input } from 'react-native-elements';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from "axios";
 
-export default function CadastroSeguranca({navigation}) {
+export default function CadastroSeguranca({navigation, route}) {
+    const [UsuarioParam, setUsuarioParam] = useState({});
+    const [Senha, setSenha] = useState();
+
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
         PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf"),
         PoppinsSemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf")
+    });
 
-      });
+    function CadastrarUsuario(){
+        const usuarioFinal = {
+            name: UsuarioParam.nome,
+            email: UsuarioParam.email,
+            phone: UsuarioParam.telefone,
+            password: Senha
+        }
+        axios.post("http://192.168.0.107:8080/union/user",usuarioFinal,{headers:{'Content-Type': 'application/json'}})
+            .then((response) => {
+                console.log(response.data)
+                navigation.navigate("CodigoVerificacao");
+            }).catch((err) =>{
+                console.log(err)
+            })
+
+
+    }
+
+
     
-      if (!loaded) {
-        return null;
-      }
+      useEffect(() => {
+        if (route.params && route.params.usuario) {
+          let usuarioParam = route.params.usuario;
+          setUsuarioParam(usuarioParam);
+        }
+      }, []);
+    
     return (
         <View style={styles.container}>
             <View style={styles.cabecalho.flex}>
@@ -28,6 +57,7 @@ export default function CadastroSeguranca({navigation}) {
                     placeholder='Digite sua senha'
                     inputContainerStyle={styles.input.inputContainerStyle}
                     inputStyle={styles.input.inputStyle}
+                    onChangeText={(senha) => setSenha(senha)}
                     containerStyle={styles.input.containerStyle}
                     style={styles.input.style}
                 />
@@ -48,7 +78,7 @@ export default function CadastroSeguranca({navigation}) {
                     buttonStyle= {styles.button.buttonFinalizarStyle}
                     title="Finalizar cadastro"
                     raised="true"
-                    onPress={()=>{navigation.navigate("CodigoVerificacao")}}
+                    onPress={()=>{CadastrarUsuario()}}
                     containerStyle={styles.button.containerStyle}
                     titleStyle={styles.button.titleFinalizarStyle}
                 />

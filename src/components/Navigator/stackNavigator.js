@@ -6,12 +6,14 @@ import CodigoVerificacao from '../CodigoVerificacao/index';
 import CondominioMorador from '../CondominioMorador/index';
 import Confirmacao from '../Confirmacao/index';
 import Debitos from '../Debitos/index';
+import EmailRecuperacaoSenha from '../EmailRecuperacaoSenha';
 import ErroCadastro from '../ErroCadastro/index';
 import Home from '../Home/index';
 import Index from '../Index/index';
 import ListaCondominios from '../ListaCondominios/index';
 import Login from '../Login/index';
 import NovaMensagem from '../NovaMensagem/index';
+import NovaSenha from '../NovaSenha';
 import NovaTaxa from '../NovaTaxa/index';
 import NovoCondominio from '../NovoCondominio/index';
 import SucessoCadastro from '../SucessoCadastro/index';
@@ -37,6 +39,9 @@ export default function StackNavigator() {
     <Stack.Screen name="NovoCondominio" component={NovoCondominio} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="Debitos" component={Debitos} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="ListaCondominios" component={ListaCondominios} options={{headerShown:true, headerTitle:""}}/>
+    <Stack.Screen name="EmailRecuperacaoSenha" component={EmailRecuperacaoSenha} options={{headerShown:true, headerTitle:""}}/>
+    <Stack.Screen name="NovaSenha" component={NovaSenha} options={{headerShown:true, headerTitle:""}}/>
+
 
   </Stack.Navigator>
   );

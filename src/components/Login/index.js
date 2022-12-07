@@ -1,13 +1,33 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Image, Input } from 'react-native-elements';
+import axios from "axios";
+import { useState } from 'react';
 
 export default function Login({navigation}) {
+    const [Email, setEmail] = useState();
+    const [Senha, setSenha] = useState();
+
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsSemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf")
       });
     
+      function Logar(){
+        axios.post("http://192.168.0.107:8080/union/user/login",
+        {
+            email:Email,
+            password:Senha
+        },
+        {headers:{'Content-Type': 'application/json'}})
+        .then((response)=>{
+            console.log(response.data)
+            global.sessionID = response.data
+            navigation.navigate("Home")
+        }).catch((err)=>{
+            console.log(err)
+        })
+      } 
       if (!loaded) {
         return null;
       }
@@ -20,6 +40,7 @@ export default function Login({navigation}) {
                     placeholder='Digite seu e-mail'
                     inputStyle={styles.inputs.inputStyle}
                     inputContainerStyle={styles.inputs.inputContainerStyle}
+                    onChangeText={(email) => {setEmail(email)}}
                     containerStyle={styles.inputs.containerStyle}
                     style={styles.inputs.alignment}
                 />
@@ -30,6 +51,7 @@ export default function Login({navigation}) {
                     secureTextEntry={true}
                     placeholder='Digite sua senha'
                     inputContainerStyle={styles.inputs.inputContainerStyle}
+                    onChangeText={(senha)=>{setSenha(senha)}}
                     inputStyle={styles.inputs.inputStyle}
                     containerStyle={styles.inputs.containerStyle}
                     style={styles.inputs.alignment}
@@ -40,12 +62,12 @@ export default function Login({navigation}) {
                 style={styles.buttonLogin.buttonAlignment}
                 title="Entrar"
                 raised="true"
-                onPress={()=>{navigation.navigate("Home")}}
+                onPress={()=>{Logar()}}
                 containerStyle={styles.buttonLogin.containerStyle}
                 titleStyle={styles.buttonEntrar}
             />
 
-            <Text onPress={() =>{navigation.navigate("CodigoVerificacao")}} style={styles.EsqueciSenha}>Esqueci minha senha</Text>
+            <Text onPress={() =>{navigation.navigate("EmailRecuperacaoSenha")}} style={styles.EsqueciSenha}>Esqueci minha senha</Text>
         </View>
     );
 }

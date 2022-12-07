@@ -3,24 +3,13 @@ import { useFonts } from "expo-font";
 import { Button, Image, Input } from 'react-native-elements';
 import { useState } from 'react';
 
-export default function CadastroDados({navigation}) {
+export default function NovaSenha({navigation}) {
 
-    const [Nome,setNome] = useState();
     const [Email,setEmail] = useState();
+    const [Senha,setSenha] = useState();
     const [Telefone,setTelefone] = useState();
-
-
-    function ProximoPassoCadastro(){
-        const NovoUsuario = {
-            nome: Nome,
-            email: Email,
-            telefone: Telefone,
-          };
-      
-          navigation.navigate("CadastroSeguranca", {
-            usuario: NovoUsuario,
-          });
-      
+    function RedefinirSenha(){
+        console.log("requisição axios para redefinir")
     }
 
     const [loaded] = useFonts({
@@ -39,27 +28,27 @@ export default function CadastroDados({navigation}) {
     return (
         <View style={styles.container}>
             <View style={{alignSelf:'flex-start', paddingStart:25}}>
-                <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Cadastro</Text>
-                <Text  style={{fontSize: 16, fontFamily:"PoppinsMedium"}}>informações pessoais e de contato</Text>
+                <Text style={{fontSize: 30, fontFamily:"PoppinsExtraBold"}}>Redefinição de Senha</Text>
             </View>
             
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>nome completo</Text>
+                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>Email</Text>
                 <Input
-                    placeholder='Digite seu nome'
+                    placeholder='Digite seu e-mail'
                     inputContainerStyle={{borderBottomWidth: 0}}
                     inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
-                    onChangeText={(nome) => setNome(nome)}
+                    onChangeText={(email) => setEmail(email)}
                     containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10, height: 50}}
                     style={{alignSelf:"center"}}
                 />
             </View>
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>e-mail</Text>
+                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>Nova Senha</Text>
                 <Input
-                    placeholder='Digite seu e-mail'
+                    placeholder='Digite sua nova senha'
+                    secureTextEntry={true}
                     inputStyle={{fontFamily:"PoppinsRegular", height: 55}}
-                    onChangeText={(email) => setEmail(email)}
+                    onChangeText={(senha) => setSenha(senha)}
                     inputContainerStyle={{borderBottomWidth: 0}}
                     containerStyle={{width: 350, backgroundColor:"#F0F1F5", borderRadius: 10,height: 50}}
                     style={{alignSelf:"center"}}
@@ -67,9 +56,9 @@ export default function CadastroDados({navigation}) {
                 />
             </View>
             <View>
-                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>telefone</Text>
+                <Text style={{fontSize: 20, fontFamily:"PoppinsExtraBold", color:"#000000"}}>Código de redefinição</Text>
                 <Input
-                    placeholder='(xx)x.xxxx-xxxx'
+                    placeholder='Digite o código'
                     onChangeText={(telefone) => setTelefone(telefone)}
                     inputContainerStyle={{borderBottomWidth: 0}}
                     inputStyle={{fontFamily:"PoppinsRegular",height: 55}}
@@ -84,9 +73,9 @@ export default function CadastroDados({navigation}) {
                     width: 350
                 }}
                 style={{alignSelf:"center"}}
-                title="Próxima etapa"
+                title="Redefinir senha"
                 raised="true"
-                onPress={()=>{ProximoPassoCadastro()}}
+                onPress={()=>{RedefinirSenha()}}
                 containerStyle={{
                     borderRadius:10
                 }}

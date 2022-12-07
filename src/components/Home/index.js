@@ -2,9 +2,9 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
 import { useState } from 'react';
+import axios from "axios";
 
 export default function Home({navigation}) {
-
     const [open, setOpen] = useState(false);
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -16,6 +16,16 @@ export default function Home({navigation}) {
     
     if (!loaded) {
         return null;
+    }
+
+    function Logout(){
+        axios.post("http://192.168.0.107:8080/union/user/logout",null,{headers:{'Content-Type': 'application/json', 'token': global.sessionID}})
+        .then(() =>{
+            navigation.navigate("Index")
+        }).catch((err)=>{
+            console.log(err)
+        })
+
     }
     let cardsGerencio = []
     let cardsFacoParte = []
@@ -55,7 +65,7 @@ export default function Home({navigation}) {
                         <Text  style={styles.areaLogado.boasVindas}>Ola Usuario logado</Text>
                     </View>
                     <Icon
-                        onPress={()=>{navigation.navigate("Index")}}
+                        onPress={()=>{Logout()}}
                         name='logout'
                         type='material'
                         color='#000'
