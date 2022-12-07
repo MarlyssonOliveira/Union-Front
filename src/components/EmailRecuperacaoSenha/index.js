@@ -4,9 +4,9 @@ import { Button, Icon, Image, Input } from 'react-native-elements';
 import { useState } from 'react';
 import axios from "axios";
 
-export default function CodigoVerificacao({navigation}) {
+export default function EmailRecuperacaoSenha({navigation}) {
 
-    const [Codigo,setCodigo] = useState();
+    const [Email,setEmail] = useState();
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -15,13 +15,15 @@ export default function CodigoVerificacao({navigation}) {
 
       });
     
-      function VerificaCodigo(){
-        axios.post("http://192.168.0.107:8080/union/user/account-confirmation",Codigo,{headers:{'Content-Type': 'application/json'}})
-        .then((response)=>{
-            navigation.navigate("SucessoCadastro")
-        }).catch((err)=>{
-            console.log(err)
-        })
+      function EnviaEmail(){
+        navigation.navigate("NovaSenha")
+
+        // axios.post("http://192.168.0.107:8080/union/user/request-new-password","marlysson.2000.mendes@gmail.com",{headers:{'Content-Type': 'application/json'}})
+        // .then((response)=>{
+        //     console.log(response)
+        // }).catch((err)=>{
+        //     console.log(err)
+        // })
       }
       if (!loaded) {
         return null;
@@ -37,14 +39,14 @@ export default function CodigoVerificacao({navigation}) {
                 />
 
                 <View style={{alignItems:'center',justifyContent:'center'}}>
-                    <Text style={styles.titulos.titulo}>Um código foi enviado para o email informado</Text>
-                    <Text style={styles.titulos.subtitulo}>Para continuar informe o codigo abaixo</Text>
+                    <Text style={styles.titulos.titulo}>Já vamos redefinir sua senha.</Text>
+                    <Text style={styles.titulos.subtitulo}>Mas para isso digite o email vinculado a sua conta.</Text>
                 </View>
                 <View style={styles.divInput.align}>
                     <Input
-                        placeholder='00-00-00-00'
+                        placeholder='Digite o seu email...'
                         inputContainerStyle={styles.divInput.inputcontainerStyle}
-                        onChangeText={(codigo)=>{setCodigo(codigo)}}
+                        onChangeText={(email)=>{setEmail(email)}}
                         inputStyle={styles.divInput.inputStyle}
                         containerStyle={styles.divInput.ContainerStyle}
                         style={styles.divInput.style}
@@ -54,22 +56,14 @@ export default function CodigoVerificacao({navigation}) {
 
             <View style={styles.divButtons.alignment}>
                 <Button
-                    buttonStyle= {styles.divButtons.buttonVerificarStyle}
+                    buttonStyle= {styles.divButtons.buttonEnviarStyle}
                     style={styles.divButtons.style}
-                    title="Verificar código"
-                    onPress={()=>{VerificaCodigo()}}
+                    title="Enviar código"
+                    onPress={()=>{EnviaEmail()}}
                     raised="true"
                     containerStyle={styles.divButtons.containerStyle}
-                    titleStyle={styles.divButtons.titleVerificarStyle}
+                    titleStyle={styles.divButtons.titleEnviarStyle}
                     />
-                <Button
-                    buttonStyle= {styles.divButtons.buttonReenviarStyle}
-                    type="outline"
-                    raised="true"
-                    containerStyle={styles.divButtons.containerStyle}
-                    title="Reenviar código"
-                    titleStyle={styles.divButtons.titleReenviarStyle}
-                />
             </View>
         </View>
     );
@@ -115,7 +109,7 @@ const styles = StyleSheet.create({
             borderBottomWidth: 0
         },
         ContainerStyle:{
-            width: 250, 
+            width: 350, 
             backgroundColor:"#F0F1F5", 
             borderRadius: 10, 
             height: 50
@@ -134,23 +128,16 @@ const styles = StyleSheet.create({
         style:{
             alignSelf:"center"
         },
-        buttonVerificarStyle:{
+        buttonEnviarStyle:{
             backgroundColor: "#1DB954",
             borderRadius:10,
             width: 350
-        },
-        buttonReenviarStyle:{
-            backgroundColor: "#fff",
-            borderRadius:10,
-            width: 340,
-            borderColor:"#ADADAD",
-            borderWidth: 1
         },
         containerStyle:{
             borderRadius:10,
             width: 340
         },
-        titleVerificarStyle:{
+        titleEnviarStyle:{
             color:"#FFF", 
             fontFamily:"PoppinsExtraBold"
         },
