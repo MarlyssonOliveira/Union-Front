@@ -28,7 +28,9 @@ export default function NovoCondominio({navigation}) {
         axios.post("http://192.168.0.107:8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
         .then((response) => {
             console.log(response.data)
-            navigation.navigate("AdmCondominio")
+            navigation.navigate("AdmCondominio", {
+                idCondominio : response.data.unionIdentifier
+            })
         }).catch((err) =>{
             console.log(err)
         })
