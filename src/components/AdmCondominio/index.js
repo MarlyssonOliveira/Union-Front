@@ -91,6 +91,15 @@ export default function AdmCondominio({navigation}) {
             onOpen={() => setOpen(!open)}
             onClose={() => setOpen(!open)}
             >
+                
+                <SpeedDial.Action
+                    style={styles.SpeedDial.width}
+                    buttonStyle={styles.SpeedDial.buttonStyle}
+                    icon={{ name: 'file-table', color: '#fff', size:35, type:"material-community" }}
+                    iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
+                    title="Adicionar moradores" 
+                    onPress={() => navigation.navigate('CSVCondominio')}
+                />
                 <SpeedDial.Action
                     style={styles.SpeedDial.width}
                     buttonStyle={styles.SpeedDial.buttonStyle}

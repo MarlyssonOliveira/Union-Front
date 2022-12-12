@@ -4,10 +4,9 @@ import { Button, Icon, Image, Input } from 'react-native-elements';
 import { useState } from 'react';
 import axios from "axios";
 
-export default function NovoCondominio({navigation}) {
+export default function CSVCondominio({navigation}) {
 
-    const [Nome,setNome] = useState()
-    const [Endereco,setEndereco] = useState()
+    const [Csv,setCSV] = useState()
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -20,54 +19,54 @@ export default function NovoCondominio({navigation}) {
         return null;
       }
     
-      function CriarCondominio(){
-        var novoCondominio = {
-            "name": Nome,
-            "address": Endereco,
-        }
+      function AdicionarMoradores(){
+
         axios.post("http://192.168.0.107:8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
         .then((response) => {
-            console.log(response.data)
-            navigation.navigate("AdmCondominio")
+            console.log(response)
         }).catch((err) =>{
             console.log(err)
         })
       }
     return (
         <View style={styles.container}>
+            <Icon
+                name="file-table-outline"
+                type='material-community'
+                color="#1DB954"
+                size={200}
+            />
             <View style={styles.flexTitle}>
-                <Text style={styles.title}>Novo Condomínio</Text>
-            </View>
-            
-            <View>
-                <Text style={styles.input.label}>Nome</Text>
-                <Input
-                    placeholder='Digite o nome'
-                    inputContainerStyle={styles.input.inputContainerStyle}
-                    onChangeText = {(nome) => setNome(nome)}
-                    inputStyle={styles.input.inputStyle}
-                    containerStyle={styles.input.containerStyle}
-                    style={styles.input.style}
-                />
+                <Text style={styles.titulos.titulo}>Adicione Moradores</Text>
+                <Text style={styles.titulos.subtitulo}>O CSV deve conter uma coluna com os emails dos moradores e outra com o nímero da residencia.</Text>
+
             </View>
 
             <View>
-                <Text style={styles.input.label}>Endereço</Text>
+                <Text style={styles.input.label}>CSV dos moradores</Text>
                 <Input
-                    placeholder='Digite o endereço'
+                    placeholder='selecione um arquivo'
                     inputContainerStyle={styles.input.inputContainerStyle}
-                    onChangeText = {(endereco) => setEndereco(endereco)}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
                     style={styles.input.style}
+                    rightIcon={
+                        <Icon
+                            name="upload"
+                            size={25}
+                            type="font-awesome"
+                            color="#1DB954"
+                            
+                        />
+                    }
                 />
             </View>
             <Button
                 buttonStyle= {styles.button.buttonStyle}
                 style={styles.input.style}
-                title="Salvar"
+                title="Adicionar"
                 raised="true"
-                onPress={()=>CriarCondominio()}
+                onPress={()=>AdicionarMoradores()}
                 containerStyle={styles.button.containerStyle}
                 titleStyle={styles.button.titleStyle}
             />
@@ -86,9 +85,19 @@ const styles = StyleSheet.create({
         paddingStart:25, 
         alignSelf:'flex-start'
     },
-    title:{
-        fontSize: 30, 
-        fontFamily:"PoppinsExtraBold"
+    titulos:{
+        titulo:{
+            fontSize: 25,
+            marginTop:50, 
+            fontFamily:"PoppinsExtraBold", 
+            textAlign: 'center'
+        },
+        subtitulo:{
+            fontSize: 14, 
+            fontFamily:"PoppinsRegular", 
+            color:"#ADADAD", 
+            textAlign: 'center'
+        }
     },
     input:{
         label:{
