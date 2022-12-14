@@ -2,37 +2,71 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Image, Input } from 'react-native-elements';
 import axios from "axios";
-import { useState } from 'react';
+import { useEffect , useState } from 'react';
 
 export default function Login({navigation}) {
     const [Email, setEmail] = useState();
     const [Senha, setSenha] = useState();
+    const [erroEmail, setErroEmail] = useState('');
+    const [erroForm, setErroForm] = useState('');
+    const [validar, setValidar] = useState(false);
 
+    
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsSemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf")
-      });
-    
-      function Logar(){
-        axios.post("http://192.168.0.107:8080/union/user/login",
-        {
-            email:Email,
-            password:Senha
-        },
-        {headers:{'Content-Type': 'application/json'}})
-        .then((response)=>{
-            console.log(response.data)
-            global.sessionID = response.data
-            navigation.navigate("Home")
-        }).catch((err)=>{
-            console.log(err)
-        })
-      } 
-      if (!loaded) {
+    });
+
+    function validadorEmail(email){
+        var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        if(email=="" || !regex.test(email)){
+            setErroEmail('Preencha corretamente')
+        }else{
+            setErroEmail('')
+        }
+    }
+
+      
+    function Logar(){
+        if(validar){
+            // console.log('tentou')
+            axios.post("http://192.168.0.107:8080/union/user/login",
+            {
+                email:Email,
+                password:Senha
+            },
+            {headers:{'Content-Type': 'application/json'}})
+            .then((response)=>{
+                    console.log(response.data)
+                    global.sessionID = response.data
+                    navigation.navigate("Home")
+            }).catch((err)=>{
+                    console.log(err)
+            })
+        }else{
+            setErroForm('Preencha os campos corretamente')
+        }
+                    
+    }
+
+    function validarCampos(){
+        if(Senha != '' && Senha != undefined && erroEmail==''){
+            setValidar(true);
+        }else{
+            setValidar(false)
+        }
+    }
+
+    useEffect(()=>{
+        validarCampos()
+    })
+
+    if (!loaded) {
         return null;
-      }
-    return (
-        <View style={styles.container}>
+    }
+
+        return (
+            <View style={styles.container}>
             <Text style={styles.textEntrar}>Entrar</Text>
             <View>
                 <Text style={styles.textEmail}>E-mail</Text>
@@ -40,9 +74,18 @@ export default function Login({navigation}) {
                     placeholder='Digite seu e-mail'
                     inputStyle={styles.inputs.inputStyle}
                     inputContainerStyle={styles.inputs.inputContainerStyle}
-                    onChangeText={(email) => {setEmail(email)}}
+                    onChangeText={(email) => {
+                        setEmail(email);
+                        validadorEmail(email);
+                        validarCampos()
+                        setErroForm('')
+                        
+                    }}
+                    keyboardType='email-address'
                     containerStyle={styles.inputs.containerStyle}
                     style={styles.inputs.alignment}
+                    errorMessage={erroEmail}
+                    
                 />
             </View>
             <View>
@@ -51,12 +94,17 @@ export default function Login({navigation}) {
                     secureTextEntry={true}
                     placeholder='Digite sua senha'
                     inputContainerStyle={styles.inputs.inputContainerStyle}
-                    onChangeText={(senha)=>{setSenha(senha)}}
+                    onChangeText={(senha)=>{
+                        setSenha(senha)
+                        validarCampos()
+                        setErroForm('')
+                    }}
                     inputStyle={styles.inputs.inputStyle}
                     containerStyle={styles.inputs.containerStyle}
                     style={styles.inputs.alignment}
                 />
             </View>
+            <Text style={styles.errorMessage}>{erroForm}</Text>
             <Button
                 buttonStyle= {styles.buttonLogin.buttonStyle}
                 style={styles.buttonLogin.buttonAlignment}
@@ -66,7 +114,6 @@ export default function Login({navigation}) {
                 containerStyle={styles.buttonLogin.containerStyle}
                 titleStyle={styles.buttonEntrar}
             />
-
             <Text onPress={() =>{navigation.navigate("EmailRecuperacaoSenha")}} style={styles.EsqueciSenha}>Esqueci minha senha</Text>
         </View>
     );
@@ -131,5 +178,9 @@ const styles = StyleSheet.create({
         fontSize: 18, 
         fontFamily:"PoppinsExtraBold", 
         alignSelf:"center",
+    },
+    errorMessage:{
+        color:'red',
+        marginVertical: -20,
     }
 });
