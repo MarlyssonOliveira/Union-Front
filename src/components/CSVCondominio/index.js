@@ -5,6 +5,7 @@ import { useState } from 'react';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import mime from 'mime';
 
 export default function CSVCondominio({navigation, route}) {
 
@@ -23,7 +24,11 @@ export default function CSVCondominio({navigation, route}) {
     function AdicionarMoradores(csvMoradores){
         if(csvMoradores != null){
             var bodyFormData = new FormData();
-            bodyFormData.append("tenants", csvMoradores)
+            bodyFormData.append("tenants", {
+                uri: csvMoradores.uri,
+                name: csvMoradores.name,
+                type: mime.getType(csvMoradores.uri)
+            })
             var axionConfig = { 
                 method: "post",
                 url: "http://192.168.0.107:8080/union/condominium/" + route.params.idCondominio + "/tenant",
@@ -40,6 +45,7 @@ export default function CSVCondominio({navigation, route}) {
             axios.request(axionConfig)
             .then((response) => {
                 console.log(response)
+                console.log("Moradores adicionados")
             }).catch((err) =>{
                 console.log(err)
             })

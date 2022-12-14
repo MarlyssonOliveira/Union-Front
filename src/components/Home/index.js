@@ -119,7 +119,7 @@ export default function Home({navigation}) {
                     buttonStyle={styles.SpeedDialStyle.buttonAction}
                     icon={styles.SpeedDialStyle.iconHouseStyle}
                     iconContainerStyle= {styles.SpeedDialStyle.iconContainerStyle}
-                    title="Condominíos registrados" 
+                    title="Condominíos Disponíveis" 
                     onPress={() => navigation.navigate('ListaCondominios')}
                 />
                 <SpeedDial.Action
