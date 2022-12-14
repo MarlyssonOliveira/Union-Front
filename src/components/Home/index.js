@@ -1,11 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from "axios";
 
 export default function Home({navigation}) {
     const [open, setOpen] = useState(false);
+    const [nomeUsuario, setnomeUsuario] = useState();
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -14,9 +15,15 @@ export default function Home({navigation}) {
         
     });
     
-    if (!loaded) {
-        return null;
-    }
+    useEffect(() =>{
+        axios.get("http://192.168.0.107:8080/union/user",{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            setnomeUsuario(response.data.name)
+        }).catch((err) =>{
+            console.log(err)
+            setnomeUsuario("Marlysson Erro")
+        })
+    }, [])
 
     function Logout(){
         axios.post("http://192.168.0.107:8080/union/user/logout",null,{headers:{'Content-Type': 'application/json', 'token': global.sessionID}})
@@ -62,7 +69,7 @@ export default function Home({navigation}) {
                             size="medium"
                             source={require('../../assets/images/user.jpg')}
                         />
-                        <Text  style={styles.areaLogado.boasVindas}>Ola Usuario logado</Text>
+                        <Text  style={styles.areaLogado.boasVindas}>Ola {nomeUsuario}</Text>
                     </View>
                     <Icon
                         onPress={()=>{Logout()}}
@@ -192,6 +199,7 @@ const styles = StyleSheet.create({
         },
         boasVindas:{
             fontSize: 18, 
+            marginStart: 25,
             fontFamily:"PoppinsExtraBold"    
         }
     },
