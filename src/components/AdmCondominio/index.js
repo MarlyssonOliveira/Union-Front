@@ -3,7 +3,7 @@ import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
 import { useState } from 'react';
 
-export default function AdmCondominio({navigation}) {
+export default function AdmCondominio({navigation, route}) {
 
     const [open, setOpen] = useState(false);
     const [loaded] = useFonts({
@@ -98,7 +98,9 @@ export default function AdmCondominio({navigation}) {
                     icon={{ name: 'file-table', color: '#fff', size:35, type:"material-community" }}
                     iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
                     title="Adicionar moradores" 
-                    onPress={() => navigation.navigate('CSVCondominio')}
+                    onPress={() => navigation.navigate('CSVCondominio', {
+                        idCondominio : route.params.idCondominio
+                    })}
                 />
                 <SpeedDial.Action
                     style={styles.SpeedDial.width}
