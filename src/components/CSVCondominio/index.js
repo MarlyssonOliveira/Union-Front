@@ -31,7 +31,7 @@ export default function CSVCondominio({navigation, route}) {
             })
             var axionConfig = { 
                 method: "post",
-                url: "http://192.168.0.107:8080/union/condominium/" + route.params.idCondominio + "/tenant",
+                url: global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant",
                 responseType: "json",
                 headers: {
                     'Content-Type': 'multipart/form-data',

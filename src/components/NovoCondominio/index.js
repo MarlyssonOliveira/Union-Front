@@ -25,7 +25,7 @@ export default function NovoCondominio({navigation}) {
             "name": Nome,
             "address": Endereco,
         }
-        axios.post("http://192.168.0.107:8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
+        axios.post(global.baseURL+":8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
         .then((response) => {
             console.log(response.data)
             navigation.navigate("AdmCondominio", {
