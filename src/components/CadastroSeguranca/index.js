@@ -63,7 +63,7 @@ export default function CadastroSeguranca({navigation, route}) {
                 phone: UsuarioParam.telefone,
                 password: Senha
             }
-            axios.post("http://192.168.0.107:8080/union/user",usuarioFinal,{headers:{'Content-Type': 'application/json'}})
+            axios.post(global.baseURL+":8080/union/user",usuarioFinal,{headers:{'Content-Type': 'application/json'}})
                 .then((response) => {
                     console.log(response.data)
                     navigation.navigate("CodigoVerificacao");

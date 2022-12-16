@@ -30,7 +30,7 @@ export default function Login({navigation}) {
     function Logar(){
         if(validar){
             // console.log('tentou')
-            axios.post("http://192.168.0.107:8080/union/user/login",
+            axios.post(global.baseURL+":8080/union/user/login",
             {
                 email:Email,
                 password:Senha

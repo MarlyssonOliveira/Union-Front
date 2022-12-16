@@ -16,7 +16,7 @@ export default function CodigoVerificacao({navigation}) {
       });
     
       function VerificaCodigo(){
-        axios.post("http://192.168.0.107:8080/union/user/account-confirmation",Codigo,{headers:{'Content-Type': 'application/json'}})
+        axios.post(global.baseURL+":8080/union/user/account-confirmation",Codigo,{headers:{'Content-Type': 'application/json'}})
         .then((response)=>{
             navigation.navigate("SucessoCadastro")
         }).catch((err)=>{

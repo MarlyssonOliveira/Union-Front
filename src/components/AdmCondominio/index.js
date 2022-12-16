@@ -1,11 +1,13 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from "axios";
 
 export default function AdmCondominio({navigation, route}) {
 
     const [open, setOpen] = useState(false);
+    const [Condominio, setCondominio] = useState();
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -14,10 +16,25 @@ export default function AdmCondominio({navigation, route}) {
         
     });
     
+    useEffect(()=>{
+        CarregaCondominio()
+    },[])
+ 
     if (!loaded) {
         return null;
     }
- 
+
+    function CarregaCondominio(){
+        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            console.log(response.data)
+            console.log("condominio carregado com sucesso")
+            setCondominio(response.data)
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
+
     let cards = []
     for(let i = 0; i< 5;i++){
         cards.push(
@@ -48,9 +65,9 @@ export default function AdmCondominio({navigation, route}) {
                             
                         />
                         <View style={{paddingStart:15}}>
-                            <Text style={styles.detalhesCondominio.nome}>Bloco 24</Text>
-                            <Text style={styles.detalhesCondominio.endereco}>Avenida um, 230</Text>
-                            <Button
+                            <Text style={styles.detalhesCondominio.nome}>{Condominio != undefined ? Condominio.name : "Nome teste" }</Text>
+                            <Text style={styles.detalhesCondominio.endereco}>{Condominio != undefined ? Condominio.address : "Nome teste" }</Text>
+                            {/* <Button
                                 buttonStyle= {styles.detalhesCondominio.buttonStyle}
                                 icon={
                                     <Icon
@@ -64,7 +81,7 @@ export default function AdmCondominio({navigation, route}) {
                                 raised="true"
                                 containerStyle={styles.detalhesCondominio.containerStyle}
                                 titleStyle={styles.detalhesCondominio.titleStyle}
-                            />
+                            /> */}
                         </View>
                     </View>
                 </View>
@@ -124,7 +141,9 @@ export default function AdmCondominio({navigation, route}) {
                     icon={{ name: 'delete', color: '#fff', size:35 }}
                     iconContainerStyle= {styles.SpeedDial.iconRedContainetStyle}
                     title="Excluir condomínio" 
-                    onPress={() => navigation.navigate('Confirmacao')}
+                    onPress={() => navigation.navigate('Confirmacao', {
+                        idCondominio : route.params.idCondominio
+                    })}
                 />
             </SpeedDial>
     </>
