@@ -32,7 +32,6 @@ export default function CadastroSeguranca({navigation, route}) {
     }
     
     function validaSenha(senha){
-        // console.log(senha)
         if(Senha!=''){
             if(senha.length<1){
                 setErrosenha('A senha não pode ser nula')
@@ -65,7 +64,6 @@ export default function CadastroSeguranca({navigation, route}) {
             }
             axios.post(global.baseURL+":8080/union/user",usuarioFinal,{headers:{'Content-Type': 'application/json'}})
                 .then((response) => {
-                    console.log(response.data)
                     navigation.navigate("CodigoVerificacao");
                 }).catch((err) =>{
                     console.log(err)

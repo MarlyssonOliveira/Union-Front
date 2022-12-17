@@ -25,6 +25,8 @@ export default function Home({navigation}) {
 
     }, [])
 
+
+
     function CarregaUsuarioLogado(){
 
         axios.get(global.baseURL+":8080/union/user",{headers: {'token' : global.sessionID}})

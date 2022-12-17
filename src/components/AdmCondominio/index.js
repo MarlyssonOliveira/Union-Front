@@ -1,13 +1,17 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
-import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
+import { Image, Input, Icon, Avatar, SpeedDial, Card, Button, Overlay  } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 
 export default function AdmCondominio({navigation, route}) {
 
+    const [visible, setVisible] = useState(false);
     const [open, setOpen] = useState(false);
     const [Condominio, setCondominio] = useState();
+    const [IdMensagem, setIdMensagem] = useState();
+    const [ConteudoMensagem, setConteudoMensagem] = useState();
+    const [Mensagens, setMensagens] = useState([]);
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -15,11 +19,24 @@ export default function AdmCondominio({navigation, route}) {
         PoppinsSemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf")
         
     });
+
+    const toggleOverlaySet = (mensagem) => {
+        setIdMensagem(mensagem.unionIdentifier)
+        setConteudoMensagem(mensagem.message)
+        setVisible(!visible);
+    };
+
+    const toggleOverlayUnSet = () => {
+        setIdMensagem("")
+        setConteudoMensagem("")
+        setVisible(!visible);
+    };
     
     useEffect(()=>{
         CarregaCondominio()
+        CarregaMensagens()
     },[])
- 
+
     if (!loaded) {
         return null;
     }
@@ -27,31 +44,29 @@ export default function AdmCondominio({navigation, route}) {
     function CarregaCondominio(){
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
-            console.log(response.data)
-            console.log("condominio carregado com sucesso")
             setCondominio(response.data)
         }).catch((err) =>{
             console.log(err)
         })
     }
 
-    let cards = []
-    for(let i = 0; i< 5;i++){
-        cards.push(
-            <Card key={i} containerStyle={styles.card.containerStyle}>
-                <View backgroundColor="#EFF3FF" style={styles.card.background}>
-                    <View style={styles.card.topoCard}>
-                        <Avatar
-                            rounded
-                            size="medium"
-                            source={require('../../assets/images/user.jpg')}
-                        />
-                        <Text  style={styles.card.titulo}>Usuario</Text>
-                    </View>
-                    <Text style={styles.card.subtitulo}>Esse ipsum qui ipsum ea. Lorem labore minim occaecat sint cillum qui voluptate. Dolore aliqua adipisicing occaecat magna pariatur fugiat tempor irure pariatur tempor mollit excepteur eiusmod proident. Id do ea tempor commodo labore anim ea elit aliquip occaecat aliquip sit eu.dolor do anim deserunt ut eiusmod labore sint minim. Non mollit qui magna aliquip.</Text>
-                </View>
-            </Card> 
-        )
+    function CarregaMensagens(){
+        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            setMensagens(response.data)
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
+    
+    function DeletarMensagem(){
+        axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication/" + IdMensagem,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            toggleOverlayUnSet()
+            console.log("Mensagem Deletada")
+        }).catch((err) =>{
+            console.log(err)
+        })
     }
 
     return (
@@ -90,12 +105,42 @@ export default function AdmCondominio({navigation, route}) {
                     <Text style={styles.feed.titulo}>Últimas atualizações</Text>
                     <View style={styles.feed.post}>
                         <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
-                            {cards}
+                            {
+                                Mensagens.map((mensagem) => (
+                                    <Card key={mensagem.unionIdentifier} containerStyle={styles.card.containerStyle}>
+                                        <View onTouchEnd={() => toggleOverlaySet(mensagem)} backgroundColor="#EFF3FF" style={styles.card.background}>
+                                            <View style={styles.card.topoCard}>
+                                                <Avatar
+                                                    rounded
+                                                    size="medium"
+                                                    source={require('../../assets/images/user.jpg')}
+                                                />
+                                                <Text  style={styles.card.titulo}>{mensagem.user.name}</Text>
+                                            </View>
+                                            <Text style={styles.card.subtitulo}>{mensagem.message}</Text>
+                                        </View>
+                                    </Card> 
+                                ))
+                            }
                         </ScrollView>
                     </View>
                 </View>
 
-                
+                <Overlay isVisible={visible} onBackdropPress={() => toggleOverlayUnSet()} overlayStyle={styles.overlay.style}>
+                    <View>
+                        <Text style={styles.overlay.titulo}>Deseja deletar a mensagem: "{ConteudoMensagem}"?</Text>
+                    </View>
+
+                    <Button
+                        buttonStyle= {styles.overlay.button.buttonStyle}
+                        title="Deletar"
+                        raised="true"
+                        onPress={() => DeletarMensagem()}
+                        containerStyle={styles.overlay.button.containerStyle}
+                        titleStyle={styles.overlay.button.titleStyle}
+                    />
+                </Overlay>
+
             </View>
 
         {/* Speed Dial */}
@@ -125,7 +170,9 @@ export default function AdmCondominio({navigation, route}) {
                     icon={{ name: 'message', color: '#fff', size:35 }}
                     iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
                     title="Nova mensagem" 
-                    onPress={() => navigation.navigate('NovaMensagem')}
+                    onPress={() => navigation.navigate('NovaMensagem', {
+                        idCondominio : route.params.idCondominio
+                    })}
                 />
                 <SpeedDial.Action
                     style={styles.SpeedDial.width}
@@ -133,7 +180,9 @@ export default function AdmCondominio({navigation, route}) {
                     icon={{ name: 'currency-usd', color: '#fff', size:35, type:"material-community"  }}
                     iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
                     title="Nova taxa"
-                    onPress={() => navigation.navigate('NovaTaxa')}
+                    onPress={() => navigation.navigate('NovaTaxa', {
+                        idCondominio : route.params.idCondominio
+                    })}
                 />
                 <SpeedDial.Action
                     style={styles.SpeedDial.width}
@@ -157,6 +206,42 @@ const styles = StyleSheet.create({
         width: "100%",
         alignItems: 'flex-end',
         justifyContent: 'center'
+    },
+    overlay:{
+        style:{
+            width:'100%',
+            height:260,
+            borderTopRightRadius:20,
+            borderTopLeftRadius:20,
+            position:'absolute',
+            bottom:0,
+            justifyContent: 'space-evenly',
+            alignItems:'center',
+            paddingStart: 15
+        },
+        titulo:{
+            fontSize: 25, 
+            fontFamily:"PoppinsSemiBold",
+            textAlign: 'center'
+        },
+        button:{
+            buttonStyle:{
+                backgroundColor: "#E91429",
+                borderRadius:10,
+                width:350,
+                height:50
+            },
+            containerStyle:{
+                borderRadius:10
+            },
+            titleStyle:{
+                color:"#FFF", 
+                fontFamily:"PoppinsExtraBold", 
+                fontSize: 20,
+                paddingStart:5
+            }
+        }
+        
     },
     card:{
         containerStyle:{
