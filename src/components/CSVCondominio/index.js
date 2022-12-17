@@ -44,7 +44,13 @@ export default function CSVCondominio({navigation, route}) {
             };
             axios.request(axionConfig)
             .then((response) => {
-                console.log("Moradores adicionados")
+                navigation.navigate("Feedback", {
+                    tipo : true,
+                    retornoEspecifico: true,
+                    mensagem : "Moradores adicionados com sucesso!",
+                    textoBotao : "Página Inicial",
+                    destinoBotao : "Home"
+                })
             }).catch((err) =>{
                 console.log(err)
             })

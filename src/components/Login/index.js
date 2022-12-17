@@ -29,7 +29,7 @@ export default function Login({navigation}) {
       
     function Logar(){
         if(validar){
-            axios.post(global.baseURL+":8080/union/user/login",
+            axios.post(global.baseURL+":8080/union/uer/login",
             {
                 email:Email,
                 password:Senha
@@ -39,8 +39,13 @@ export default function Login({navigation}) {
                     console.log(response.data)
                     global.sessionID = response.data
                     navigation.navigate("Home")
-            }).catch((err)=>{
-                    console.log(err)
+            }).catch((err)=>{    
+                navigation.navigate("Feedback", {
+                    tipo : false,
+                    retornoEspecifico: false,
+                    mensagem : "Ocorreu um erro inesperado!",
+                    textoBotao : "Voltar",
+                })
             })
         }else{
             setErroForm('Preencha os campos corretamente')

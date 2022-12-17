@@ -26,7 +26,13 @@ export default function ListaCondominios() {
     function EntrarNoCondominio(){
         axios.put(global.baseURL+":8080/union/condominium/" + IdCondominio + "/tenant",null,{headers: {'token' : global.sessionID}})
         .then((response) =>{
-            console.log("entrou no condominio com sucesso")
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: true,
+                mensagem : "Entrou no condominio com sucesso!",
+                textoBotao : "Página Inicial",
+                destinoBotao : "Home"
+            })
         }).catch((err) =>{
             console.log(err)
         })
