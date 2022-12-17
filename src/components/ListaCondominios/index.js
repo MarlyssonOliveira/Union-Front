@@ -1,11 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button, Overlay  } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 
 export default function ListaCondominios() {
-
+    const isFocused = useIsFocused();
     const [visible, setVisible] = useState(false);
     const [ListaDisponiveis, setListaDisponiveis] = useState([]);
     const [IdCondominio, setIdCondominio] = useState();

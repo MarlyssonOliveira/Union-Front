@@ -1,10 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button, Overlay  } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 
 export default function AdmCondominio({navigation, route}) {
+    const isFocused = useIsFocused();
 
     const [visible, setVisible] = useState(false);
     const [open, setOpen] = useState(false);
@@ -35,7 +37,7 @@ export default function AdmCondominio({navigation, route}) {
     useEffect(()=>{
         CarregaCondominio()
         CarregaMensagens()
-    },[])
+    },[isFocused])
 
     if (!loaded) {
         return null;
@@ -63,7 +65,12 @@ export default function AdmCondominio({navigation, route}) {
         axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication/" + IdMensagem,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             toggleOverlayUnSet()
-            console.log("Mensagem Deletada")
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: false,
+                mensagem : "Mensagem Deletada com Sucesso!",
+                textoBotao : "Voltar",
+            })
         }).catch((err) =>{
             console.log(err)
         })
@@ -92,6 +99,7 @@ export default function AdmCondominio({navigation, route}) {
                                         color="#FFF"  
                                     />
                                 }
+                                onPress={() => navigation.navigate("Home")}
                                 title="Alterar Imagem"
                                 raised="true"
                                 containerStyle={styles.detalhesCondominio.containerStyle}
@@ -179,7 +187,7 @@ export default function AdmCondominio({navigation, route}) {
                     buttonStyle={styles.SpeedDial.buttonStyle}
                     icon={{ name: 'currency-usd', color: '#fff', size:35, type:"material-community"  }}
                     iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
-                    title="Nova taxa"
+                    title="Gerenciar taxas"
                     onPress={() => navigation.navigate('NovaTaxa', {
                         idCondominio : route.params.idCondominio
                     })}

@@ -29,7 +29,7 @@ export default function Login({navigation}) {
       
     function Logar(){
         if(validar){
-            axios.post(global.baseURL+":8080/union/uer/login",
+            axios.post(global.baseURL+":8080/union/user/login",
             {
                 email:Email,
                 password:Senha
@@ -39,7 +39,8 @@ export default function Login({navigation}) {
                     console.log(response.data)
                     global.sessionID = response.data
                     navigation.navigate("Home")
-            }).catch((err)=>{    
+            }).catch((err)=>{   
+                console.log(err) 
                 navigation.navigate("Feedback", {
                     tipo : false,
                     retornoEspecifico: false,

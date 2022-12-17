@@ -1,15 +1,16 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
 import { useState, useEffect } from 'react';
 import axios from "axios";
 
 export default function Home({navigation}) {
+    const isFocused = useIsFocused();
     const [open, setOpen] = useState(false);
     const [nomeUsuario, setnomeUsuario] = useState();
     const [CondominiosDono, setCondominiosDono] = useState([]);
     const [CondominiosMorador, setCondominiosMorador] = useState([]);
-
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -22,10 +23,7 @@ export default function Home({navigation}) {
     useEffect(() =>{
         CarregaUsuarioLogado()
         CarregaCondominios()
-
-    }, [])
-
-
+    },[isFocused])
 
     function CarregaUsuarioLogado(){
 
@@ -39,9 +37,10 @@ export default function Home({navigation}) {
 
     function CarregaCondominios(){
         axios.get(global.baseURL+":8080/union/condominium?name=",{headers: {'token' : global.sessionID}})
-        .then(async (response) =>{
+        .then(async (response) =>{ 
             setCondominiosDono(response.data.filter((cond) => {return cond.userIsOwner == true}))
             setCondominiosMorador(response.data.filter((cond) => {return cond.userIsOwner == false}))
+
         }).catch((err) =>{
             console.log(err)
             
@@ -150,7 +149,7 @@ export default function Home({navigation}) {
                     icon={styles.SpeedDialStyle.iconHouseStyle}
                     iconContainerStyle= {styles.SpeedDialStyle.iconContainerStyle}
                     title="Condominíos Disponíveis" 
-                    onPress={() => navigation.navigate('ListaCondominios')}
+                    onPress={() => {navigation.navigate('ListaCondominios')}}
                 />
                 <SpeedDial.Action
                     style={styles.SpeedDialStyle.style}
@@ -158,7 +157,7 @@ export default function Home({navigation}) {
                     icon={styles.SpeedDialStyle.iconAddStyle}
                     iconContainerStyle= {styles.SpeedDialStyle.iconContainerStyle}
                     title="Novo condomínio" 
-                    onPress={() => navigation.navigate('NovoCondominio')}
+                    onPress={() => {navigation.navigate('NovoCondominio')}}
                 />
             </SpeedDial>
     </>
