@@ -24,8 +24,6 @@ export default function Confirmacao({navigation, route}) {
     function DetelarCondominio(){
         axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
-            console.log(response.data)
-            console.log("condominio deletado com sucesso")
             navigation.navigate("Home")
         }).catch((err) =>{
             console.log(err)
@@ -35,8 +33,6 @@ export default function Confirmacao({navigation, route}) {
     function CarregaCondominio(){
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
-            console.log(response.data)
-            console.log("condominio carregado com sucesso")
             setCondominio(response.data)
         }).catch((err) =>{
             console.log(err)

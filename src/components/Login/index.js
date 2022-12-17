@@ -29,7 +29,6 @@ export default function Login({navigation}) {
       
     function Logar(){
         if(validar){
-            // console.log('tentou')
             axios.post(global.baseURL+":8080/union/user/login",
             {
                 email:Email,

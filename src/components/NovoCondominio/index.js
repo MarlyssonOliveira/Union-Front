@@ -27,7 +27,6 @@ export default function NovoCondominio({navigation}) {
         }
         axios.post(global.baseURL+":8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
         .then((response) => {
-            console.log(response.data)
             navigation.navigate("AdmCondominio", {
                 idCondominio : response.data.unionIdentifier
             })

@@ -1,15 +1,29 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
+import axios from "axios";
+import { useState } from 'react';
 
-export default function NovaMensagem({navigation}) {
+export default function NovaMensagem({navigation,route}) {
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
         PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf")
 
       });
+      const [Mensagem, setMensagem] = useState();
     
+      function CriarMensagem(){
+        axios.post(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication",{"message": Mensagem},{headers: {'token' : global.sessionID}})
+        .then((response) => {
+            navigation.navigate("AdmCondominio", {
+                idCondominio : route.params.idCondominio
+            })
+        }).catch((err) => {
+            console.log(err)
+        })
+      }
+
       if (!loaded) {
         return null;
       }
@@ -25,11 +39,12 @@ export default function NovaMensagem({navigation}) {
                     placeholder='Sua mensagem...'
                     inputContainerStyle={styles.inputMensagem.inputContainerStyle}
                     inputStyle={styles.inputMensagem.inputStyle}
+                    onChangeText = {(mensagem) => setMensagem(mensagem)}
                     containerStyle={styles.inputMensagem.containerStyle}
                     style={styles.inputMensagem.style}
                 />
             </View>
-            <View>
+            {/* <View>
                 <Text style={styles.labelCampos}>Anexo</Text>
                 <Input
                     placeholder='anexar um arquivo'
@@ -47,13 +62,13 @@ export default function NovaMensagem({navigation}) {
                         />
                     }
                 />
-            </View>
+            </View> */}
             <Button
                 buttonStyle= {styles.button.buttonStyle}
                 style={styles.button.style}
                 title="Publicar"
                 raised="true"
-                onPress={()=>navigation.navigate("AdmCondominio")}
+                onPress={()=>CriarMensagem()}
                 containerStyle={styles.button.containerStyle}
                 titleStyle={styles.button.titleStyle}
             />

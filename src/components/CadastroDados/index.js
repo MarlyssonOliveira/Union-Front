@@ -49,7 +49,6 @@ export default function CadastroDados({navigation}) {
         }else{
             setValidar(false)
         }
-        // console.log(validar)
     }
     function validaTelefone(tel){
         const regex = /^[0-9]*$/;

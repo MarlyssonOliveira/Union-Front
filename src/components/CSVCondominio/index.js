@@ -44,7 +44,6 @@ export default function CSVCondominio({navigation, route}) {
             };
             axios.request(axionConfig)
             .then((response) => {
-                console.log(response)
                 console.log("Moradores adicionados")
             }).catch((err) =>{
                 console.log(err)
@@ -53,10 +52,8 @@ export default function CSVCondominio({navigation, route}) {
         
     }
     async function CapturaCSVMoradores() {
-        console.log(route.params.idCondominio)
         try{
             const  res = await DocumentPicker.getDocumentAsync({})
-            console.log(res)
 
             if(res.name != null){
                 setNomeCSV(res.name)
