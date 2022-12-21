@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Linking, Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native'
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
@@ -10,6 +10,7 @@ export default function CondominioMorador({navigation,route}) {
     const [open, setOpen] = useState(false);
     const [Condominio, setCondominioMorador] = useState();
     const [Mensagens, setMensagensCondominio] = useState([]);
+    const [PossuiNumero, setPossuiNumero] = useState(false);
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -29,8 +30,11 @@ export default function CondominioMorador({navigation,route}) {
 
     function CarregaCondominio(){
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
-        .then(async (response) =>{
+        .then((response) =>{
             setCondominioMorador(response.data)
+            if(response.data.owner.phone != null && response.data.owner.phone != undefined && response.data.owner.phone != ""){
+                setPossuiNumero(true)
+            }
         }).catch((err) =>{
             console.log(err)
         })
@@ -38,11 +42,23 @@ export default function CondominioMorador({navigation,route}) {
 
     function CarregaMensagens(){
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
-        .then(async (response) =>{
+        .then((response) =>{
             setMensagensCondominio(response.data)
         }).catch((err) =>{
             console.log(err)
         })
+    }
+
+    function EntraNoWathsApp(url){
+        try {
+            if(url != null){
+                Linking.openURL(url)
+            }else{
+
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
     
 
@@ -63,8 +79,10 @@ export default function CondominioMorador({navigation,route}) {
                             <Button
                                 buttonStyle= {styles.button.buttonStyle}
                                 title={Condominio != undefined ? Condominio.owner.name.split(" ")[0] : "Sindico"}
+                                onPress={() => EntraNoWathsApp("https://wa.me/55" + Condominio.owner.phone)}
                                 containerStyle={styles.button.containerStyle}
                                 titleStyle={styles.button.titleStyle}
+                                disabled={!PossuiNumero}
                             />
                         </View>
                     </View>
