@@ -1,4 +1,4 @@
-# pp2ReactProject
+# Union Front
 Repositorio destinado a versionar o projeto em react native da disciplina de projeto e pratica profissional 2 na IFPE - Jaboatão
 
 
