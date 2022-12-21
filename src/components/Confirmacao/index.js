@@ -24,7 +24,13 @@ export default function Confirmacao({navigation, route}) {
     function DetelarCondominio(){
         axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
-            navigation.navigate("Home")
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: true,
+                mensagem : "Condominio deletado com sucesso!",
+                textoBotao : "Pagina inicial!",
+                destinoBotao : "Home"
+            })
         }).catch((err) =>{
             console.log(err)
         })

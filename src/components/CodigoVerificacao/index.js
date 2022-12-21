@@ -18,7 +18,13 @@ export default function CodigoVerificacao({navigation}) {
       function VerificaCodigo(){
         axios.post(global.baseURL+":8080/union/user/account-confirmation",Codigo,{headers:{'Content-Type': 'application/json'}})
         .then((response)=>{
-            navigation.navigate("SucessoCadastro")
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: true,
+                mensagem : "Cadastro Realizado com Sucesso!",
+                textoBotao : "Ir para Login",
+                destinoBotao : "Login"
+            })
         }).catch((err)=>{
             console.log(err)
         })

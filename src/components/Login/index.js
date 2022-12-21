@@ -39,8 +39,14 @@ export default function Login({navigation}) {
                     console.log(response.data)
                     global.sessionID = response.data
                     navigation.navigate("Home")
-            }).catch((err)=>{
-                    console.log(err)
+            }).catch((err)=>{   
+                console.log(err) 
+                navigation.navigate("Feedback", {
+                    tipo : false,
+                    retornoEspecifico: false,
+                    mensagem : "Ocorreu um erro inesperado!",
+                    textoBotao : "Voltar",
+                })
             })
         }else{
             setErroForm('Preencha os campos corretamente')

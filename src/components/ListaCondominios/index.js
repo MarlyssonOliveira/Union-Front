@@ -1,11 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button, Overlay  } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 
-export default function ListaCondominios() {
-
+export default function ListaCondominios({navigation}) {
+    const isFocused = useIsFocused();
     const [visible, setVisible] = useState(false);
     const [ListaDisponiveis, setListaDisponiveis] = useState([]);
     const [IdCondominio, setIdCondominio] = useState();
@@ -26,7 +27,13 @@ export default function ListaCondominios() {
     function EntrarNoCondominio(){
         axios.put(global.baseURL+":8080/union/condominium/" + IdCondominio + "/tenant",null,{headers: {'token' : global.sessionID}})
         .then((response) =>{
-            console.log("entrou no condominio com sucesso")
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: true,
+                mensagem : "Entrou no condominio com sucesso!",
+                textoBotao : "Página Inicial",
+                destinoBotao : "Home"
+            })
         }).catch((err) =>{
             console.log(err)
         })
@@ -42,7 +49,7 @@ export default function ListaCondominios() {
 
     useEffect(() =>{
         CarregaCondominiosDisponiveis()
-    }, [])
+    }, [isFocused])
     
     if (!loaded) {
         return null;

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
 
-export default function SucessoCadastro({navigation}) {
+export default function Feedback({navigation, route}) {
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -16,21 +16,25 @@ export default function SucessoCadastro({navigation}) {
     return (
         <View style={styles.container}>
             <View style={styles.iconStyle}>
-            <Icon
-                name="check-circle-outline"
+            <Icon 
+                name={(route.params.tipo ? "check-circle-outline" : "close-circle-outline")}
                 type='material-community'
-                color="#1DB954"
+                color= {(route.params.tipo ? "#1DB954" : "#E91429")}
                 size={200}
             />
             
-                <Text style={styles.titleStyle}>Cadastro realizado com sucesso!</Text>
+                <Text style={styles.titleStyle}>{route.params.mensagem}</Text>
             </View>
             <Button
-                buttonStyle= {styles.button.buttonStyle}
+                buttonStyle= {{
+                    backgroundColor: route.params.tipo ? "#1DB954" : "#E91429",
+                    borderRadius:10,
+                    width: 350
+                }}
                 style={styles.button.style}
-                title="Ir para o login"
+                title={route.params.textoBotao}
                 raised="true"
-                onPress={()=>{navigation.navigate("Login")}}
+                onPress={()=>{route.params.retornoEspecifico ? navigation.navigate(route.params.destinoBotao) : navigation.goBack()}}
                 containerStyle={styles.button.containerStyle}
                 titleStyle={styles.button.titleStyle}
             />
@@ -55,11 +59,6 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     button:{
-        buttonStyle:{
-            backgroundColor: "#1DB954",
-            borderRadius:10,
-            width: 350
-        },
         style:{
             alignSelf:"center"
         },
