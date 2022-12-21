@@ -123,7 +123,7 @@ export default function AdmCondominio({navigation, route}) {
                                                     size="medium"
                                                     source={require('../../assets/images/user.jpg')}
                                                 />
-                                                <Text  style={styles.card.titulo}>{mensagem.user.name}</Text>
+                                                <Text  style={styles.card.titulo}>{mensagem.condominium.owner.name}</Text>
                                             </View>
                                             <Text style={styles.card.subtitulo}>{mensagem.message}</Text>
                                         </View>

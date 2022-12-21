@@ -115,7 +115,7 @@ export default function Home({navigation}) {
                             {
                                 CondominiosMorador.map((condominio) => (
                                         <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
-                                            <Card.Image  onPress={()=>{navigation.navigate("AdmCondominio", {idCondominio : condominio.unionIdentifier})}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
+                                            <Card.Image  onPress={()=>{navigation.navigate("CondominioMorador", {idCondominio : condominio.unionIdentifier})}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
                                                 <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
                                                     <Text style={styles.card.titulo}>{condominio.name}</Text>
                                                     <Text style={styles.card.subtitulo}>{condominio.tenantsCount} moradores</Text>

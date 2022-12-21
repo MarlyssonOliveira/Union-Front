@@ -5,7 +5,7 @@ import { Image, Input, Icon, Avatar, SpeedDial, Card, Button, Overlay  } from 'r
 import { useEffect, useState } from 'react';
 import axios from "axios";
 
-export default function ListaCondominios() {
+export default function ListaCondominios({navigation}) {
     const isFocused = useIsFocused();
     const [visible, setVisible] = useState(false);
     const [ListaDisponiveis, setListaDisponiveis] = useState([]);
@@ -49,7 +49,7 @@ export default function ListaCondominios() {
 
     useEffect(() =>{
         CarregaCondominiosDisponiveis()
-    }, [])
+    }, [isFocused])
     
     if (!loaded) {
         return null;
