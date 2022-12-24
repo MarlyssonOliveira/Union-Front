@@ -63,7 +63,7 @@ export default function CadastroSeguranca({navigation, route}) {
                 phone: UsuarioParam.telefone,
                 password: Senha
             }
-            axios.post("http://192.168.0.107:8080/union/user",usuarioFinal,{headers:{'Content-Type': 'application/json'}})
+            axios.post("http://192.168.116.208:8080/union/user",usuarioFinal,{headers:{'Content-Type': 'application/json'}})
                 .then((response) => {
                     console.log(response.data)
                     navigation.navigate("CodigoVerificacao");
@@ -83,7 +83,7 @@ export default function CadastroSeguranca({navigation, route}) {
 
     useEffect(()=>{
         validaSenha(Senha)
-    })
+    }, [Senha])
     
       useEffect(() => {
         if (route.params && route.params.usuario) {

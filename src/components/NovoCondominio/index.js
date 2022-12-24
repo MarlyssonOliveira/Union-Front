@@ -8,6 +8,10 @@ export default function NovoCondominio({navigation}) {
 
     const [Nome,setNome] = useState()
     const [Endereco,setEndereco] = useState()
+    const [erroNome, setErroNome] = useState('');
+    const [erroEndereco, setErroEndereco] = useState('');
+    const [validar, setValidar] = useState(false);
+    const [erroForm, setErroForm] = useState('');
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -15,26 +19,65 @@ export default function NovoCondominio({navigation}) {
         PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf")
 
       });
+
+    function validarCampos(){
+        if(erroEndereco=='' && erroNome==''){
+            setValidar(true);
+        }else{
+            setValidar(false)
+        }
+    }
+
+    function validaNome(){
+        if(Nome.length<1){
+            setErroNome('Preencha o nome do condomínio corretamente')
+        }
+    }
+
+    function validaEndereco(){
+        if(Endereco.length<1){
+            setErroEndereco('Preencha o endereco corretamente')
+        }
+    }
     
       if (!loaded) {
         return null;
       }
     
       function CriarCondominio(){
-        var novoCondominio = {
-            "name": Nome,
-            "address": Endereco,
-        }
-        axios.post("http://192.168.0.107:8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
-        .then((response) => {
-            console.log(response.data)
-            navigation.navigate("AdmCondominio", {
-                idCondominio : response.data.unionIdentifier
+        if(validar){
+            var novoCondominio = {
+                "name": Nome,
+                "address": Endereco,
+            }
+            axios.post("http://192.168.0.107:8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
+            .then((response) => {
+                console.log(response.data)
+                navigation.navigate("AdmCondominio", {
+                    idCondominio : response.data.unionIdentifier
+                })
+            }).catch((err) =>{
+                console.log(err)
             })
-        }).catch((err) =>{
-            console.log(err)
-        })
+        }else{
+            setErroForm('Preencha os campos corretamente')
+        }
+        
       }
+
+    useEffect(()=>{
+        validarCampos()
+    })
+
+    useEffect(()=>{
+        validaNome()
+    })
+
+    useEffect(()=>{
+        validaEndereco()
+    })
+
+
     return (
         <View style={styles.container}>
             <View style={styles.flexTitle}>
@@ -50,6 +93,7 @@ export default function NovoCondominio({navigation}) {
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
                     style={styles.input.style}
+                    errorMessage={erroNome}
                 />
             </View>
 
@@ -62,8 +106,10 @@ export default function NovoCondominio({navigation}) {
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
                     style={styles.input.style}
+                    errorMessage={erroEndereco}
                 />
             </View>
+            <Text style={styles.errorMessage}>{erroForm}</Text>
             <Button
                 buttonStyle= {styles.button.buttonStyle}
                 style={styles.input.style}
@@ -129,5 +175,8 @@ const styles = StyleSheet.create({
             color:"#FFF", 
             fontFamily:"PoppinsExtraBold"
         }
+    },
+    errorMessage:{
+        color:'red',
     }
 });
