@@ -7,6 +7,8 @@ import axios from "axios";
 export default function EmailRecuperacaoSenha({navigation}) {
 
     const [Email,setEmail] = useState();
+    const [erroEmail,setErroEmail] = useState();
+    const [validar, setValidar] = useState(false);
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -14,14 +16,39 @@ export default function EmailRecuperacaoSenha({navigation}) {
         PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf")
 
       });
+
+    function validarCampos(){
+        if(erroEmail==''){
+            setValidar(true);
+        }else{
+            setValidar(false)
+        }
+        // console.log(validar)
+    }
+
+    function validadorEmail(email){
+        var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        if(email=="" || !regex.test(email)){
+            setErroEmail('Preencha corretamente')
+        }else{
+            setErroEmail('')
+        }
+    }
+
+    useEffect(()=>{
+        validarCampos()
+    })
     
       function EnviaEmail(){
-        axios.post("http://192.168.0.107:8080/union/user/request-new-password",Email,{headers:{'Content-Type': 'text/html'}})
-        .then((response)=>{
-            navigation.navigate("NovaSenha")
-        }).catch((err)=>{
-            console.log(err)
-        })
+        if(validar){
+            axios.post("http://192.168.0.107:8080/union/user/request-new-password",Email,{headers:{'Content-Type': 'text/html'}})
+            .then((response)=>{
+                navigation.navigate("NovaSenha")
+            }).catch((err)=>{
+                console.log(err)
+            })
+        }
+        
       }
       if (!loaded) {
         return null;
@@ -44,10 +71,14 @@ export default function EmailRecuperacaoSenha({navigation}) {
                     <Input
                         placeholder='Digite o seu email...'
                         inputContainerStyle={styles.divInput.inputcontainerStyle}
-                        onChangeText={(email)=>{setEmail(email)}}
+                        onChangeText={(email)=>{
+                            setEmail(email)
+                            validadorEmail(email);
+                        }}
                         inputStyle={styles.divInput.inputStyle}
                         containerStyle={styles.divInput.ContainerStyle}
                         style={styles.divInput.style}
+                        errorMessage={erroEmail}
                     />
                 </View>
             </View>
