@@ -1,17 +1,18 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from "axios";
 
 export default function NovoCondominio({navigation}) {
 
-    const [Nome,setNome] = useState()
-    const [Endereco,setEndereco] = useState()
+    const [Nome,setNome] = useState('')
+    const [Endereco,setEndereco] = useState('')
     const [erroNome, setErroNome] = useState('');
     const [erroEndereco, setErroEndereco] = useState('');
     const [validar, setValidar] = useState(false);
     const [erroForm, setErroForm] = useState('');
+    const [count, setCount] = useState(0);
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -21,25 +22,53 @@ export default function NovoCondominio({navigation}) {
       });
 
     function validarCampos(){
-        if(erroEndereco=='' && erroNome==''){
-            setValidar(true);
-        }else{
-            setValidar(false)
+        if(count>0){
+            if(erroEndereco=='' && erroNome==''){
+                setValidar(true);
+            }else{
+                setValidar(false)
+            }
         }
+        
     }
 
-    function validaNome(){
-        if(Nome.length<1){
-            setErroNome('Preencha o nome do condomínio corretamente')
+    function validaNome(nome){
+        setErroForm('')
+        if(count>0){
+            if(nome.length<1){
+                setErroNome('Preencha o nome do condomínio corretamente')
+            }else{
+                setErroNome('')
+            }
         }
+        
     }
 
-    function validaEndereco(){
-        if(Endereco.length<1){
-            setErroEndereco('Preencha o endereco corretamente')
+    function validaEndereco(endereco){
+        setErroForm('')
+        if(count>0){
+            if(endereco.length<1){
+                setErroEndereco('Preencha o endereco corretamente')
+            }else{
+                setErroEndereco('')
+            }
         }
+        
     }
     
+    useEffect(()=>{
+        validarCampos()
+    })
+
+    // useEffect(()=>{
+    //     validaNome()
+    // })
+
+    // useEffect(()=>{
+    //     validaEndereco()
+    // })
+
+
       if (!loaded) {
         return null;
       }
@@ -65,17 +94,7 @@ export default function NovoCondominio({navigation}) {
         
       }
 
-    useEffect(()=>{
-        validarCampos()
-    })
-
-    useEffect(()=>{
-        validaNome()
-    })
-
-    useEffect(()=>{
-        validaEndereco()
-    })
+    
 
 
     return (
@@ -89,7 +108,11 @@ export default function NovoCondominio({navigation}) {
                 <Input
                     placeholder='Digite o nome'
                     inputContainerStyle={styles.input.inputContainerStyle}
-                    onChangeText = {(nome) => setNome(nome)}
+                    onChangeText = {(nome) => {
+                        setNome(nome)
+                        validaNome(nome)
+                        setCount(count+1)
+                    }}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
                     style={styles.input.style}
@@ -102,7 +125,11 @@ export default function NovoCondominio({navigation}) {
                 <Input
                     placeholder='Digite o endereço'
                     inputContainerStyle={styles.input.inputContainerStyle}
-                    onChangeText = {(endereco) => setEndereco(endereco)}
+                    onChangeText = {(endereco) => {
+                        setCount(count+1)
+                        setEndereco(endereco)
+                        validaEndereco(endereco)
+                    }}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
                     style={styles.input.style}
