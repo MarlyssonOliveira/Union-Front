@@ -36,7 +36,7 @@ export default function CadastroSeguranca({navigation, route}) {
             if(senha.length<1){
                 setErrosenha('A senha não pode ser nula')
             }else{
-                if(senha.length>5 && /[A-Z]/.test(Senha) && /[0-9]/.test(Senha)){
+                if(senha.length>5 && /[A-Z]/.test(Senha) && /[0-9]/.test(Senha) && /\W|_/.test(Senha)){
                     setErrosenha('')
                 }else{
                     setErrosenha('Preencha corretamente')
@@ -81,7 +81,7 @@ export default function CadastroSeguranca({navigation, route}) {
 
     useEffect(()=>{
         validaSenha(Senha)
-    })
+    }, [Senha])
     
       useEffect(() => {
         if (route.params && route.params.usuario) {
@@ -153,6 +153,11 @@ export default function CadastroSeguranca({navigation, route}) {
                     <Icon name={Senha == ConfSenha ? "check-circle": "cancel"} type='material' color={Senha == ConfSenha ? "green": "red"}></Icon>
                     <Text style={styles.textosSenha}>
                     As senhas devem ser iguais</Text>
+                </View>
+                <View style={styles.divTextoSenha}>
+                    <Icon name={Senha == ConfSenha ? "check-circle": "cancel"} type='material' color={/\W|_/.test(Senha) ? "green": "red"}></Icon>
+                    <Text style={styles.textosSenha}>
+                    A senha deve conter um caractere especial</Text>
                 </View>
             </View>
             <View>

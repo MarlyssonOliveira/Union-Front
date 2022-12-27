@@ -11,18 +11,26 @@ export default function CSVCondominio({navigation, route}) {
 
     const [Csv,setCSV] = useState()
     const [nomeCsv, setNomeCSV] = useState();
+    const [erroForm, setErroForm] = useState('');
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
         PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf")
 
       });
+    function validarCampos(){
+        if(erroForm==''){
+            setValidar(true);
+        }else{
+            setValidar(false)
+        }
+    }
     
       if (!loaded) {
         return null;
       }
     function AdicionarMoradores(csvMoradores){
-        if(csvMoradores != null){
+        if(csvMoradores != null && validar){
             var bodyFormData = new FormData();
             bodyFormData.append("tenants", {
                 uri: csvMoradores.uri,
@@ -54,21 +62,32 @@ export default function CSVCondominio({navigation, route}) {
             }).catch((err) =>{
                 console.log(err)
             })
+        }else{
+            setErroForm('Selecione um arquivo válido')
         }
         
     }
     async function CapturaCSVMoradores() {
+        setErroForm('')
         try{
             const  res = await DocumentPicker.getDocumentAsync({})
 
             if(res.name != null){
                 setNomeCSV(res.name)
                 setCSV(res)
+                
+            }else{
+                setErroForm('Selecione um arquivo válido')
             }
         }catch (err){
             console.log(err);
+            setErroForm('Selecione um arquivo válido')
         }
     }
+    useEffect(()=>{
+        validarCampos()
+    })
+
 
     return (
         <View style={styles.container}>
@@ -110,7 +129,7 @@ export default function CSVCondominio({navigation, route}) {
                 </TouchableOpacity>
             </View>
             <View>
-
+            <Text style={styles.errorMessage}>{erroForm}</Text>
                 
             
             <Button
@@ -189,5 +208,8 @@ const styles = StyleSheet.create({
             color:"#FFF", 
             fontFamily:"PoppinsExtraBold"
         }
+    },
+    errorMessage:{
+        color:'red',
     }
 });
