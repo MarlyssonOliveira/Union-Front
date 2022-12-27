@@ -13,6 +13,8 @@ export default function NovoCondominio({navigation}) {
     const [validar, setValidar] = useState(false);
     const [erroForm, setErroForm] = useState('');
     const [count, setCount] = useState(0);
+    const [countNome, setCountNome] = useState(0);
+    const [countEndereco, setCountEndereco] = useState(0);
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -24,7 +26,9 @@ export default function NovoCondominio({navigation}) {
     function validarCampos(){
         if(count>0){
             if(erroEndereco=='' && erroNome==''){
-                setValidar(true);
+                if(countNome>0 && countEndereco>0){
+                    setValidar(true);
+                }
             }else{
                 setValidar(false)
             }
@@ -112,6 +116,7 @@ export default function NovoCondominio({navigation}) {
                         setNome(nome)
                         validaNome(nome)
                         setCount(count+1)
+                        setCountNome(1)
                     }}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
@@ -129,6 +134,7 @@ export default function NovoCondominio({navigation}) {
                         setCount(count+1)
                         setEndereco(endereco)
                         validaEndereco(endereco)
+                        setCountEndereco(1)
                     }}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
