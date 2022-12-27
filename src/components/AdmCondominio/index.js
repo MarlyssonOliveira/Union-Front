@@ -162,7 +162,7 @@ export default function AdmCondominio({navigation, route}) {
             onClose={() => setOpen(!open)}
             >
                 
-                <SpeedDial.Action
+                {/* <SpeedDial.Action
                     style={styles.SpeedDial.width}
                     buttonStyle={styles.SpeedDial.buttonStyle}
                     icon={{ name: 'file-table', color: '#fff', size:35, type:"material-community" }}
@@ -171,7 +171,7 @@ export default function AdmCondominio({navigation, route}) {
                     onPress={() => navigation.navigate('CSVCondominio', {
                         idCondominio : route.params.idCondominio
                     })}
-                />
+                /> */}
                 <SpeedDial.Action
                     style={styles.SpeedDial.width}
                     buttonStyle={styles.SpeedDial.buttonStyle}
@@ -189,6 +189,16 @@ export default function AdmCondominio({navigation, route}) {
                     iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
                     title="Gerenciar taxas"
                     onPress={() => navigation.navigate('NovaTaxa', {
+                        idCondominio : route.params.idCondominio
+                    })}
+                />
+                <SpeedDial.Action
+                    style={styles.SpeedDial.width}
+                    buttonStyle={styles.SpeedDial.buttonStyle}
+                    icon={{ name: 'account-group-outline', color: '#fff', size:35, type:"material-community"  }}
+                    iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
+                    title="Gerenciar Moradores"
+                    onPress={() => navigation.navigate('ListaMoradores', {
                         idCondominio : route.params.idCondominio
                     })}
                 />

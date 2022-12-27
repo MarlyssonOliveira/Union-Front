@@ -60,6 +60,21 @@ export default function CondominioMorador({navigation,route}) {
             console.log(error)
         }
     }
+
+    function SairDoCondominio(){
+        axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant/leave" ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: true,
+                mensagem : "Você saiu do condomínio com Sucesso!",
+                textoBotao : "Página Inicial",
+                destinoBotao : "Home"
+            })
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
     
 
 
@@ -150,7 +165,7 @@ export default function CondominioMorador({navigation,route}) {
                     icon={styles.speedDial.iconExit}
                     iconContainerStyle= {styles.speedDial.iconExitContainer}
                     title="Sair do condomínio" 
-                    onPress={() => navigation.navigate('Home')}
+                    onPress={() => SairDoCondominio()}
                 />
             </SpeedDial>
     </>
