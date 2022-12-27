@@ -32,7 +32,6 @@ export default function GerenciamentoTaxas({navigation, route}) {
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt",{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setTaxas(response.data)
-            console.log(response.data)
         }).catch((err) =>{
             console.log(err)
         })
@@ -47,7 +46,7 @@ export default function GerenciamentoTaxas({navigation, route}) {
                         {
                             Taxas.map((taxa) => (
                                     <Card key={taxa.unionIdentifier} containerStyle={styles.card.containerHistoricoStyle}>
-                                        <View onTouchEnd={() => {navigation.navigate("DetalhamentoTaxa",{idCondominio : taxa.unionIdentifier})}} style={styles.card.viewTituloCard}>
+                                        <View onTouchEnd={() => {navigation.navigate("DetalhamentoTaxa",{idDebito : taxa.unionIdentifier})}} style={styles.card.viewTituloCard}>
                                             <Text style={styles.card.tituloDebito}>{taxa.title}</Text>
                                             <View style={styles.card.flexDetalhesDebito}>
                                                 <Text style={styles.card.textoVencimentoDebito}>Venc. {taxa.expirationDate}</Text>

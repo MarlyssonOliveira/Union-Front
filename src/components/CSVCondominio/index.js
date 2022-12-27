@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -12,6 +12,7 @@ export default function CSVCondominio({navigation, route}) {
     const [Csv,setCSV] = useState()
     const [nomeCsv, setNomeCSV] = useState();
     const [erroForm, setErroForm] = useState('');
+    const [validar, setValidar] = useState(false);
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -25,7 +26,9 @@ export default function CSVCondominio({navigation, route}) {
             setValidar(false)
         }
     }
-    
+    useEffect(()=>{
+        validarCampos()
+    })
       if (!loaded) {
         return null;
       }
@@ -84,9 +87,7 @@ export default function CSVCondominio({navigation, route}) {
             setErroForm('Selecione um arquivo válido')
         }
     }
-    useEffect(()=>{
-        validarCampos()
-    })
+
 
 
     return (

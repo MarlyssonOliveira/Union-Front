@@ -157,7 +157,7 @@ export default function CondominioMorador({navigation,route}) {
                     icon={styles.speedDial.iconDebitos}
                     iconContainerStyle= {styles.speedDial.iconDebitosContainer}
                     title="Débitos"
-                    onPress={() => navigation.navigate('Debitos')}
+                    onPress={() => navigation.navigate('Debitos',{idCondominio : route.params.idCondominio})}
                 />
                 <SpeedDial.Action
                     style={styles.speedDial.style}
