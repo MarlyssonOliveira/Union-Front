@@ -162,16 +162,6 @@ export default function AdmCondominio({navigation, route}) {
             onClose={() => setOpen(!open)}
             >
                 
-                {/* <SpeedDial.Action
-                    style={styles.SpeedDial.width}
-                    buttonStyle={styles.SpeedDial.buttonStyle}
-                    icon={{ name: 'file-table', color: '#fff', size:35, type:"material-community" }}
-                    iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
-                    title="Adicionar moradores" 
-                    onPress={() => navigation.navigate('CSVCondominio', {
-                        idCondominio : route.params.idCondominio
-                    })}
-                /> */}
                 <SpeedDial.Action
                     style={styles.SpeedDial.width}
                     buttonStyle={styles.SpeedDial.buttonStyle}
@@ -188,7 +178,7 @@ export default function AdmCondominio({navigation, route}) {
                     icon={{ name: 'currency-usd', color: '#fff', size:35, type:"material-community"  }}
                     iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
                     title="Gerenciar taxas"
-                    onPress={() => navigation.navigate('NovaTaxa', {
+                    onPress={() => navigation.navigate('GerenciamentoTaxas', {
                         idCondominio : route.params.idCondominio
                     })}
                 />

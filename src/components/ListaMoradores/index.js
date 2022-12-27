@@ -23,14 +23,14 @@ export default function ListaMoradores({navigation, route}) {
     });
 
     const toggleOverlaySet = (morador) => {
-        // setIdMorador(morador.unionIdentifier)
-        // setMoradorSelecionado(morador.name)
+        setIdMorador(morador.unionIdentifier)
+        setMoradorSelecionado(morador.name)
         setVisible(!visible);
     };
 
     const toggleOverlayUnSet = () => {
-        // setIdMorador("")
-        // setMoradorSelecionado("")
+        setIdMorador("")
+        setMoradorSelecionado("")
         setVisible(!visible);
     };
     
@@ -43,91 +43,46 @@ export default function ListaMoradores({navigation, route}) {
     }
 
     function CarregaMoradores(){
-        // axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
-        // .then((response) =>{
-        //     setMoradores(response.data)
-        // }).catch((err) =>{
-        //     console.log(err)
-        // })
+        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant" ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            setMoradores(response.data)
+        }).catch((err) =>{
+            console.log(err)
+        })
     }
     
     function RemoverMorador(){
-        // axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant/" + IdMorador,{headers: {'token' : global.sessionID}})
-        // .then((response) =>{
-        //     toggleOverlayUnSet()
-        //     navigation.navigate("Feedback", {
-        //         tipo : true,
-        //         retornoEspecifico: false,
-        //         mensagem : "Morador removido com Sucesso!",
-        //         textoBotao : "Voltar",
-        //     })
-        // }).catch((err) =>{
-        //     console.log(err)
-        // })
+        axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant/" + IdMorador,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            toggleOverlayUnSet()
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: false,
+                mensagem : "Morador removido com Sucesso!",
+                textoBotao : "Voltar",
+            })
+        }).catch((err) =>{
+            console.log(err)
+        })
     }
 
     return (
         <>
             <View style={styles.container}>
 
-                <Text style={styles.feed.titulo}>Moradores</Text>
-                <View style={styles.feed.conteudo}>
-                    <View style={styles.feed.post}>
-                        <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
-                                    <Card containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet()} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.subtitulo}>Teste 1</Text>
-                                        </View>
-                                    </Card> 
-                                    <Card containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet()} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.subtitulo}>Teste 2</Text>
-                                        </View>
-                                    </Card> 
-                                    <Card containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet()} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.subtitulo}>Teste 3</Text>
-                                        </View>
-                                    </Card> 
-                                    <Card containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet()} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.subtitulo}>Teste 1</Text>
-                                        </View>
-                                    </Card> 
-                                    <Card containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet()} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.subtitulo}>Teste 2</Text>
-                                        </View>
-                                    </Card> 
-                                    <Card containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet()} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.subtitulo}>Teste 3</Text>
-                                        </View>
-                                    </Card> 
-                                    <Card containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet()} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.subtitulo}>Teste 1</Text>
-                                        </View>
-                                    </Card> 
-                                    <Card containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet()} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.subtitulo}>Teste 2</Text>
-                                        </View>
-                                    </Card> 
-                                    <Card containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet()} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.subtitulo}>Teste 3</Text>
-                                        </View>
-                                    </Card> 
-                            {/* {
+                <Text style={styles.lista.titulo}>Moradores</Text>
+                <View style={styles.lista.conteudo}>
+                    <View style={styles.lista.post}>
+                        <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>                           
+                            {
                                 Moradores.map((morador) => (
                                     <Card key={morador.unionIdentifier} containerStyle={styles.card.containerStyle}>
                                         <View onTouchEnd={() => toggleOverlaySet(morador)} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.subtitulo}>{morador.name}</Text>
+                                            <Text style={styles.card.titulo}>{morador.name}</Text>
                                         </View>
                                     </Card> 
                                 ))
-                            } */}
+                            }
                         </ScrollView>
                     </View>
                 </View>
@@ -190,8 +145,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         width: "100%",
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     overlay:{
         style:{
@@ -250,7 +203,7 @@ const styles = StyleSheet.create({
             alignItems: 'center'
         },
         titulo:{
-            fontSize: 14, 
+            fontSize: 16, 
             fontFamily:"PoppinsExtraBold", 
             paddingHorizontal:15
         },
@@ -262,7 +215,7 @@ const styles = StyleSheet.create({
         }
     },
 
-    feed:{
+    lista:{
         conteudo:{
             marginTop:30,
             marginStart: 20,
@@ -275,7 +228,7 @@ const styles = StyleSheet.create({
             textAlign: "center"
         },
         post:{
-            height:450, 
+            height:550, 
             paddingVertical:10,
             alignItems: "center",
             justifyContent: "center"
