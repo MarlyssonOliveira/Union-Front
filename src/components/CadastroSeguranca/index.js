@@ -37,7 +37,7 @@ export default function CadastroSeguranca({navigation, route}) {
             if(senha.length<1){
                 setErrosenha('A senha não pode ser nula')
             }else{
-                if(senha.length>5 && /[A-Z]/.test(Senha) && /[0-9]/.test(Senha)){
+                if(senha.length>5 && /[A-Z]/.test(Senha) && /[0-9]/.test(Senha) && /\W|_/.test(Senha)){
                     setErrosenha('')
                 }else{
                     setErrosenha('Preencha corretamente')
@@ -63,7 +63,7 @@ export default function CadastroSeguranca({navigation, route}) {
                 phone: UsuarioParam.telefone,
                 password: Senha
             }
-            axios.post("http://192.168.116.208:8080/union/user",usuarioFinal,{headers:{'Content-Type': 'application/json'}})
+            axios.post("http://192.168.69.208:8080/union/user",usuarioFinal,{headers:{'Content-Type': 'application/json'}})
                 .then((response) => {
                     console.log(response.data)
                     navigation.navigate("CodigoVerificacao");
@@ -155,6 +155,11 @@ export default function CadastroSeguranca({navigation, route}) {
                     <Icon name={Senha == ConfSenha ? "check-circle": "cancel"} type='material' color={Senha == ConfSenha ? "green": "red"}></Icon>
                     <Text style={styles.textosSenha}>
                     As senhas devem ser iguais</Text>
+                </View>
+                <View style={styles.divTextoSenha}>
+                    <Icon name={Senha == ConfSenha ? "check-circle": "cancel"} type='material' color={/\W|_/.test(Senha) ? "green": "red"}></Icon>
+                    <Text style={styles.textosSenha}>
+                    A senha deve conter um caractere especial</Text>
                 </View>
             </View>
             <View>
