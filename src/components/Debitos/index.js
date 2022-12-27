@@ -1,13 +1,27 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native'
 import { useFonts } from "expo-font";
 import { Avatar, Button, Card, Icon, Image, Input, Overlay } from 'react-native-elements';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as Clipboard from 'expo-clipboard';
+import axios from "axios";
 
-export default function Debitos() {
-
+export default function Debitos({navigation,route}) {
+    const isFocused = useIsFocused();
     const [visible, setVisible] = useState(false);
+    const [DebitosAbertos, setDebitosAbertos] = useState([]);
+    const [DebitoSelecionado, setDebitoSelecionado] = useState();
+    const [Historico, setHistorico] = useState([]);
+    const [ChavePix, setChavePix] = useState('');
 
-    const toggleOverlay = () => {
+    const toggleOverlaySet = (debito) => {
+        setDebitoSelecionado(debito)
+        setChavePix(debito.pixKey)
+        setVisible(!visible);
+    };
+
+    const toggleOverlayUnSet = () => {
+        setDebitoSelecionado({})
         setVisible(!visible);
     };
 
@@ -18,34 +32,55 @@ export default function Debitos() {
         PoppinsSemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf")
       });
     
+      useEffect(() => {
+        CarregaDebitosAbertos();
+        CarregaHistorico();
+      },[isFocused])
+
       if (!loaded) {
         return null;
       }
+
+    function CarregaHistorico(){
+        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt/history" ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            setHistorico(response.data)
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
+
+    function Copiar(){
+         Clipboard.setStringAsync(ChavePix);
+      };
+
+    function CarregaDebitosAbertos(){
+        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt/open" ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            setDebitosAbertos(response.data)
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
     return (
         <View style={styles.container}>
             <View style={styles.marginConteudo}>
                 <Text style={styles.titulo}>Débitos</Text>
                 <View style={styles.viewDebitos}>
                     <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
-                        <Card containerStyle={styles.card.containerAlertStyle}>
-                            <View onTouchEnd={toggleOverlay} style={styles.card.viewTituloCard}>
-                                    <Text style={styles.card.tituloDebito}>Taxa - Novembro</Text>
-                                    <View style={styles.card.flexDetalhesDebito}>
-                                        <Text style={styles.card.textoVencimentoDebito}>Venc. 05/11/2022</Text>
-                                        <Text style={styles.card.textoValorAVencer}>R$ 40,00</Text>
+                        {
+                            DebitosAbertos.map((debitoAberto) => (
+                                <Card key={debitoAberto.unionIdentifier} containerStyle={ debitoAberto.overdue ? styles.card.containerDangerStyle : styles.card.containerAlertStyle }>
+                                    <View onTouchEnd={() => toggleOverlaySet(debitoAberto)} style={styles.card.viewTituloCard}>
+                                            <Text style={styles.card.tituloDebito}>{debitoAberto.title}</Text>
+                                            <View style={styles.card.flexDetalhesDebito}>
+                                                <Text style={styles.card.textoVencimentoDebito}>Venc. {debitoAberto.expirationDate}</Text>
+                                                <Text style={debitoAberto.overdue ? styles.card.textoValorVencido : styles.card.textoValorAVencer}>R$ {debitoAberto.value}</Text>
+                                            </View>
                                     </View>
-                            </View>
-                        </Card> 
-
-                        <Card containerStyle={styles.card.containerDangerStyle}>
-                            <View onTouchEnd={toggleOverlay} style={styles.card.viewTituloCard}>
-                                    <Text style={styles.card.tituloDebito}>Taxa - Outubro</Text>
-                                    <View style={styles.card.flexDetalhesDebito}>
-                                        <Text style={styles.card.textoVencimentoDebito}>Venc. 05/10/2022</Text>
-                                        <Text style={styles.card.textoValorVencido}>R$ 40,00</Text>
-                                    </View>
-                            </View>
-                        </Card> 
+                                </Card>
+                            ))
+                        }
                     </ScrollView>
                 </View>
             </View>
@@ -53,46 +88,33 @@ export default function Debitos() {
                 <Text style={styles.titulo}>Histórico</Text>
                 <View style={styles.viewDebitos}>
                     <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
-
-                        <Card containerStyle={styles.card.containerHistoricoStyle}>
-                            <View onTouchEnd={toggleOverlay} style={styles.card.viewTituloCard}>
-                                    <Text style={styles.card.tituloDebito}>Taxa - Novembro</Text>
-                                    <View style={styles.card.flexDetalhesDebito}>
-                                        <Text style={styles.card.textoVencimentoDebito}>Venc. 05/12/2022</Text>
-                                        <Text style={styles.card.textoValorHistorico}>R$ 40,00</Text>
+                        {
+                            Historico.map((debitoPago) => (
+                                <Card key={debitoPago.unionIdentifier} containerStyle={styles.card.containerHistoricoStyle}>
+                                    <View style={styles.card.viewTituloCard}>
+                                        <Text style={styles.card.tituloDebito}>{debitoPago.title}</Text>
+                                        <View style={styles.card.flexDetalhesDebito}>
+                                            <Text style={styles.card.textoVencimentoDebito}>Venc. {debitoPago.expirationDate}</Text>
+                                            <Text style={styles.card.textoValorHistorico}>R$ {debitoPago.value}</Text>
+                                        </View>
                                     </View>
-                            </View>
-                        </Card> 
-                        <Card containerStyle={styles.card.containerHistoricoStyle}>
-                            <View onTouchEnd={toggleOverlay} style={styles.card.viewTituloCard}>
-                                    <Text style={styles.card.tituloDebito}>Taxa - Novembro</Text>
-                                    <View style={styles.card.flexDetalhesDebito}>
-                                        <Text style={styles.card.textoVencimentoDebito}>Venc. 05/12/2022</Text>
-                                        <Text style={styles.card.textoValorHistorico}>R$ 40,00</Text>
-                                    </View>
-                            </View>
-                        </Card> 
-                        <Card containerStyle={styles.card.containerHistoricoStyle}>
-                            <View onTouchEnd={toggleOverlay} style={styles.card.viewTituloCard}>
-                                    <Text style={styles.card.tituloDebito}>Taxa - Novembro</Text>
-                                    <View style={styles.card.flexDetalhesDebito}>
-                                        <Text style={styles.card.textoVencimentoDebito}>Venc. 05/12/2022</Text>
-                                        <Text style={styles.card.textoValorHistorico}>R$ 40,00</Text>
-                                    </View>
-                            </View>
-                        </Card> 
+                                </Card>
+                            ))
+                        }
+                         
+                        
                     </ScrollView>
                 </View>
             </View>
 
 
-            <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.overlay.flex}>
+            <Overlay isVisible={visible} onBackdropPress={() => toggleOverlayUnSet()} overlayStyle={styles.overlay.flex}>
                 <View>
-                    <Text style={styles.overlay.descricaoTaxa}>Taxa - Novembro</Text>
-                    <Text style={styles.overlay.vencimentoTaxa}>05/12/2022</Text>
+                    <Text style={styles.overlay.descricaoTaxa}>{DebitoSelecionado != undefined ? DebitoSelecionado.title : "Undefined"}</Text>
+                    <Text style={styles.overlay.vencimentoTaxa}>{DebitoSelecionado != undefined ? DebitoSelecionado.expirationDate : "00/00/0000"}</Text>
                 </View>
                 <Input
-                    value='e6eae6fd-c638-458e-bbbb-c638c638-c638'
+                    value={DebitoSelecionado != undefined ? DebitoSelecionado.pixKey : "aaa-bbb-ccc"}
                     inputContainerStyle={styles.overlay.input.inputContainerStyle}
                     inputStyle={styles.overlay.input.inputStyle}
                     disabled={true}
@@ -113,6 +135,7 @@ export default function Debitos() {
                       }
                     title="Copiar chave"
                     raised="true"
+                    onPress={() => Copiar()}
                     containerStyle={{
                         borderRadius:10
                     }}

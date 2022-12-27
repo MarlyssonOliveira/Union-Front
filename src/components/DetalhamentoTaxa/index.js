@@ -9,6 +9,7 @@ export default function DetalhamentoTaxa({navigation, route}) {
     const isFocused = useIsFocused();
     const [visible, setVisible] = useState(false);
     const [IdMorador, setIdMorador] = useState();
+    const [Debito, setDebito] = useState();
     const [MoradorSelecionado, setMoradorSelecionado] = useState();
     const [Moradores, setMoradores] = useState([]);
     const [loaded] = useFonts({
@@ -31,14 +32,23 @@ export default function DetalhamentoTaxa({navigation, route}) {
         setVisible(!visible);
     };
     
-    // useEffect(()=>{
-    //     CarregaMoradores()
-    // },[])
+    useEffect(()=>{
+        CarregaMoradores()
+        CarregaDebito()
+    },[isFocused])
 
     if (!loaded) {
         return null;
     }
 
+    function CarregaDebito(){
+        axios.get(global.baseURL+":8080/union/debt/" + route.params.idDebito,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            setDebito(response.data)
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
     function CarregaMoradores(){
         axios.get(global.baseURL+":8080/union/debt/" + route.params.idDebito + "/user" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
@@ -49,16 +59,26 @@ export default function DetalhamentoTaxa({navigation, route}) {
     }
 
     function ConfirmarPagamento(){
-
+        axios.put(global.baseURL+":8080/union/debt/" + route.params.idDebito + "/user/" + IdMorador + "/payment" ,null,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            navigation.navigate("Feedback",{
+                tipo : true,
+                retornoEspecifico: false,
+                mensagem : "Pagamento registrado com Sucesso!",
+                textoBotao : "Voltar",
+        })
+        }).catch((err) =>{
+            console.log(err)
+        })
     }
 
     return (
             <View style={styles.container}>
                 <View>
-                    <Text style={styles.infoTaxa.titulo}>Taxa - Novembro</Text>
+                    <Text style={styles.infoTaxa.titulo}>{Debito != undefined ? Debito.title : "Erro"}</Text>
                     <View style={styles.infoTaxa.vencimentoConteiner}>
-                        <Text style={styles.infoTaxa.vencimento}>Venc. 05/12/2022</Text>
-                        <Text style={styles.infoTaxa.valor}>R$40</Text>
+                        <Text style={styles.infoTaxa.vencimento}>Venc. {Debito != undefined ? Debito.expirationDate : "00/00/0000"}</Text>
+                        <Text style={styles.infoTaxa.valor}>R${Debito != undefined ? Debito.value : "00"}</Text>
 
                     </View>
                 </View>
@@ -67,7 +87,7 @@ export default function DetalhamentoTaxa({navigation, route}) {
                     <View style={styles.lista.conteudo}>
                         <View style={styles.lista.post}>
                             <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>                           
-                                {/* {
+                                {
                                     Moradores.map((morador) => (
                                         <Card key={morador.unionIdentifier} containerStyle={styles.card.containerStyle}>
                                             <View onTouchEnd={() => toggleOverlaySet(morador)} backgroundColor="#EFF3FF" style={styles.card.background}>
@@ -75,12 +95,12 @@ export default function DetalhamentoTaxa({navigation, route}) {
                                             </View>
                                         </Card> 
                                     ))
-                                } */}
+                                }
                             </ScrollView>
                         </View>
                     </View>
                 </View>
-                <Overlay isVisible={visible} onBackdropPress={toggleOverlayUnSet()} overlayStyle={styles.overlay.flex}>
+                <Overlay isVisible={visible} onBackdropPress={()=> toggleOverlayUnSet()} overlayStyle={styles.overlay.flex}>
                 <View>
                     <Text style={styles.overlay.descricaoTaxa}>{MoradorSelecionado}</Text>
                 </View>
