@@ -7,8 +7,10 @@ import CondominioMorador from '../CondominioMorador/index';
 import Confirmacao from '../Confirmacao/index';
 import CSVCondominio from '../CSVCondominio';
 import Debitos from '../Debitos/index';
+import DetalhamentoTaxa from '../DetalhamentoTaxa';
 import EmailRecuperacaoSenha from '../EmailRecuperacaoSenha';
 import Feedback from '../Feedback';
+import GerenciamentoTaxas from '../GerenciamentoTaxas';
 import Home from '../Home/index';
 import Index from '../Index/index';
 import ListaCondominios from '../ListaCondominios/index';
@@ -40,6 +42,8 @@ export default function StackNavigator() {
     <Stack.Screen name="Confirmacao" component={Confirmacao} options={{headerShown:false, headerTitle:""}}/>
     <Stack.Screen name="NovoCondominio" component={NovoCondominio} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="Debitos" component={Debitos} options={{headerShown:true, headerTitle:""}}/>
+    <Stack.Screen name="GerenciamentoTaxas" component={GerenciamentoTaxas} options={{headerShown:true, headerTitle:""}}/>
+    <Stack.Screen name="DetalhamentoTaxa" component={DetalhamentoTaxa} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="ListaCondominios" component={ListaCondominios} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="EmailRecuperacaoSenha" component={EmailRecuperacaoSenha} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="NovaSenha" component={NovaSenha} options={{headerShown:true, headerTitle:""}}/>
