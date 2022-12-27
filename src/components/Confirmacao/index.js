@@ -1,18 +1,49 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
+import axios from "axios";
+import { useEffect } from 'react';
+import { useState } from 'react';
 
-export default function Confirmacao({navigation}) {
+export default function Confirmacao({navigation, route}) {
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
         PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf")
 
-      });
-    
-      if (!loaded) {
+    });
+    const [Condominio, setCondominio] = useState();
+
+    useEffect(()=>{
+        CarregaCondominio()
+    },[])
+
+    if (!loaded) {
         return null;
-      }
+    }
+    function DetelarCondominio(){
+        axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: true,
+                mensagem : "Condominio deletado com sucesso!",
+                textoBotao : "Pagina inicial!",
+                destinoBotao : "Home"
+            })
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
+
+    function CarregaCondominio(){
+        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            setCondominio(response.data)
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
     return (
         <View style={styles.container}>
             <View style={{alignItems:'center'}}>
@@ -24,14 +55,16 @@ export default function Confirmacao({navigation}) {
             />
             
                 <Text style={styles.icon.titulo}>Tem certeza?</Text>
-                <Text style={styles.icon.subtitulo}>Ao confirmar o --- será confirmado</Text>
+                <Text style={styles.icon.subtitulo}>Ao confirmar o condominio </Text>
+                <Text style={styles.icon.nomeCondominio}>{Condominio != undefined ? Condominio.name : "Nome teste" }</Text>
+                <Text style={styles.icon.subtitulo}> será deletado!</Text>
             </View>
             <View style={styles.buttons.flex}>
                 <Button
                     buttonStyle= {styles.buttons.buttonConfirmarStyle}
                     style={{alignSelf:"center"}}
                     title="Confirmar"
-                    onPress={()=>navigation.navigate("Home")}
+                    onPress={()=>DetelarCondominio()}
                     raised="true"
                     containerStyle={styles.buttons.containerStyle}
                     titleStyle={{}}
@@ -69,6 +102,12 @@ const styles = StyleSheet.create({
             fontSize: 15, 
             fontFamily:"PoppinsMedium"
         },
+        nomeCondominio:{
+            fontSize: 16,
+            fontFamily:"PoppinsExtraBold", 
+            color:"#E91429",
+
+        }
         
     },
     buttons:{

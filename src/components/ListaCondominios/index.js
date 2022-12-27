@@ -1,16 +1,43 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button, Overlay  } from 'react-native-elements';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from "axios";
 
-export default function ListaCondominios() {
-
+export default function ListaCondominios({navigation}) {
+    const isFocused = useIsFocused();
     const [visible, setVisible] = useState(false);
+    const [ListaDisponiveis, setListaDisponiveis] = useState([]);
+    const [IdCondominio, setIdCondominio] = useState();
+    const [NomeCondominio, setNomeCondominio] = useState();
 
-    
-    const toggleOverlay = () => {
+    const toggleOverlaySet = (condominio) => {
+        setIdCondominio(condominio.unionIdentifier)
+        setNomeCondominio(condominio.name)
         setVisible(!visible);
     };
+
+    const toggleOverlayUnSet = () => {
+        setIdCondominio("")
+        setNomeCondominio("")
+        setVisible(!visible);
+    };
+
+    function EntrarNoCondominio(){
+        axios.put(global.baseURL+":8080/union/condominium/" + IdCondominio + "/tenant",null,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: true,
+                mensagem : "Entrou no condominio com sucesso!",
+                textoBotao : "Página Inicial",
+                destinoBotao : "Home"
+            })
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -19,23 +46,26 @@ export default function ListaCondominios() {
         PoppinsSemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf")
         
     });
+
+    useEffect(() =>{
+        CarregaCondominiosDisponiveis()
+    }, [isFocused])
     
     if (!loaded) {
         return null;
     }
-    let cards = []
-    for(let i = 0; i< 5;i++){
-        cards.push(
-            <Card key={i} containerStyle={styles.card.containerStyle}>
-                <Card.Image onPress={toggleOverlay} source={require('../../assets/images/predio.jpg')} style={styles.card.cardImage}>
-                    <View backgroundColor="#EFF3FF" style={styles.card.divTitulos}>
-                        <Text style={styles.card.titulo}>Condomínio {i}</Text>
-                        <Text style={styles.card.subtitulo}>{(i+1)*10} moradores</Text>
-                    </View>
-                </Card.Image>
-            </Card> 
-        )
+
+    function CarregaCondominiosDisponiveis(){
+        axios.get(global.baseURL+":8080/union/condominium/availables?name=",{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            setListaDisponiveis(response.data)
+        }).catch((err) =>{
+            console.log(err)
+        })
     }
+
+    
+
     return (
         <>
             <View style={styles.container}>
@@ -54,20 +84,33 @@ export default function ListaCondominios() {
                     <Text  style={styles.divLista.titulo}>Condomínios disponíveis</Text>
                     <View style={styles.divLista.divScroll}>
                         <ScrollView contentContainerStyle={styles.divLista.scroll} showsVerticalScrollIndicator={false} >
-                            {cards} 
+                            {
+                                ListaDisponiveis.map((condominio) => (
+                                    <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
+                                        <Card.Image onPress={() => toggleOverlaySet(condominio)} source={require('../../assets/images/predio.jpg')} style={styles.card.cardImage}>
+                                            <View backgroundColor="#EFF3FF" style={styles.card.divTitulos}>
+                                                <Text style={styles.card.titulo}>{condominio.name}</Text>
+                                                <Text style={styles.card.subtitulo}>{condominio.tenantsCount == null ? "0" : condominio.tenantsCount} moradores</Text>
+                                            </View>
+                                        </Card.Image>
+                                    </Card> 
+                                ))
+
+                            }
                         </ScrollView>
                     </View>
                 </View>
 
-                <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.overlay.style}>
+                <Overlay isVisible={visible} onBackdropPress={() => toggleOverlayUnSet()} overlayStyle={styles.overlay.style}>
                     <View>
-                        <Text style={styles.overlay.titulo}>Condomínio 01</Text>
+                        <Text style={styles.overlay.titulo}>{NomeCondominio}</Text>
                     </View>
 
                     <Button
                         buttonStyle= {styles.overlay.button.buttonStyle}
                         title="Ingressar"
                         raised="true"
+                        onPress={() => EntrarNoCondominio()}
                         containerStyle={styles.overlay.button.containerStyle}
                         titleStyle={styles.overlay.button.titleStyle}
                     />

@@ -15,9 +15,15 @@ export default function NovaSenha({navigation}) {
             "password": Senha,
             "code": Codigo
         }
-        axios.put("http://192.168.0.107:8080/union/user/new-password",novaSenhaObj,{headers:{'Content-Type': 'application/json'}})
+        axios.put(global.baseURL+":8080/union/user/new-password",novaSenhaObj,{headers:{'Content-Type': 'application/json'}})
         .then((response) => {
-            navigation.navigate("SucessoRedefinicaoSenha")
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: true,
+                mensagem : "Senha redefinida com Sucesso!",
+                textoBotao : "Ir para Login",
+                destinoBotao : "Login"
+            })
         }).catch((err) =>{
             console.log(err)
         })

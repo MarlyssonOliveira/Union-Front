@@ -1,11 +1,16 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Linking, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native'
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from "axios";
 
-export default function CondominioMorador({navigation}) {
-
+export default function CondominioMorador({navigation,route}) {
+    const isFocused = useIsFocused();
     const [open, setOpen] = useState(false);
+    const [Condominio, setCondominioMorador] = useState();
+    const [Mensagens, setMensagensCondominio] = useState([]);
+    const [PossuiNumero, setPossuiNumero] = useState(false);
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -13,29 +18,50 @@ export default function CondominioMorador({navigation}) {
         PoppinsSemiBold: require("../../assets/fonts/Poppins-SemiBold.ttf")
         
     });
-    
+
+    useEffect(()=>{
+        CarregaCondominio()
+        CarregaMensagens()
+    }, [isFocused])
+
     if (!loaded) {
         return null;
     }
- 
-    let cards = []
-    for(let i = 0; i< 5;i++){
-        cards.push(
-            <Card key={i} containerStyle={styles.card.cardContainerStyle}>
-                <View backgroundColor="#EFF3FF" style={styles.card.backgroundStyle}>
-                    <View style={styles.card.cardConteudo}>
-                        <Avatar
-                            rounded
-                            size="medium"
-                            source={require('../../assets/images/user.jpg')}
-                        />
-                        <Text  style={styles.card.tituloCard}>Usuario</Text>
-                    </View>
-                    <Text style={styles.card.textoCard}>Esse ipsum qui ipsum ea. Lorem labore minim occaecat sint cillum qui voluptate. Dolore aliqua adipisicing occaecat magna pariatur fugiat tempor irure pariatur tempor mollit excepteur eiusmod proident. Id do ea tempor commodo labore anim ea elit aliquip occaecat aliquip sit eu.dolor do anim deserunt ut eiusmod labore sint minim. Non mollit qui magna aliquip.</Text>
-                </View>
-            </Card> 
-        )
+
+    function CarregaCondominio(){
+        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            setCondominioMorador(response.data)
+            if(response.data.owner.phone != null && response.data.owner.phone != undefined && response.data.owner.phone != ""){
+                setPossuiNumero(true)
+            }
+        }).catch((err) =>{
+            console.log(err)
+        })
     }
+
+    function CarregaMensagens(){
+        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            setMensagensCondominio(response.data)
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
+
+    function EntraNoWathsApp(url){
+        try {
+            if(url != null){
+                Linking.openURL(url)
+            }else{
+
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
+
 
     return (
         <>
@@ -47,24 +73,26 @@ export default function CondominioMorador({navigation}) {
                             style={styles.detalhesCondominio.imageStyle}
                         />
                         <View>
-                            <Text style={styles.detalhesCondominio.nomeCondominio}>Bloco 24</Text>
-                            <Text style={styles.detalhesCondominio.enderecoCondominio}>Avenida um, 230</Text>
-                        
+                        <Text style={styles.detalhesCondominio.nome}>{Condominio != undefined ? Condominio.name : "Nome teste" }</Text>
+                            <Text style={styles.detalhesCondominio.enderecoCondominio}>{Condominio != undefined ? Condominio.address : "Nome teste" }</Text>
+                            <Text style={styles.detalhesCondominio.whatsResponsavel}>Responsavel:</Text>
                             <Button
                                 buttonStyle= {styles.button.buttonStyle}
-                                title="Joana Muniz"
+                                title={Condominio != undefined ? Condominio.owner.name.split(" ")[0] : "Sindico"}
+                                onPress={() => EntraNoWathsApp("https://wa.me/55" + Condominio.owner.phone)}
                                 containerStyle={styles.button.containerStyle}
                                 titleStyle={styles.button.titleStyle}
+                                disabled={!PossuiNumero}
                             />
                         </View>
                     </View>
                     <View style={styles.divInfoStyle.flexConteudo}>
                         <View style={styles.divInfoStyle.infoContainer}>
-                            <Text style={styles.divInfoStyle.infoNumero}>25</Text>
+                            <Text style={styles.divInfoStyle.infoNumero}>{Condominio != undefined ? Condominio.tenantsCount : 0}</Text>
                             <Text style={styles.divInfoStyle.infoTitulo}>Moradores</Text>
                         </View>
                         <View style={styles.divInfoStyle.infoContainer}>
-                            <Text style={styles.divInfoStyle.infoNumero}>36</Text>
+                            <Text style={styles.divInfoStyle.infoNumero}>{Condominio != undefined ? Condominio.publicationsCount : 0}</Text>
                             <Text style={styles.divInfoStyle.infoTitulo}>Publicações</Text>
                         </View>
                     </View>
@@ -74,7 +102,23 @@ export default function CondominioMorador({navigation}) {
                     <Text style={styles.feed.titleConteudo}>Últimas atualizações</Text>
                     <View style={styles.feed.divScroll}>
                         <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
-                            {cards}
+                            {
+                                Mensagens.map((mensagem) => (
+                                    <Card key={mensagem.unionIdentifier} containerStyle={styles.card.cardContainerStyle}>
+                                        <View backgroundColor="#EFF3FF" style={styles.card.backgroundStyle}>
+                                            <View style={styles.card.cardConteudo}>
+                                                <Avatar
+                                                    rounded
+                                                    size="medium"
+                                                    source={require('../../assets/images/user.jpg')}
+                                                />
+                                                <Text  style={styles.card.tituloCard}>{mensagem.user.name}</Text>
+                                            </View>
+                                            <Text style={styles.card.textoCard}>{mensagem.message}</Text>
+                                        </View>
+                                    </Card> 
+                                ))
+                            }
                         </ScrollView>
                     </View>
                 </View>
@@ -106,7 +150,7 @@ export default function CondominioMorador({navigation}) {
                     icon={styles.speedDial.iconExit}
                     iconContainerStyle= {styles.speedDial.iconExitContainer}
                     title="Sair do condomínio" 
-                    onPress={() => navigation.navigate('Confirmacao')}
+                    onPress={() => navigation.navigate('Home')}
                 />
             </SpeedDial>
     </>
@@ -176,6 +220,11 @@ const styles = StyleSheet.create({
         enderecoCondominio:{
             fontSize: 16, 
             fontFamily:"PoppinsMedium", 
+            color:"#ADADAD"
+        },
+        whatsResponsavel:{
+            fontSize: 16, 
+            fontFamily:"PoppinsExtraBold", 
             color:"#ADADAD"
         }
     },

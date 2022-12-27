@@ -1,12 +1,17 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
 import { useState, useEffect } from 'react';
 import axios from "axios";
 
 export default function Home({navigation}) {
+    const isFocused = useIsFocused();
     const [open, setOpen] = useState(false);
     const [nomeUsuario, setnomeUsuario] = useState();
+    const [CondominiosDono, setCondominiosDono] = useState([]);
+    const [CondominiosMorador, setCondominiosMorador] = useState([]);
+
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -16,48 +21,41 @@ export default function Home({navigation}) {
     });
     
     useEffect(() =>{
-        axios.get("http://192.168.0.107:8080/union/user",{headers: {'token' : global.sessionID}})
+        CarregaUsuarioLogado()
+        CarregaCondominios()
+    },[isFocused])
+
+    function CarregaUsuarioLogado(){
+
+        axios.get(global.baseURL+":8080/union/user",{headers: {'token' : global.sessionID}})
         .then((response) =>{
-            setnomeUsuario(response.data.name)
+            setnomeUsuario(response.data.name.split(" ")[0])
         }).catch((err) =>{
             console.log(err)
-            setnomeUsuario("Marlysson Erro")
         })
-    }, [])
+    }
+
+    function CarregaCondominios(){
+        axios.get(global.baseURL+":8080/union/condominium?name=",{headers: {'token' : global.sessionID}})
+        .then(async (response) =>{ 
+            setCondominiosDono(response.data.filter((cond) => {return cond.userIsOwner == true}))
+            setCondominiosMorador(response.data.filter((cond) => {return cond.userIsOwner == false}))
+
+        }).catch((err) =>{
+            console.log(err)
+            
+        })
+    }
+
 
     function Logout(){
-        axios.post("http://192.168.0.107:8080/union/user/logout",null,{headers:{'Content-Type': 'application/json', 'token': global.sessionID}})
+        axios.post(global.baseURL+":8080/union/user/logout",null,{headers:{'Content-Type': 'application/json', 'token': global.sessionID}})
         .then(() =>{
             navigation.navigate("Index")
         }).catch((err)=>{
             console.log(err)
         })
 
-    }
-    let cardsGerencio = []
-    let cardsFacoParte = []
-    for(let i = 0; i< 5;i++){
-        cardsGerencio.push(
-            <Card key={i} containerStyle={styles.card.containerStyle}>
-                <Card.Image  onPress={()=>{navigation.navigate("AdmCondominio")}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
-                    <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
-                        <Text style={styles.card.titulo}>Condomínio {i}</Text>
-                        <Text style={styles.card.subtitulo}>{(i+1)*10} moradores</Text>
-                    </View>
-                </Card.Image>
-            </Card> 
-        )
-
-        cardsFacoParte.push(
-            <Card key={i} containerStyle={styles.card.containerStyle}>
-                <Card.Image onPress={()=>{navigation.navigate("CondominioMorador")}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
-                    <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
-                        <Text style={styles.card.titulo}>Condomínio {i}</Text>
-                        <Text style={styles.card.subtitulo}>{(i+1)*10} moradores</Text>
-                    </View>
-                </Card.Image>
-            </Card> 
-        )
     }
     return (
         <>
@@ -69,7 +67,7 @@ export default function Home({navigation}) {
                             size="medium"
                             source={require('../../assets/images/user.jpg')}
                         />
-                        <Text  style={styles.areaLogado.boasVindas}>Ola {nomeUsuario}</Text>
+                        <Text  style={styles.areaLogado.boasVindas}>Olá {nomeUsuario}</Text>
                     </View>
                     <Icon
                         onPress={()=>{Logout()}}
@@ -94,7 +92,19 @@ export default function Home({navigation}) {
                     <Text  style={styles.caixaGerencio.titulo}>Condomínios que gerencio</Text>
                     <View style={styles.caixaGerencio.tamanhoScroll}>
                         <ScrollView contentContainerStyle={styles.caixaGerencio.scroll} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
-                            {cardsGerencio} 
+                        {
+
+                            CondominiosDono.map((condominio) => (
+                                    <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
+                                        <Card.Image  onPress={()=>{navigation.navigate("AdmCondominio", {idCondominio : condominio.unionIdentifier})}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
+                                            <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
+                                                <Text style={styles.card.titulo}>{condominio.name}</Text>
+                                                <Text style={styles.card.subtitulo}>{condominio.tenantsCount} moradores</Text>
+                                            </View>
+                                        </Card.Image>
+                                    </Card> 
+                            ))
+                        }
                         </ScrollView>
                     </View>
 
@@ -102,7 +112,19 @@ export default function Home({navigation}) {
                         <Text style={styles.caixaGerencio.titulo}>Condomínios que faço parte</Text>
                         <View style={styles.caixaGerencio.tamanhoScroll}>
                             <ScrollView contentContainerStyle={styles.caixaGerencio.scroll} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
-                                {cardsFacoParte}
+                            {
+                                CondominiosMorador.map((condominio) => (
+                                        <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
+                                            <Card.Image  onPress={()=>{navigation.navigate("CondominioMorador", {idCondominio : condominio.unionIdentifier})}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
+                                                <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
+                                                    <Text style={styles.card.titulo}>{condominio.name}</Text>
+                                                    <Text style={styles.card.subtitulo}>{condominio.tenantsCount} moradores</Text>
+                                                </View>
+                                            </Card.Image>
+                                        </Card> 
+                                ))
+
+                            }
                             </ScrollView>
                         </View>
                     </View>
@@ -127,7 +149,7 @@ export default function Home({navigation}) {
                     icon={styles.SpeedDialStyle.iconHouseStyle}
                     iconContainerStyle= {styles.SpeedDialStyle.iconContainerStyle}
                     title="Condominíos Disponíveis" 
-                    onPress={() => navigation.navigate('ListaCondominios')}
+                    onPress={() => {navigation.navigate('ListaCondominios')}}
                 />
                 <SpeedDial.Action
                     style={styles.SpeedDialStyle.style}
@@ -135,7 +157,7 @@ export default function Home({navigation}) {
                     icon={styles.SpeedDialStyle.iconAddStyle}
                     iconContainerStyle= {styles.SpeedDialStyle.iconContainerStyle}
                     title="Novo condomínio" 
-                    onPress={() => navigation.navigate('NovoCondominio')}
+                    onPress={() => {navigation.navigate('NovoCondominio')}}
                 />
             </SpeedDial>
     </>

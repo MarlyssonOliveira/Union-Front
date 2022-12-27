@@ -39,7 +39,7 @@ export default function CSVCondominio({navigation, route}) {
             })
             var axionConfig = { 
                 method: "post",
-                url: "http://192.168.0.107:8080/union/condominium/" + route.params.idCondominio + "/tenant",
+                url: global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant",
                 responseType: "json",
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -52,8 +52,13 @@ export default function CSVCondominio({navigation, route}) {
             };
             axios.request(axionConfig)
             .then((response) => {
-                console.log(response)
-                console.log("Moradores adicionados")
+                navigation.navigate("Feedback", {
+                    tipo : true,
+                    retornoEspecifico: true,
+                    mensagem : "Moradores adicionados com sucesso!",
+                    textoBotao : "Página Inicial",
+                    destinoBotao : "Home"
+                })
             }).catch((err) =>{
                 console.log(err)
             })
@@ -64,10 +69,8 @@ export default function CSVCondominio({navigation, route}) {
     }
     async function CapturaCSVMoradores() {
         setErroForm('')
-        console.log(route.params.idCondominio)
         try{
             const  res = await DocumentPicker.getDocumentAsync({})
-            console.log(res)
 
             if(res.name != null){
                 setNomeCSV(res.name)

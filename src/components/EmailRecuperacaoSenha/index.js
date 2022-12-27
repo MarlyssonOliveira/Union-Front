@@ -41,12 +41,12 @@ export default function EmailRecuperacaoSenha({navigation}) {
     
       function EnviaEmail(){
         if(validar){
-            axios.post("http://192.168.0.107:8080/union/user/request-new-password",Email,{headers:{'Content-Type': 'text/html'}})
-            .then((response)=>{
-                navigation.navigate("NovaSenha")
-            }).catch((err)=>{
-                console.log(err)
-            })
+            axios.post(global.baseURL+":8080/union/user/request-new-password",Email,{headers:{'Content-Type': 'text/html'}})
+        .then((response)=>{
+            navigation.navigate("NovaSenha")
+        }).catch((err)=>{
+            console.log(err)
+        })
         }
         
       }

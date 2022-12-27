@@ -83,12 +83,16 @@ export default function NovoCondominio({navigation}) {
                 "name": Nome,
                 "address": Endereco,
             }
-            axios.post("http://192.168.0.107:8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
-            .then((response) => {
-                console.log(response.data)
-                navigation.navigate("AdmCondominio", {
-                    idCondominio : response.data.unionIdentifier
-                })
+            axios.post(global.baseURL+":8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
+        .then((response) => {
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: true,
+                mensagem : "Condominio criado com sucesso!",
+                textoBotao : "Pagina inicial!",
+                destinoBotao : "Home"
+
+            })
             }).catch((err) =>{
                 console.log(err)
             })

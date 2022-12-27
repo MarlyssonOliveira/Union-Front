@@ -8,7 +8,7 @@ import Confirmacao from '../Confirmacao/index';
 import CSVCondominio from '../CSVCondominio';
 import Debitos from '../Debitos/index';
 import EmailRecuperacaoSenha from '../EmailRecuperacaoSenha';
-import ErroCadastro from '../ErroCadastro/index';
+import Feedback from '../Feedback';
 import Home from '../Home/index';
 import Index from '../Index/index';
 import ListaCondominios from '../ListaCondominios/index';
@@ -17,8 +17,6 @@ import NovaMensagem from '../NovaMensagem/index';
 import NovaSenha from '../NovaSenha';
 import NovaTaxa from '../NovaTaxa/index';
 import NovoCondominio from '../NovoCondominio/index';
-import SucessoCadastro from '../SucessoCadastro/index';
-import SucessoRedefinicaoSenha from '../SucessoRedefinicaoSenha';
 
 const Stack = createStackNavigator();
 
@@ -29,10 +27,8 @@ export default function StackNavigator() {
     <Stack.Screen name="CadastroDados" component={CadastroDados} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="CadastroSeguranca" component={CadastroSeguranca} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="CodigoVerificacao" component={CodigoVerificacao} options={{headerShown:true, headerTitle:""}}/>
-    <Stack.Screen name="SucessoCadastro" component={SucessoCadastro} options={{headerShown:false, headerTitle:""}}/>
-    <Stack.Screen name="SucessoRedefinicaoSenha" component={SucessoRedefinicaoSenha} options={{headerShown:false, headerTitle:""}}/>
+    <Stack.Screen name="Feedback" component={Feedback} options={{headerShown:false, headerTitle:""}}/>
     <Stack.Screen name="CSVCondominio" component={CSVCondominio} options={{headerShown:false, headerTitle:""}}/>
-    <Stack.Screen name="ErroCadastro" component={ErroCadastro} options={{headerShown:false, headerTitle:""}}/>
     <Stack.Screen name="Login" component={Login} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="Home" component={Home} options={{headerShown:false, headerTitle:""}}/>
     <Stack.Screen name="CondominioMorador" component={CondominioMorador} options={{headerShown:true, headerTitle:""}}/>
