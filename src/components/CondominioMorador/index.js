@@ -35,8 +35,17 @@ export default function CondominioMorador({navigation,route}) {
             if(response.data.owner.phone != null && response.data.owner.phone != undefined && response.data.owner.phone != ""){
                 setPossuiNumero(true)
             }
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
         })
     }
 
@@ -44,8 +53,17 @@ export default function CondominioMorador({navigation,route}) {
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setMensagensCondominio(response.data)
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
         })
     }
 
@@ -71,8 +89,17 @@ export default function CondominioMorador({navigation,route}) {
                 textoBotao : "Página Inicial",
                 destinoBotao : "Home"
             })
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
         })
     }
     

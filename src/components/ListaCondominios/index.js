@@ -11,6 +11,7 @@ export default function ListaCondominios({navigation}) {
     const [ListaDisponiveis, setListaDisponiveis] = useState([]);
     const [IdCondominio, setIdCondominio] = useState();
     const [NomeCondominio, setNomeCondominio] = useState();
+    const [Pesquisa,setPesquisa] = useState('');
 
     const toggleOverlaySet = (condominio) => {
         setIdCondominio(condominio.unionIdentifier)
@@ -34,8 +35,17 @@ export default function ListaCondominios({navigation}) {
                 textoBotao : "Página Inicial",
                 destinoBotao : "Home"
             })
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+           if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
         })
     }
 
@@ -48,23 +58,30 @@ export default function ListaCondominios({navigation}) {
     });
 
     useEffect(() =>{
-        CarregaCondominiosDisponiveis()
-    }, [isFocused])
+        CarregaCondominiosDisponiveis(Pesquisa)
+    }, [isFocused, Pesquisa])
     
     if (!loaded) {
         return null;
     }
 
-    function CarregaCondominiosDisponiveis(){
-        axios.get(global.baseURL+":8080/union/condominium/availables?name=",{headers: {'token' : global.sessionID}})
+    function CarregaCondominiosDisponiveis(nome){
+        axios.get(global.baseURL+":8080/union/condominium/availables?name="+nome,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setListaDisponiveis(response.data)
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
         })
     }
-
-    
 
     return (
         <>
@@ -74,6 +91,7 @@ export default function ListaCondominios({navigation}) {
                     <Input
                         leftIcon={styles.input.leftIcon}
                         placeholder='Pesquisar condomínios...'
+                        onChangeText={(nome) => {setPesquisa(nome)}}
                         inputContainerStyle={styles.input.inputContainerStyle}
                         inputStyle={styles.input.inputStyle}
                         containerStyle={styles.input.containerStyle}

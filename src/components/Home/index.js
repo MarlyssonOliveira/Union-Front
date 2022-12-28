@@ -11,6 +11,7 @@ export default function Home({navigation}) {
     const [nomeUsuario, setnomeUsuario] = useState();
     const [CondominiosDono, setCondominiosDono] = useState([]);
     const [CondominiosMorador, setCondominiosMorador] = useState([]);
+    const [Pesquisa,setPesquisa] = useState('');
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -22,27 +23,45 @@ export default function Home({navigation}) {
     
     useEffect(() =>{
         CarregaUsuarioLogado()
-        CarregaCondominios()
-    },[isFocused])
+        CarregaCondominios(Pesquisa)
+    },[isFocused, Pesquisa])
 
     function CarregaUsuarioLogado(){
 
         axios.get(global.baseURL+":8080/union/user",{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setnomeUsuario(response.data.name.split(" ")[0])
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
     }
 
-    function CarregaCondominios(){
-        axios.get(global.baseURL+":8080/union/condominium?name=",{headers: {'token' : global.sessionID}})
-        .then(async (response) =>{ 
+    function CarregaCondominios(nome){
+        axios.get(global.baseURL+":8080/union/condominium?name="+nome,{headers: {'token' : global.sessionID}})
+        .then((response) =>{ 
             setCondominiosDono(response.data.filter((cond) => {return cond.userIsOwner == true}))
             setCondominiosMorador(response.data.filter((cond) => {return cond.userIsOwner == false}))
 
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
             
         })
     }
@@ -52,11 +71,25 @@ export default function Home({navigation}) {
         axios.post(global.baseURL+":8080/union/user/logout",null,{headers:{'Content-Type': 'application/json', 'token': global.sessionID}})
         .then(() =>{
             navigation.navigate("Index")
-        }).catch((err)=>{
-            console.log(err)
+        }).catch((error)=>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
-
     }
+
+    function Pesquisar(nome){
+        console.log(nome)
+        setPesquisa(nome)
+    }
+
     return (
         <>
             <View style={styles.container}>
@@ -82,6 +115,7 @@ export default function Home({navigation}) {
                     <Input
                         leftIcon={styles.caixaPesquisa.icone}
                         placeholder='Pesquisar condomínios...'
+                        onChangeText={(nome) => {Pesquisar(nome)}}
                         inputContainerStyle={styles.caixaPesquisa.inputContainerStyle}
                         inputStyle={styles.caixaPesquisa.inputStyle}
                         containerStyle={styles.caixaPesquisa.containerStyle}
