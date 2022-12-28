@@ -101,8 +101,8 @@ export default function NovoCondominio({navigation}) {
                     tipo : false,
                     retornoEspecifico: true,
                     mensagem : "Ocorreu um erro inesperado no sistema!",
-                    textoBotao : "Inicio",
-                    destinoBotao: "Index"
+                    textoBotao : "Pagina Inicial",
+                    destinoBotao: "Home"
                 })
             })
         }else{
