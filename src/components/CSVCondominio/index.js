@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -12,6 +12,7 @@ export default function CSVCondominio({navigation, route}) {
     const [Csv,setCSV] = useState()
     const [nomeCsv, setNomeCSV] = useState();
     const [erroForm, setErroForm] = useState('');
+    const [validar, setValidar] = useState(false);
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -19,12 +20,18 @@ export default function CSVCondominio({navigation, route}) {
 
       });
     function validarCampos(){
+        console.log(validar)
+        // console.log(nomeCsv)
         if(erroForm==''){
             setValidar(true);
         }else{
             setValidar(false)
         }
     }
+
+    useEffect(()=>{
+        validarCampos()
+    })
     
       if (!loaded) {
         return null;
@@ -70,11 +77,19 @@ export default function CSVCondominio({navigation, route}) {
     async function CapturaCSVMoradores() {
         setErroForm('')
         try{
-            const  res = await DocumentPicker.getDocumentAsync({})
+            const  res = await DocumentPicker.getDocumentAsync({type:'text/comma-separated-values',})
 
             if(res.name != null){
-                setNomeCSV(res.name)
-                setCSV(res)
+                // console.log(res.name)
+                // console.log(res)
+                if(res.name.indexOf('.csv') == -1){
+                    setErroForm('Formato de arquivo não suportado')
+                    setNomeCSV('')
+                    setCSV('')
+                }else{
+                    setNomeCSV(res.name)
+                    setCSV(res)
+                }
                 
             }else{
                 setErroForm('Selecione um arquivo válido')
@@ -84,9 +99,7 @@ export default function CSVCondominio({navigation, route}) {
             setErroForm('Selecione um arquivo válido')
         }
     }
-    useEffect(()=>{
-        validarCampos()
-    })
+    
 
 
     return (
@@ -125,11 +138,12 @@ export default function CSVCondominio({navigation, route}) {
                                 />
                             }
                         />
+                        <Text style={styles.errorMessage}>{erroForm}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
             <View>
-            <Text style={styles.errorMessage}>{erroForm}</Text>
+            
                 
             
             <Button
@@ -211,5 +225,7 @@ const styles = StyleSheet.create({
     },
     errorMessage:{
         color:'red',
+        alignSelf: 'center',
+        marginTop: 10
     }
 });
