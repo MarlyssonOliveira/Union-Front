@@ -20,12 +20,15 @@ export default function CSVCondominio({navigation, route}) {
 
       });
     function validarCampos(){
+        console.log(validar)
+        // console.log(nomeCsv)
         if(erroForm==''){
             setValidar(true);
         }else{
             setValidar(false)
         }
     }
+
     useEffect(()=>{
         validarCampos()
     })
@@ -82,11 +85,19 @@ export default function CSVCondominio({navigation, route}) {
     async function CapturaCSVMoradores() {
         setErroForm('')
         try{
-            const  res = await DocumentPicker.getDocumentAsync({})
+            const  res = await DocumentPicker.getDocumentAsync({type:'text/comma-separated-values',})
 
             if(res.name != null){
-                setNomeCSV(res.name)
-                setCSV(res)
+                // console.log(res.name)
+                // console.log(res)
+                if(res.name.indexOf('.csv') == -1){
+                    setErroForm('Formato de arquivo não suportado')
+                    setNomeCSV('')
+                    setCSV('')
+                }else{
+                    setNomeCSV(res.name)
+                    setCSV(res)
+                }
                 
             }else{
                 setErroForm('Selecione um arquivo válido')
@@ -96,8 +107,6 @@ export default function CSVCondominio({navigation, route}) {
             setErroForm('Selecione um arquivo válido')
         }
     }
-
-
 
     return (
         <View style={styles.container}>
@@ -135,11 +144,12 @@ export default function CSVCondominio({navigation, route}) {
                                 />
                             }
                         />
+                        <Text style={styles.errorMessage}>{erroForm}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
             <View>
-            <Text style={styles.errorMessage}>{erroForm}</Text>
+            
                 
             
             <Button
@@ -221,5 +231,7 @@ const styles = StyleSheet.create({
     },
     errorMessage:{
         color:'red',
+        alignSelf: 'center',
+        marginTop: 10
     }
 });
