@@ -47,8 +47,17 @@ export default function AdmCondominio({navigation, route}) {
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setCondominio(response.data)
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
         })
     }
 
@@ -56,8 +65,17 @@ export default function AdmCondominio({navigation, route}) {
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setMensagens(response.data)
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
         })
     }
     
@@ -71,8 +89,17 @@ export default function AdmCondominio({navigation, route}) {
                 mensagem : "Mensagem Deletada com Sucesso!",
                 textoBotao : "Voltar",
             })
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
         })
     }
 
@@ -165,16 +192,6 @@ export default function AdmCondominio({navigation, route}) {
                 <SpeedDial.Action
                     style={styles.SpeedDial.width}
                     buttonStyle={styles.SpeedDial.buttonStyle}
-                    icon={{ name: 'file-table', color: '#fff', size:35, type:"material-community" }}
-                    iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
-                    title="Adicionar moradores" 
-                    onPress={() => navigation.navigate('CSVCondominio', {
-                        idCondominio : route.params.idCondominio
-                    })}
-                />
-                <SpeedDial.Action
-                    style={styles.SpeedDial.width}
-                    buttonStyle={styles.SpeedDial.buttonStyle}
                     icon={{ name: 'message', color: '#fff', size:35 }}
                     iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
                     title="Nova mensagem" 
@@ -188,7 +205,17 @@ export default function AdmCondominio({navigation, route}) {
                     icon={{ name: 'currency-usd', color: '#fff', size:35, type:"material-community"  }}
                     iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
                     title="Gerenciar taxas"
-                    onPress={() => navigation.navigate('NovaTaxa', {
+                    onPress={() => navigation.navigate('GerenciamentoTaxas', {
+                        idCondominio : route.params.idCondominio
+                    })}
+                />
+                <SpeedDial.Action
+                    style={styles.SpeedDial.width}
+                    buttonStyle={styles.SpeedDial.buttonStyle}
+                    icon={{ name: 'account-group-outline', color: '#fff', size:35, type:"material-community"  }}
+                    iconContainerStyle= {styles.SpeedDial.iconGreenContainerStyle}
+                    title="Gerenciar Moradores"
+                    onPress={() => navigation.navigate('ListaMoradores', {
                         idCondominio : route.params.idCondominio
                     })}
                 />

@@ -25,8 +25,17 @@ export default function CodigoVerificacao({navigation}) {
                 textoBotao : "Ir para Login",
                 destinoBotao : "Login"
             })
-        }).catch((err)=>{
-            console.log(err)
+        }).catch((error)=>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
       }
       if (!loaded) {
@@ -68,14 +77,14 @@ export default function CodigoVerificacao({navigation}) {
                     containerStyle={styles.divButtons.containerStyle}
                     titleStyle={styles.divButtons.titleVerificarStyle}
                     />
-                <Button
+                {/* <Button
                     buttonStyle= {styles.divButtons.buttonReenviarStyle}
                     type="outline"
                     raised="true"
                     containerStyle={styles.divButtons.containerStyle}
                     title="Reenviar código"
                     titleStyle={styles.divButtons.titleReenviarStyle}
-                />
+                /> */}
             </View>
         </View>
     );

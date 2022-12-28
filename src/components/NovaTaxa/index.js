@@ -1,8 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
+import { useState } from 'react';
 import { Button, Icon, Image, Input } from 'react-native-elements';
+import axios from "axios";
 
-export default function NovaTaxa({navigation}) {
+export default function NovaTaxa({navigation,route}) {
+    const[TituloTaxa, setTituloTaxa] = useState();
+    const[ValorTaxa, setValorTaxa] = useState();
+    const[VencimentoTaxa, setVencimentoTaxa] = useState();
+    const[PixTaxa, setPixTaxa] = useState();
+
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -13,6 +20,39 @@ export default function NovaTaxa({navigation}) {
       if (!loaded) {
         return null;
       }
+
+      function CadastrarTaxa(){
+            axios.post(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt" ,{
+                title: TituloTaxa,
+                expirationDate: VencimentoTaxa,
+                value: ValorTaxa,
+                pixKey: PixTaxa
+            }
+            ,{
+                headers: {'token' : global.sessionID}
+            })
+            .then((response) =>{
+                navigation.navigate("Feedback", {
+                    tipo : true,
+                    retornoEspecifico: true,
+                    mensagem : "Taxa cadastrada com Sucesso!",
+                    textoBotao : "Voltar",
+                    destinoBotao : "Home"
+                })
+            }).catch((error) =>{
+                if(error.response != undefined){
+                    console.log(error.response.data.message)
+                }
+                navigation.navigate("Feedback", {
+                    tipo : false,
+                    retornoEspecifico: true,
+                    mensagem : "Ocorreu um erro inesperado no sistema!",
+                    textoBotao : "Pagina Inicial",
+                    destinoBotao: "Home"
+                })
+            })
+      }
+
     return (
         <View style={styles.container}>
             <View style={styles.divTitulo}>
@@ -23,6 +63,7 @@ export default function NovaTaxa({navigation}) {
                 <Text style={styles.labelInput}>Título</Text>
                 <Input
                     placeholder='Defina um título'
+                    onChangeText={(titulo)=>{setTituloTaxa(titulo)}}
                     inputContainerStyle={styles.input.inputContainerStyle}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
@@ -34,6 +75,7 @@ export default function NovaTaxa({navigation}) {
                 <Text style={styles.labelInput}>Data de vencimento</Text>
                 <Input
                     placeholder='DD/MM/AAAA'
+                    onChangeText={(vencimento)=>{setVencimentoTaxa(vencimento)}}
                     inputContainerStyle={styles.input.inputContainerStyle}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
@@ -54,6 +96,18 @@ export default function NovaTaxa({navigation}) {
                 <Text style={styles.labelInput}>Valor</Text>
                 <Input
                     placeholder='Valor em reais(R$)'
+                    onChangeText={(valor)=>{setValorTaxa(valor)}}
+                    inputContainerStyle={styles.input.inputContainerStyle}
+                    inputStyle={styles.input.inputStyle}
+                    containerStyle={styles.input.containerStyle}
+                    style={styles.input.style}
+                />
+            </View>
+            <View>
+                <Text style={styles.labelInput}>Chave Pix</Text>
+                <Input
+                    placeholder='chave...'
+                    onChangeText={(pix)=>{setPixTaxa(pix)}}
                     inputContainerStyle={styles.input.inputContainerStyle}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
@@ -65,7 +119,7 @@ export default function NovaTaxa({navigation}) {
                 style={styles.input.style}
                 title="Salvar"
                 raised="true"
-                onPress={()=>{navigation.navigate("AdmCondominio")}}
+                onPress={()=>{CadastrarTaxa()}}
                 containerStyle={styles.button.containerStyle}
                 titleStyle={styles.button.titleStyle}
             />

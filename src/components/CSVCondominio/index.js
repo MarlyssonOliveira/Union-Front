@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -32,7 +32,6 @@ export default function CSVCondominio({navigation, route}) {
     useEffect(()=>{
         validarCampos()
     })
-    
       if (!loaded) {
         return null;
       }
@@ -66,8 +65,17 @@ export default function CSVCondominio({navigation, route}) {
                     textoBotao : "Página Inicial",
                     destinoBotao : "Home"
                 })
-            }).catch((err) =>{
-                console.log(err)
+            }).catch((error) =>{
+                if(error.response != undefined){
+                    console.log(error.response.data.message)
+                }
+                navigation.navigate("Feedback", {
+                    tipo : false,
+                    retornoEspecifico: true,
+                    mensagem : "Ocorreu um erro inesperado no sistema!",
+                    textoBotao : "Pagina Inicial",
+                    destinoBotao: "Home"
+                })
             })
         }else{
             setErroForm('Selecione um arquivo válido')
@@ -95,12 +103,10 @@ export default function CSVCondominio({navigation, route}) {
                 setErroForm('Selecione um arquivo válido')
             }
         }catch (err){
-            console.log(err);
+            console.log(err)
             setErroForm('Selecione um arquivo válido')
         }
     }
-    
-
 
     return (
         <View style={styles.container}>

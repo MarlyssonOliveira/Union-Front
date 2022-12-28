@@ -35,8 +35,17 @@ export default function CondominioMorador({navigation,route}) {
             if(response.data.owner.phone != null && response.data.owner.phone != undefined && response.data.owner.phone != ""){
                 setPossuiNumero(true)
             }
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
         })
     }
 
@@ -44,8 +53,17 @@ export default function CondominioMorador({navigation,route}) {
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setMensagensCondominio(response.data)
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
         })
     }
 
@@ -59,6 +77,30 @@ export default function CondominioMorador({navigation,route}) {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    function SairDoCondominio(){
+        axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant/leave" ,{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            navigation.navigate("Feedback", {
+                tipo : true,
+                retornoEspecifico: true,
+                mensagem : "Você saiu do condomínio com Sucesso!",
+                textoBotao : "Página Inicial",
+                destinoBotao : "Home"
+            })
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Pagina Inicial",
+                destinoBotao: "Home"
+            })
+        })
     }
     
 
@@ -142,7 +184,7 @@ export default function CondominioMorador({navigation,route}) {
                     icon={styles.speedDial.iconDebitos}
                     iconContainerStyle= {styles.speedDial.iconDebitosContainer}
                     title="Débitos"
-                    onPress={() => navigation.navigate('Debitos')}
+                    onPress={() => navigation.navigate('Debitos',{idCondominio : route.params.idCondominio})}
                 />
                 <SpeedDial.Action
                     style={styles.speedDial.style}
@@ -150,7 +192,7 @@ export default function CondominioMorador({navigation,route}) {
                     icon={styles.speedDial.iconExit}
                     iconContainerStyle= {styles.speedDial.iconExitContainer}
                     title="Sair do condomínio" 
-                    onPress={() => navigation.navigate('Home')}
+                    onPress={() => SairDoCondominio()}
                 />
             </SpeedDial>
     </>
