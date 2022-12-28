@@ -35,8 +35,17 @@ export default function ListaCondominios({navigation}) {
                 textoBotao : "Página Inicial",
                 destinoBotao : "Home"
             })
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+           if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
     }
 
@@ -60,8 +69,17 @@ export default function ListaCondominios({navigation}) {
         axios.get(global.baseURL+":8080/union/condominium/availables?name="+nome,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setListaDisponiveis(response.data)
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
     }
 

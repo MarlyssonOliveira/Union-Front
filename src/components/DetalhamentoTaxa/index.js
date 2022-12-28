@@ -45,16 +45,34 @@ export default function DetalhamentoTaxa({navigation, route}) {
         axios.get(global.baseURL+":8080/union/debt/" + route.params.idDebito,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setDebito(response.data)
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
     }
     function CarregaMoradores(){
         axios.get(global.baseURL+":8080/union/debt/" + route.params.idDebito + "/user" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setMoradores(response.data)
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
     }
 
@@ -67,8 +85,17 @@ export default function DetalhamentoTaxa({navigation, route}) {
                 mensagem : "Pagamento registrado com Sucesso!",
                 textoBotao : "Voltar",
         })
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
     }
 

@@ -45,8 +45,17 @@ export default function Debitos({navigation,route}) {
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt/history" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setHistorico(response.data)
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
     }
 
@@ -58,8 +67,17 @@ export default function Debitos({navigation,route}) {
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt/open" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setDebitosAbertos(response.data)
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
     }
     return (

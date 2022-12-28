@@ -39,14 +39,44 @@ export default function Login({navigation}) {
                     console.log(response.data)
                     global.sessionID = response.data
                     navigation.navigate("Home")
-            }).catch((err)=>{   
-                console.log(err) 
-                navigation.navigate("Feedback", {
-                    tipo : false,
-                    retornoEspecifico: false,
-                    mensagem : "Ocorreu um erro inesperado!",
-                    textoBotao : "Voltar",
-                })
+            }).catch((error)=>{
+                if(error.response != undefined){
+
+                    console.log(error.response.data.message)
+                    if(error.response.data.message.toLowerCase().includes("password")){
+                        navigation.navigate("Feedback", {
+                            tipo : false,
+                            retornoEspecifico: false,
+                            mensagem : "Credenciais incorretas!",
+                            textoBotao : "Voltar",
+                        })
+                    }else if(error.response.data.message.toLowerCase().includes("inactive")){
+                        navigation.navigate("Feedback", {
+                            tipo : false,
+                            retornoEspecifico: true,
+                            mensagem : "Sua conta não foi validada!",
+                            textoBotao : "Clique aqui para validar",
+                            destinoBotao: "CodigoVerificacao"
+                        })
+                    }else{
+                        navigation.navigate("Feedback", {
+                            tipo : false,
+                            retornoEspecifico: true,
+                            mensagem : "Ocorreu um erro inesperado no sistema!",
+                            textoBotao : "Inicio",
+                            destinoBotao: "Index"
+                        })
+                    }
+                }else{
+                    navigation.navigate("Feedback", {
+                        tipo : false,
+                        retornoEspecifico: true,
+                        mensagem : "Ocorreu um erro inesperado no sistema!",
+                        textoBotao : "Inicio",
+                        destinoBotao: "Index"
+                    })
+                }
+                
             })
         }else{
             setErroForm('Preencha os campos corretamente')

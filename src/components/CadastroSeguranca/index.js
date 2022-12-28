@@ -65,8 +65,17 @@ export default function CadastroSeguranca({navigation, route}) {
             axios.post(global.baseURL+":8080/union/user",usuarioFinal,{headers:{'Content-Type': 'application/json'}})
                 .then((response) => {
                     navigation.navigate("CodigoVerificacao");
-                }).catch((err) =>{
-                    console.log(err)
+                }).catch((error) =>{
+                    if(error.response != undefined){
+                        console.log(error.response.data.message)
+                    }
+                    navigation.navigate("Feedback", {
+                        tipo : false,
+                        retornoEspecifico: true,
+                        mensagem : "Ocorreu um erro inesperado no sistema!",
+                        textoBotao : "Inicio",
+                        destinoBotao: "Index"
+                    })
                 })
         }else{
             setErroMessage('Preencha corretamente a senha e a confirmação')

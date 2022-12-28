@@ -39,8 +39,17 @@ export default function NovaTaxa({navigation,route}) {
                     textoBotao : "Voltar",
                     destinoBotao : "Home"
                 })
-            }).catch((err) =>{
-                console.log(err)
+            }).catch((error) =>{
+                if(error.response != undefined){
+                    console.log(error.response.data.message)
+                }
+                navigation.navigate("Feedback", {
+                    tipo : false,
+                    retornoEspecifico: true,
+                    mensagem : "Ocorreu um erro inesperado no sistema!",
+                    textoBotao : "Inicio",
+                    destinoBotao: "Index"
+                })
             })
       }
 

@@ -31,8 +31,17 @@ export default function Home({navigation}) {
         axios.get(global.baseURL+":8080/union/user",{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setnomeUsuario(response.data.name.split(" ")[0])
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
     }
 
@@ -42,8 +51,17 @@ export default function Home({navigation}) {
             setCondominiosDono(response.data.filter((cond) => {return cond.userIsOwner == true}))
             setCondominiosMorador(response.data.filter((cond) => {return cond.userIsOwner == false}))
 
-        }).catch((err) =>{
-            console.log(err)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
             
         })
     }
@@ -53,8 +71,17 @@ export default function Home({navigation}) {
         axios.post(global.baseURL+":8080/union/user/logout",null,{headers:{'Content-Type': 'application/json', 'token': global.sessionID}})
         .then(() =>{
             navigation.navigate("Index")
-        }).catch((err)=>{
-            console.log(err)
+        }).catch((error)=>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
         })
     }
 
