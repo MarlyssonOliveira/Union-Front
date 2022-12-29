@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
 import axios from "axios";
+import * as Progress from 'react-native-progress';
 import { useState } from 'react';
 
 export default function NovaMensagem({navigation,route}) {
@@ -12,14 +13,19 @@ export default function NovaMensagem({navigation,route}) {
 
       });
       const [Mensagem, setMensagem] = useState();
+      const [spin, setSpin] = useState();
+
     
       function CriarMensagem(){
+        setSpin(true)
         axios.post(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication",{"message": Mensagem},{headers: {'token' : global.sessionID}})
         .then((response) => {
+            setSpin(false)
             navigation.navigate("AdmCondominio", {
                 idCondominio : route.params.idCondominio
             })
         }).catch((error) => {
+            setSpin(false)
             if(error.response != undefined){
                 console.log(error.response.data.message)
             }
@@ -75,7 +81,8 @@ export default function NovaMensagem({navigation,route}) {
             <Button
                 buttonStyle= {styles.button.buttonStyle}
                 style={styles.button.style}
-                title="Publicar"
+                title={spin != false ?
+                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} /> : 'Publicar'}
                 raised="true"
                 onPress={()=>CriarMensagem()}
                 containerStyle={styles.button.containerStyle}

@@ -4,16 +4,16 @@ import { Button, Image, Input, Icon } from 'react-native-elements';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from "axios";
+import * as Progress from 'react-native-progress'
 
 export default function CadastroSeguranca({navigation, route}) {
     const [UsuarioParam, setUsuarioParam] = useState({});
     const [Senha, setSenha] = useState("");
-    const [ConfSenha, setConfSenha] = useState();
+    const [ConfSenha, setConfSenha] = useState('');
     const [errorSenha,setErrosenha] = useState();
     const [errorConfSenha,setErroConfSenha] = useState();
     const [errorMessage,setErroMessage] = useState();
-    
-
+    const [spin, setSpin] = useState(false);
     const [validar, setValidar] = useState(false);
 
     const [loaded] = useFonts({
@@ -36,7 +36,7 @@ export default function CadastroSeguranca({navigation, route}) {
             if(senha.length<1){
                 setErrosenha('A senha não pode ser nula')
             }else{
-                if(senha.length>5 && /[A-Z]/.test(Senha) && /[0-9]/.test(Senha) && /\W|_/.test(Senha)){
+                if(senha.length>7 && /[A-Z]/.test(Senha) && /[0-9]/.test(Senha) && /\W|_/.test(Senha)){
                     setErrosenha('')
                 }else{
                     setErrosenha('Preencha corretamente')
@@ -56,6 +56,8 @@ export default function CadastroSeguranca({navigation, route}) {
 
     function CadastrarUsuario(){
         if(validar){
+            setSpin(true);
+            setValidar(false);
             const usuarioFinal = {
                 name: UsuarioParam.nome,
                 email: UsuarioParam.email,
@@ -66,6 +68,7 @@ export default function CadastroSeguranca({navigation, route}) {
                 .then((response) => {
                     navigation.navigate("CodigoVerificacao");
                 }).catch((error) =>{
+                    setSpin(false)
                     if(error.response != undefined){
                         console.log(error.response.data.message)
                     }
@@ -77,6 +80,7 @@ export default function CadastroSeguranca({navigation, route}) {
                         destinoBotao: "Index"
                     })
                 })
+                
         }else{
             setErroMessage('Preencha corretamente a senha e a confirmação')
         }
@@ -91,6 +95,10 @@ export default function CadastroSeguranca({navigation, route}) {
     useEffect(()=>{
         validaSenha(Senha)
     }, [Senha])
+
+    useEffect(()=>{
+        validarConfSenha(ConfSenha)
+    }, [ConfSenha])
     
       useEffect(() => {
         if (route.params && route.params.usuario) {
@@ -142,9 +150,9 @@ export default function CadastroSeguranca({navigation, route}) {
             </View>
             <View>
                 <View style={styles.divTextoSenha}>
-                    <Icon name={Senha.length>5? "check-circle": "cancel"} type='material' color={Senha.length>5? "green": "red"} containerStyle={styles.icons} ></Icon>
+                    <Icon name={Senha.length>7? "check-circle": "cancel"} type='material' color={Senha.length>7? "green": "red"} containerStyle={styles.icons} ></Icon>
                     <Text style={styles.textosSenha}>
-                        A senha deve ser maior do que 6 caracteres
+                        A senha deve ser maior do que 8 caracteres
                     </Text>
                 </View>
                 
@@ -164,7 +172,7 @@ export default function CadastroSeguranca({navigation, route}) {
                     As senhas devem ser iguais</Text>
                 </View>
                 <View style={styles.divTextoSenha}>
-                    <Icon name={Senha == ConfSenha ? "check-circle": "cancel"} type='material' color={/\W|_/.test(Senha) ? "green": "red"}></Icon>
+                    <Icon name={/\W|_/.test(Senha) ? "check-circle": "cancel"} type='material' color={/\W|_/.test(Senha) ? "green": "red"}></Icon>
                     <Text style={styles.textosSenha}>
                     A senha deve conter um caractere especial</Text>
                 </View>
@@ -177,7 +185,8 @@ export default function CadastroSeguranca({navigation, route}) {
             <View style={{flexBasis: 150, justifyContent: "space-evenly"}}>
                 <Button
                     buttonStyle= {styles.button.buttonFinalizarStyle}
-                    title="Finalizar cadastro"
+                    title={spin != false ?
+                        <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} /> : 'Finalizar Cadastro'}
                     raised="true"
                     onPress={()=>{CadastrarUsuario()}}
                     containerStyle={styles.button.containerStyle}
