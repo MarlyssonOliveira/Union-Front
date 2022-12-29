@@ -7,6 +7,7 @@ import CadastroSeguranca from '../CadastroSeguranca/index';
 import CodigoVerificacao from '../CodigoVerificacao/index';
 import CondominioMorador from '../CondominioMorador/index';
 import Confirmacao from '../Confirmacao/index';
+import ConfirmacaoLogout from '../ConfirmacaoLogout/ConfirmacaoLogout';
 import CSVCondominio from '../CSVCondominio';
 import Debitos from '../Debitos/index';
 import DetalhamentoTaxa from '../DetalhamentoTaxa';
@@ -51,6 +52,7 @@ export default function StackNavigator() {
     <Stack.Screen name="NovaSenha" component={NovaSenha} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="AletrarImgCondominio" component={AletrarImgCondominio} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="AletrarImgUsuario" component={AletrarImgUsuario} options={{headerShown:true, headerTitle:""}}/>
+    <Stack.Screen name="ConfirmacaoLogout" component={ConfirmacaoLogout} options={{headerShown:true, headerTitle:""}}/>
 
 
   </Stack.Navigator>

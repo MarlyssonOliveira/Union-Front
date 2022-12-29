@@ -66,25 +66,6 @@ export default function Home({navigation}) {
         })
     }
 
-
-    function Logout(){
-        axios.post(global.baseURL+":8080/union/user/logout",null,{headers:{'Content-Type': 'application/json', 'token': global.sessionID}})
-        .then(() =>{
-            navigation.navigate("Index")
-        }).catch((error)=>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
-            navigation.navigate("Feedback", {
-                tipo : false,
-                retornoEspecifico: true,
-                mensagem : "Ocorreu um erro inesperado no sistema!",
-                textoBotao : "Inicio",
-                destinoBotao: "Index"
-            })
-        })
-    }
-
     function Pesquisar(nome){
         console.log(nome)
         setPesquisa(nome)
@@ -104,7 +85,7 @@ export default function Home({navigation}) {
                         <Text  style={styles.areaLogado.boasVindas}>Olá {nomeUsuario}</Text>
                     </View>
                     <Icon
-                        onPress={()=>{Logout()}}
+                        onPress={()=>{navigation.navigate("ConfirmacaoLogout")}}
                         name='logout'
                         type='material'
                         color='#000'

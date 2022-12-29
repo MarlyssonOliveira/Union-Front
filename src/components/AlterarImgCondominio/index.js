@@ -36,7 +36,7 @@ export default function AletrarImgCondominio({navigation, route}) {
     return (
         <View style={styles.container}>
             <Icon
-                name="file-table-outline"
+                name="home-city-outline"
                 type='material-community'
                 color="#1DB954"
                 size={200}

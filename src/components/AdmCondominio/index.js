@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         width: "100%",
-        alignItems: 'flex-end',
+        alignItems: 'center',
         justifyContent: 'center'
     },
     overlay:{
@@ -290,9 +290,8 @@ const styles = StyleSheet.create({
             border: 0,
             borderWidth: 0, 
             marginTop:15, 
-            marginEnd: 30, 
             margin:0, 
-            borderRadius: 10
+            borderRadius: 10,
         },
         background:{
             borderRadius:10, 
@@ -323,6 +322,7 @@ const styles = StyleSheet.create({
         },
         conteudo:{
             flexDirection:'row', 
+            alignSelf: 'center', 
             justifyContent: 'space-between'
         },
         imagem:{
@@ -355,6 +355,8 @@ const styles = StyleSheet.create({
 
     feed:{
         conteudo:{
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop:30
         },
         titulo:{
@@ -362,6 +364,11 @@ const styles = StyleSheet.create({
             fontFamily:"PoppinsExtraBold"
         },
         post:{
+            
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            width: '100%',
             height:450, 
             paddingVertical:10
         }

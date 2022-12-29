@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         justifyContent: 'center'
     },
 
@@ -219,7 +219,6 @@ const styles = StyleSheet.create({
             border: 0,
             borderWidth: 0, 
             marginTop:15, 
-            marginEnd: 30, 
             margin:0, 
             borderRadius: 10
         },
@@ -326,6 +325,8 @@ const styles = StyleSheet.create({
     },
     feed:{
         divConteudo:{
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop:30
         },
         titleConteudo:{
@@ -333,6 +334,9 @@ const styles = StyleSheet.create({
             fontFamily:"PoppinsExtraBold"
         },
         divScroll:{
+            justifyContent: 'center',
+            alignItems: 'center',
+            width:'100%',
             height:300, 
             paddingVertical:10,
         }

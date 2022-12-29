@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
-import { Button, Icon, Image, Input } from 'react-native-elements';
+import { Avatar, Button, Icon, Image, Input } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
@@ -35,7 +35,7 @@ export default function AletrarImgUsuario({navigation, route}) {
     return (
         <View style={styles.container}>
             <Icon
-                name="file-table-outline"
+                name="account"
                 type='material-community'
                 color="#1DB954"
                 size={200}
