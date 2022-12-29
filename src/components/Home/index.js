@@ -96,6 +96,7 @@ export default function Home({navigation}) {
                 <View style={styles.areaLogado.row}>
                     <View style={styles.areaLogado.segundaRow}>
                         <Avatar
+                            onPress={()=>{navigation.navigate("AletrarImgUsuario")}}
                             rounded
                             size="medium"
                             source={require('../../assets/images/user.jpg')}
