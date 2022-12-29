@@ -140,9 +140,11 @@ export default function Home({navigation}) {
                                     </Card> 
                                 ))
                             :
-                                <View>
-                                    <Text>Você nao possui condominios que administra.</Text>
+                                <View style={styles.cardFeedback.container}>
+                                    <Text style={styles.cardFeedback.mensagem}>Você nao gerencia nenhum condomínio.</Text>
                                 </View>
+
+                                
                         }
                         </ScrollView>
                     </View>
@@ -164,9 +166,9 @@ export default function Home({navigation}) {
                                         </Card> 
                                     ))
                                 :
-                                    <View>
-                                        <Text>Você nao possui condominios que é morador.</Text>
-                                    </View>
+                                <View style={styles.cardFeedback.container}>
+                                    <Text style={styles.cardFeedback.mensagem}>Você nao faz parte de nenhum condomínio.</Text>
+                                </View>
 
                             }
                             </ScrollView>
@@ -248,6 +250,26 @@ const styles = StyleSheet.create({
             color: "#ADADAD"
         }
 
+    },
+    cardFeedback:{ 
+        container:{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            maxWidth: 300,
+            
+        },
+        mensagem:{
+            fontSize: 18,
+            fontFamily:"PoppinsExtraBold",
+            textAlign: 'center',
+            borderColor: "#ADADAD",
+            borderWidth: 1,
+            borderRadius: 20,
+            padding: 5,
+            backgroundColor: "#F0F1F5"
+        }
     },
 
     areaLogado:{

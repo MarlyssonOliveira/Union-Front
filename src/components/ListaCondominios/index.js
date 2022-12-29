@@ -115,8 +115,8 @@ export default function ListaCondominios({navigation}) {
                                         </Card> 
                                     ))
                                 :
-                                    <View>
-                                        <Text>Não existem condominios disponíveis para você.</Text>
+                                    <View style={styles.cardFeedback.container}>
+                                        <Text style={styles.cardFeedback.mensagem}>Não existem condomínios disponíveis para você.</Text>
                                     </View>
 
                             }
@@ -252,6 +252,27 @@ const styles = StyleSheet.create({
         },
         scroll:{
             paddingHorizontal:20
+        }
+    },
+    cardFeedback:{ 
+        container:{
+            marginTop: 20,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            maxWidth: 300,
+            
+        },
+        mensagem:{
+            fontSize: 18,
+            fontFamily:"PoppinsExtraBold",
+            textAlign: 'center',
+            borderColor: "#ADADAD",
+            borderWidth: 1,
+            borderRadius: 20,
+            padding: 5,
+            backgroundColor: "#F0F1F5"
         }
     }
 });
