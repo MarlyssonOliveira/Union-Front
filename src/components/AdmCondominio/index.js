@@ -116,7 +116,7 @@ export default function AdmCondominio({navigation, route}) {
                         <View style={{paddingStart:15}}>
                             <Text style={styles.detalhesCondominio.nome}>{Condominio != undefined ? Condominio.name : "Nome teste" }</Text>
                             <Text style={styles.detalhesCondominio.endereco}>{Condominio != undefined ? Condominio.address : "Nome teste" }</Text>
-                            {/* <Button
+                            <Button
                                 buttonStyle= {styles.detalhesCondominio.buttonStyle}
                                 icon={
                                     <Icon
@@ -126,12 +126,12 @@ export default function AdmCondominio({navigation, route}) {
                                         color="#FFF"  
                                     />
                                 }
-                                onPress={() => navigation.navigate("Home")}
+                                onPress={() => navigation.navigate("AletrarImgCondominio")}
                                 title="Alterar Imagem"
                                 raised="true"
                                 containerStyle={styles.detalhesCondominio.containerStyle}
                                 titleStyle={styles.detalhesCondominio.titleStyle}
-                            /> */}
+                            />
                         </View>
                     </View>
                 </View>
