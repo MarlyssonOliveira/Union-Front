@@ -145,21 +145,26 @@ export default function CondominioMorador({navigation,route}) {
                     <View style={styles.feed.divScroll}>
                         <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
                             {
-                                Mensagens.map((mensagem) => (
-                                    <Card key={mensagem.unionIdentifier} containerStyle={styles.card.cardContainerStyle}>
-                                        <View backgroundColor="#EFF3FF" style={styles.card.backgroundStyle}>
-                                            <View style={styles.card.cardConteudo}>
-                                                <Avatar
-                                                    rounded
-                                                    size="medium"
-                                                    source={require('../../assets/images/user.jpg')}
-                                                />
-                                                <Text  style={styles.card.tituloCard}>{mensagem.user.name}</Text>
+                                Mensagens.length > 0 ?
+                                    Mensagens.map((mensagem) => (
+                                        <Card key={mensagem.unionIdentifier} containerStyle={styles.card.cardContainerStyle}>
+                                            <View backgroundColor="#EFF3FF" style={styles.card.backgroundStyle}>
+                                                <View style={styles.card.cardConteudo}>
+                                                    <Avatar
+                                                        rounded
+                                                        size="medium"
+                                                        source={require('../../assets/images/user.jpg')}
+                                                    />
+                                                    <Text  style={styles.card.tituloCard}>{mensagem.user.name}</Text>
+                                                </View>
+                                                <Text style={styles.card.textoCard}>{mensagem.message}</Text>
                                             </View>
-                                            <Text style={styles.card.textoCard}>{mensagem.message}</Text>
-                                        </View>
-                                    </Card> 
-                                ))
+                                        </Card> 
+                                    ))
+                                :
+                                    <View>
+                                        <Text>Sem mensagens no condominio.</Text>
+                                    </View>
                             }
                         </ScrollView>
                     </View>

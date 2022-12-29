@@ -140,22 +140,27 @@ export default function AdmCondominio({navigation, route}) {
                     <Text style={styles.feed.titulo}>Últimas atualizações</Text>
                     <View style={styles.feed.post}>
                         <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
-                            {
-                                Mensagens.map((mensagem) => (
-                                    <Card key={mensagem.unionIdentifier} containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet(mensagem)} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <View style={styles.card.topoCard}>
-                                                <Avatar
-                                                    rounded
-                                                    size="medium"
-                                                    source={require('../../assets/images/user.jpg')}
-                                                />
-                                                <Text  style={styles.card.titulo}>{mensagem.condominium.owner.name}</Text>
+                            { 
+                                Mensagens.length > 0 ?
+                                    Mensagens.map((mensagem) => (
+                                        <Card key={mensagem.unionIdentifier} containerStyle={styles.card.containerStyle}>
+                                            <View onTouchEnd={() => toggleOverlaySet(mensagem)} backgroundColor="#EFF3FF" style={styles.card.background}>
+                                                <View style={styles.card.topoCard}>
+                                                    <Avatar
+                                                        rounded
+                                                        size="medium"
+                                                        source={require('../../assets/images/user.jpg')}
+                                                    />
+                                                    <Text  style={styles.card.titulo}>{mensagem.condominium.owner.name}</Text>
+                                                </View>
+                                                <Text style={styles.card.subtitulo}>{mensagem.message}</Text>
                                             </View>
-                                            <Text style={styles.card.subtitulo}>{mensagem.message}</Text>
-                                        </View>
-                                    </Card> 
-                                ))
+                                        </Card> 
+                                    ))
+                                :
+                                    <View>
+                                        <Text>Sem mensagens no condominio.</Text>
+                                    </View>
                             }
                         </ScrollView>
                     </View>

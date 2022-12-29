@@ -92,14 +92,19 @@ export default function ListaMoradores({navigation, route}) {
                 <View style={styles.lista.conteudo}>
                     <View style={styles.lista.post}>
                         <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>                           
-                            {
-                                Moradores.map((morador) => (
-                                    <Card key={morador.unionIdentifier} containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet(morador)} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <Text style={styles.card.titulo}>{morador.name}</Text>
-                                        </View>
-                                    </Card> 
-                                ))
+                            { 
+                                Moradores.length > 0 ?
+                                    Moradores.map((morador) => (
+                                        <Card key={morador.unionIdentifier} containerStyle={styles.card.containerStyle}>
+                                            <View onTouchEnd={() => toggleOverlaySet(morador)} backgroundColor="#EFF3FF" style={styles.card.background}>
+                                                <Text style={styles.card.titulo}>{morador.name}</Text>
+                                            </View>
+                                        </Card> 
+                                    ))
+                                :
+                                    <View>
+                                        <Text>O condominio nao possui moradores.</Text>
+                                    </View>
                             }
                         </ScrollView>
                     </View>

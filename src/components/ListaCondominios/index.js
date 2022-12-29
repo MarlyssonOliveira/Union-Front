@@ -102,17 +102,22 @@ export default function ListaCondominios({navigation}) {
                     <Text  style={styles.divLista.titulo}>Condomínios disponíveis</Text>
                     <View style={styles.divLista.divScroll}>
                         <ScrollView contentContainerStyle={styles.divLista.scroll} showsVerticalScrollIndicator={false} >
-                            {
-                                ListaDisponiveis.map((condominio) => (
-                                    <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
-                                        <Card.Image onPress={() => toggleOverlaySet(condominio)} source={require('../../assets/images/predio.jpg')} style={styles.card.cardImage}>
-                                            <View backgroundColor="#EFF3FF" style={styles.card.divTitulos}>
-                                                <Text style={styles.card.titulo}>{condominio.name}</Text>
-                                                <Text style={styles.card.subtitulo}>{condominio.tenantsCount == null ? "0" : condominio.tenantsCount} moradores</Text>
-                                            </View>
-                                        </Card.Image>
-                                    </Card> 
-                                ))
+                            { 
+                                ListaDisponiveis.length > 0 ?
+                                    ListaDisponiveis.map((condominio) => (
+                                        <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
+                                            <Card.Image onPress={() => toggleOverlaySet(condominio)} source={require('../../assets/images/predio.jpg')} style={styles.card.cardImage}>
+                                                <View backgroundColor="#EFF3FF" style={styles.card.divTitulos}>
+                                                    <Text style={styles.card.titulo}>{condominio.name}</Text>
+                                                    <Text style={styles.card.subtitulo}>{condominio.tenantsCount == null ? "0" : condominio.tenantsCount} moradores</Text>
+                                                </View>
+                                            </Card.Image>
+                                        </Card> 
+                                    ))
+                                :
+                                    <View>
+                                        <Text>Não existem condominios disponíveis para você.</Text>
+                                    </View>
 
                             }
                         </ScrollView>

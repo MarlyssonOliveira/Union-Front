@@ -127,9 +127,9 @@ export default function Home({navigation}) {
                     <Text  style={styles.caixaGerencio.titulo}>Condomínios que gerencio</Text>
                     <View style={styles.caixaGerencio.tamanhoScroll}>
                         <ScrollView contentContainerStyle={styles.caixaGerencio.scroll} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
-                        {
-
-                            CondominiosDono.map((condominio) => (
+                        { 
+                            CondominiosDono.length > 0 ?
+                                CondominiosDono.map((condominio) => (
                                     <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
                                         <Card.Image  onPress={()=>{navigation.navigate("AdmCondominio", {idCondominio : condominio.unionIdentifier})}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
                                             <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
@@ -138,7 +138,11 @@ export default function Home({navigation}) {
                                             </View>
                                         </Card.Image>
                                     </Card> 
-                            ))
+                                ))
+                            :
+                                <View>
+                                    <Text>Você nao possui condominios que administra.</Text>
+                                </View>
                         }
                         </ScrollView>
                     </View>
@@ -147,8 +151,9 @@ export default function Home({navigation}) {
                         <Text style={styles.caixaGerencio.titulo}>Condomínios que faço parte</Text>
                         <View style={styles.caixaGerencio.tamanhoScroll}>
                             <ScrollView contentContainerStyle={styles.caixaGerencio.scroll} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
-                            {
-                                CondominiosMorador.map((condominio) => (
+                            { 
+                                CondominiosMorador.length > 0 ?
+                                    CondominiosMorador.map((condominio) => (
                                         <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
                                             <Card.Image  onPress={()=>{navigation.navigate("CondominioMorador", {idCondominio : condominio.unionIdentifier})}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
                                                 <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
@@ -157,7 +162,11 @@ export default function Home({navigation}) {
                                                 </View>
                                             </Card.Image>
                                         </Card> 
-                                ))
+                                    ))
+                                :
+                                    <View>
+                                        <Text>Você nao possui condominios que é morador.</Text>
+                                    </View>
 
                             }
                             </ScrollView>

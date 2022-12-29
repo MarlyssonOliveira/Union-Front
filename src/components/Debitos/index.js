@@ -86,18 +86,23 @@ export default function Debitos({navigation,route}) {
                 <Text style={styles.titulo}>Débitos</Text>
                 <View style={styles.viewDebitos}>
                     <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
-                        {
-                            DebitosAbertos.map((debitoAberto) => (
-                                <Card key={debitoAberto.unionIdentifier} containerStyle={ debitoAberto.overdue ? styles.card.containerDangerStyle : styles.card.containerAlertStyle }>
-                                    <View onTouchEnd={() => toggleOverlaySet(debitoAberto)} style={styles.card.viewTituloCard}>
-                                            <Text style={styles.card.tituloDebito}>{debitoAberto.title}</Text>
-                                            <View style={styles.card.flexDetalhesDebito}>
-                                                <Text style={styles.card.textoVencimentoDebito}>Venc. {debitoAberto.expirationDate}</Text>
-                                                <Text style={debitoAberto.overdue ? styles.card.textoValorVencido : styles.card.textoValorAVencer}>R$ {debitoAberto.value}</Text>
-                                            </View>
-                                    </View>
-                                </Card>
-                            ))
+                        { 
+                            DebitosAbertos.length > 0 ?
+                                DebitosAbertos.map((debitoAberto) => (
+                                    <Card key={debitoAberto.unionIdentifier} containerStyle={ debitoAberto.overdue ? styles.card.containerDangerStyle : styles.card.containerAlertStyle }>
+                                        <View onTouchEnd={() => toggleOverlaySet(debitoAberto)} style={styles.card.viewTituloCard}>
+                                                <Text style={styles.card.tituloDebito}>{debitoAberto.title}</Text>
+                                                <View style={styles.card.flexDetalhesDebito}>
+                                                    <Text style={styles.card.textoVencimentoDebito}>Venc. {debitoAberto.expirationDate}</Text>
+                                                    <Text style={debitoAberto.overdue ? styles.card.textoValorVencido : styles.card.textoValorAVencer}>R$ {debitoAberto.value}</Text>
+                                                </View>
+                                        </View>
+                                    </Card>
+                                ))
+                            :
+                                <View>
+                                    <Text>Você nao possui debitos em aberto.</Text>
+                                </View>
                         }
                     </ScrollView>
                 </View>
@@ -106,18 +111,23 @@ export default function Debitos({navigation,route}) {
                 <Text style={styles.titulo}>Histórico</Text>
                 <View style={styles.viewDebitos}>
                     <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
-                        {
-                            Historico.map((debitoPago) => (
-                                <Card key={debitoPago.unionIdentifier} containerStyle={styles.card.containerHistoricoStyle}>
-                                    <View style={styles.card.viewTituloCard}>
-                                        <Text style={styles.card.tituloDebito}>{debitoPago.title}</Text>
-                                        <View style={styles.card.flexDetalhesDebito}>
-                                            <Text style={styles.card.textoVencimentoDebito}>Venc. {debitoPago.expirationDate}</Text>
-                                            <Text style={styles.card.textoValorHistorico}>R$ {debitoPago.value}</Text>
+                        { 
+                            Historico.length > 0 ?
+                                Historico.map((debitoPago) => (
+                                    <Card key={debitoPago.unionIdentifier} containerStyle={styles.card.containerHistoricoStyle}>
+                                        <View style={styles.card.viewTituloCard}>
+                                            <Text style={styles.card.tituloDebito}>{debitoPago.title}</Text>
+                                            <View style={styles.card.flexDetalhesDebito}>
+                                                <Text style={styles.card.textoVencimentoDebito}>Venc. {debitoPago.expirationDate}</Text>
+                                                <Text style={styles.card.textoValorHistorico}>R$ {debitoPago.value}</Text>
+                                            </View>
                                         </View>
-                                    </View>
-                                </Card>
-                            ))
+                                    </Card>
+                                ))
+                            :
+                                <View>
+                                    <Text>Você nao possui um histórico de pagamentos.</Text>
+                                </View>
                         }
                          
                         
