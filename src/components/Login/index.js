@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Image, Input } from 'react-native-elements';
 import axios from "axios";
+import * as Progress from 'react-native-progress'
 import { useEffect , useState } from 'react';
 
 export default function Login({navigation}) {
@@ -10,6 +11,7 @@ export default function Login({navigation}) {
     const [erroEmail, setErroEmail] = useState('');
     const [erroForm, setErroForm] = useState('');
     const [validar, setValidar] = useState(false);
+    const [spin, setSpin] = useState(false);
 
     
     const [loaded] = useFonts({
@@ -29,6 +31,7 @@ export default function Login({navigation}) {
       
     function Logar(){
         if(validar){
+            setSpin(true)
             axios.post(global.baseURL+":8080/union/user/login",
             {
                 email:Email,
@@ -38,10 +41,11 @@ export default function Login({navigation}) {
             .then((response)=>{
                     console.log(response.data)
                     global.sessionID = response.data
+                    setSpin(false)
                     navigation.navigate("Home")
             }).catch((error)=>{
                 if(error.response != undefined){
-
+                    setSpin(false)
                     console.log(error.response.data.message)
                     if(error.response.data.message.toLowerCase().includes("password")){
                         navigation.navigate("Feedback", {
@@ -140,10 +144,13 @@ export default function Login({navigation}) {
                 />
             </View>
             <Text style={styles.errorMessage}>{erroForm}</Text>
+            
+            
             <Button
                 buttonStyle= {styles.buttonLogin.buttonStyle}
                 style={styles.buttonLogin.buttonAlignment}
-                title="Entrar"
+                title={spin != false ?
+                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />: 'Entrar'}
                 raised="true"
                 onPress={()=>{Logar()}}
                 containerStyle={styles.buttonLogin.containerStyle}

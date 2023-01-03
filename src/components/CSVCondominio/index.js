@@ -20,7 +20,7 @@ export default function CSVCondominio({navigation, route}) {
 
       });
     function validarCampos(){
-        console.log(validar)
+        // console.log(validar)
         // console.log(nomeCsv)
         if(erroForm==''){
             setValidar(true);

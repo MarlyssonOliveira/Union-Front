@@ -1,14 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Icon, Image, Input } from 'react-native-elements';
+import * as Progress from 'react-native-progress'
+import MaskInput, {Masks} from 'react-native-mask-input';
 import axios from "axios";
 
 export default function NovaTaxa({navigation,route}) {
-    const[TituloTaxa, setTituloTaxa] = useState();
-    const[ValorTaxa, setValorTaxa] = useState();
+    const[TituloTaxa, setTituloTaxa] = useState('');
+    const[ValorTaxa, setValorTaxa] = useState('');
     const[VencimentoTaxa, setVencimentoTaxa] = useState();
-    const[PixTaxa, setPixTaxa] = useState();
+    const[PixTaxa, setPixTaxa] = useState('');
+    const[erroTitulo, setErroTitulo] = useState('');
+    const[erroValor, setErroValor] = useState('');
+    const[erroChave, setErroChave] = useState('');
+    const[erroForm, setErroForm] = useState('');
+    const[validar, setValidar] = useState(false);
+    const[spin, setSpin] = useState(false);
+
+
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -17,11 +27,46 @@ export default function NovaTaxa({navigation,route}) {
 
       });
     
-      if (!loaded) {
-        return null;
+      
+
+      function validaTitulo(titulo){
+        setErroTitulo('')
+        if(titulo.length<2){
+            setErroTitulo('Preencha o título da taxa corretamente')
+        }
+      }
+
+      function validarCampos(){
+        
+        setValidar(false)
+        if(erroTitulo=='' && erroChave=='' && erroValor==''){
+            if(TituloTaxa!='' && PixTaxa!= '' && ValorTaxa!= ''){
+                setValidar(true)
+                
+            }   
+        }
+      }
+
+    
+
+      function validaChavePix(chave){
+        setErroChave('')
+        if(chave.length<2){
+            setErroChave('Preencha a chave da taxa corretamente')
+        }
+      }
+
+      function validaValor(valor){
+        setErroValor('')
+        valor = parseFloat(valor);
+        if(valor<=0.0 || valor.toString()=='NaN'){
+            setErroValor('O valor precisa ser maior que 0')
+        }
       }
 
       function CadastrarTaxa(){
+        if(validar){
+            setSpin(true)
             axios.post(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt" ,{
                 title: TituloTaxa,
                 expirationDate: VencimentoTaxa,
@@ -32,6 +77,7 @@ export default function NovaTaxa({navigation,route}) {
                 headers: {'token' : global.sessionID}
             })
             .then((response) =>{
+                setSpin(false)
                 navigation.navigate("Feedback", {
                     tipo : true,
                     retornoEspecifico: true,
@@ -40,6 +86,7 @@ export default function NovaTaxa({navigation,route}) {
                     destinoBotao : "Home"
                 })
             }).catch((error) =>{
+                setSpin(false)
                 if(error.response != undefined){
                     console.log(error.response.data.message)
                 }
@@ -51,8 +98,19 @@ export default function NovaTaxa({navigation,route}) {
                     destinoBotao: "Home"
                 })
             })
+        }else{
+            setErroForm('Preencha os campos corretamente')
+        }
+            
       }
 
+      useEffect(()=>{
+        validarCampos()
+    })
+
+    if (!loaded) {
+        return null;
+    }
     return (
         <View style={styles.container}>
             <View style={styles.divTitulo}>
@@ -63,19 +121,27 @@ export default function NovaTaxa({navigation,route}) {
                 <Text style={styles.labelInput}>Título</Text>
                 <Input
                     placeholder='Defina um título'
-                    onChangeText={(titulo)=>{setTituloTaxa(titulo)}}
+                    onChangeText={(titulo)=>{
+                        setTituloTaxa(titulo)
+                        validaTitulo(titulo)
+                        setErroForm('')
+                    }}
                     inputContainerStyle={styles.input.inputContainerStyle}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
                     style={styles.input.style}
+                    errorMessage={erroTitulo}
                 />
             </View>
-
+            
             <View>
                 <Text style={styles.labelInput}>Data de vencimento</Text>
                 <Input
                     placeholder='DD/MM/AAAA'
-                    onChangeText={(vencimento)=>{setVencimentoTaxa(vencimento)}}
+                    onChangeText={(vencimento)=>{
+                        setVencimentoTaxa(vencimento)
+                        setErroForm('')
+                    }}
                     inputContainerStyle={styles.input.inputContainerStyle}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
@@ -89,6 +155,8 @@ export default function NovaTaxa({navigation,route}) {
                             
                         />
                     }
+                    maxLength={10}
+                    keyboardType='phone-pad'
                 />
             </View>
 
@@ -96,28 +164,41 @@ export default function NovaTaxa({navigation,route}) {
                 <Text style={styles.labelInput}>Valor</Text>
                 <Input
                     placeholder='Valor em reais(R$)'
-                    onChangeText={(valor)=>{setValorTaxa(valor)}}
+                    onChangeText={(valor)=>{
+                        setValorTaxa(valor)
+                        validaValor(valor)
+                        setErroForm('')
+                    }}
                     inputContainerStyle={styles.input.inputContainerStyle}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
                     style={styles.input.style}
+                    keyboardType='numeric'
+                    errorMessage={erroValor}
                 />
             </View>
             <View>
                 <Text style={styles.labelInput}>Chave Pix</Text>
                 <Input
                     placeholder='chave...'
-                    onChangeText={(pix)=>{setPixTaxa(pix)}}
+                    onChangeText={(pix)=>{
+                        setPixTaxa(pix)
+                        validaChavePix(pix)
+                        setErroForm('')
+                    }}
                     inputContainerStyle={styles.input.inputContainerStyle}
                     inputStyle={styles.input.inputStyle}
                     containerStyle={styles.input.containerStyle}
                     style={styles.input.style}
+                    errorMessage={erroChave}
                 />
             </View>
+            <Text style={styles.errorMessage}>{erroForm}</Text>
             <Button
                 buttonStyle= {styles.button.buttonStyle}
                 style={styles.input.style}
-                title="Salvar"
+                title={spin != false ?
+                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} /> : 'Salvar'}
                 raised="true"
                 onPress={()=>{CadastrarTaxa()}}
                 containerStyle={styles.button.containerStyle}
