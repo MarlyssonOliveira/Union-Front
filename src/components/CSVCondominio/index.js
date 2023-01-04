@@ -40,6 +40,7 @@ export default function CSVCondominio({navigation, route}) {
     function AdicionarMoradores(csvMoradores){
         if(csvMoradores != null && validar){
             setSpin(true)
+            setValidar(false)
             var bodyFormData = new FormData();
             bodyFormData.append("tenants", {
                 uri: csvMoradores.uri,

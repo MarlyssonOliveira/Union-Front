@@ -14,6 +14,7 @@ export default function NovaTaxa({navigation,route}) {
     const[erroTitulo, setErroTitulo] = useState('');
     const[erroValor, setErroValor] = useState('');
     const[erroChave, setErroChave] = useState('');
+    const[erroVencimento, setErroVencimento] = useState('');
     const[erroForm, setErroForm] = useState('');
     const[validar, setValidar] = useState(false);
     const[spin, setSpin] = useState(false);
@@ -39,8 +40,8 @@ export default function NovaTaxa({navigation,route}) {
       function validarCampos(){
         
         setValidar(false)
-        if(erroTitulo=='' && erroChave=='' && erroValor==''){
-            if(TituloTaxa!='' && PixTaxa!= '' && ValorTaxa!= ''){
+        if(erroTitulo=='' && erroChave=='' && erroValor=='' && erroVencimento==''){
+            if(TituloTaxa!='' && PixTaxa!= '' && ValorTaxa!= '' && VencimentoTaxa!=''){
                 setValidar(true)
                 
             }   
@@ -53,6 +54,13 @@ export default function NovaTaxa({navigation,route}) {
         setErroChave('')
         if(chave.length<2){
             setErroChave('Preencha a chave da taxa corretamente')
+        }
+      }
+
+      function validaVencimento(vencimento){
+        setErroVencimento('')
+        if(vencimento.length<2){
+            setErroVencimento('Preencha o vencimento da taxa corretamente')
         }
       }
 
@@ -140,6 +148,7 @@ export default function NovaTaxa({navigation,route}) {
                     placeholder='DD/MM/AAAA'
                     onChangeText={(vencimento)=>{
                         setVencimentoTaxa(vencimento)
+                        validaVencimento(vencimento)
                         setErroForm('')
                     }}
                     inputContainerStyle={styles.input.inputContainerStyle}
@@ -157,6 +166,7 @@ export default function NovaTaxa({navigation,route}) {
                     }
                     maxLength={10}
                     keyboardType='phone-pad'
+                    errorMessage={erroVencimento}
                 />
             </View>
 

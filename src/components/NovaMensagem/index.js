@@ -13,30 +13,48 @@ export default function NovaMensagem({navigation,route}) {
 
       });
       const [Mensagem, setMensagem] = useState();
+      const [erroMensagem, setErroMensagem] = useState();
+      const [validar, setValidar] = useState(false);
       const [spin, setSpin] = useState(false);
 
+      function validaMensagem(mensagem){
+        setValidar(false)
+        setErroMensagem('')
+        if(mensagem.length<1){
+            setErroMensagem('Mensagem não pode ser nula')
+        }else{
+            setValidar(true)
+        }
+      }
     
       function CriarMensagem(){
-        setSpin(true)
-        axios.post(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication",{"message": Mensagem},{headers: {'token' : global.sessionID}})
-        .then((response) => {
-            setSpin(false)
-            navigation.navigate("AdmCondominio", {
-                idCondominio : route.params.idCondominio
-            })
-        }).catch((error) => {
-            setSpin(false)
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
-            navigation.navigate("Feedback", {
-                tipo : false,
-                retornoEspecifico: true,
-                mensagem : "Ocorreu um erro inesperado no sistema!",
-                textoBotao : "Pagina Inicial",
-                destinoBotao: "Home"
-            })
-        })
+        
+        if(validar){
+            setValidar(false)
+            setSpin(true)
+            axios.post(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication",{"message": Mensagem},{headers: {'token' : global.sessionID}})
+                .then((response) => {
+                    setSpin(false)
+                    navigation.navigate("AdmCondominio", {
+                        idCondominio : route.params.idCondominio
+                    })
+                }).catch((error) => {
+                    setSpin(false)
+                    if(error.response != undefined){
+                        console.log(error.response.data.message)
+                    }
+                    navigation.navigate("Feedback", {
+                        tipo : false,
+                        retornoEspecifico: true,
+                        mensagem : "Ocorreu um erro inesperado no sistema!",
+                        textoBotao : "Pagina Inicial",
+                        destinoBotao: "Home"
+                    })
+                })
+        }else{
+            setErroMensagem('Mensagem não pode ser nula')
+        }
+        
       }
 
       if (!loaded) {
@@ -54,9 +72,13 @@ export default function NovaMensagem({navigation,route}) {
                     placeholder='Sua mensagem...'
                     inputContainerStyle={styles.inputMensagem.inputContainerStyle}
                     inputStyle={styles.inputMensagem.inputStyle}
-                    onChangeText = {(mensagem) => setMensagem(mensagem)}
+                    onChangeText = {(mensagem) => {
+                        setMensagem(mensagem)
+                        validaMensagem(mensagem)
+                    }}
                     containerStyle={styles.inputMensagem.containerStyle}
                     style={styles.inputMensagem.style}
+                    errorMessage={erroMensagem}
                 />
             </View>
             {/* <View>
