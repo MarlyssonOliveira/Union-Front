@@ -13,7 +13,7 @@ export default function NovaMensagem({navigation,route}) {
 
       });
       const [Mensagem, setMensagem] = useState();
-      const [spin, setSpin] = useState();
+      const [spin, setSpin] = useState(false);
 
     
       function CriarMensagem(){
@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
             borderBottomWidth: 0
         },
         inputStyle:{
-            fontFamily:"PoppinsRegular"
+            fontFamily:"PoppinsRegular",
+            height: 150
         },
         containerStyle:{
             width: 350, 

@@ -31,6 +31,8 @@ export default function Login({navigation}) {
       
     function Logar(){
         if(validar){
+            setValidar(false)
+            console.log('asdasdasd')
             setSpin(true)
             axios.post(global.baseURL+":8080/union/user/login",
             {
