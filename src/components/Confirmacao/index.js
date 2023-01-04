@@ -4,6 +4,7 @@ import { Button, Icon, Image, Input } from 'react-native-elements';
 import axios from "axios";
 import { useEffect } from 'react';
 import { useState } from 'react';
+import * as Progress from 'react-native-progress'
 
 export default function Confirmacao({navigation, route}) {
     const [loaded] = useFonts({
@@ -13,6 +14,7 @@ export default function Confirmacao({navigation, route}) {
 
     });
     const [Condominio, setCondominio] = useState();
+    const [spin, setSpin] = useState(false);
 
     useEffect(()=>{
         CarregaCondominio()
@@ -46,10 +48,13 @@ export default function Confirmacao({navigation, route}) {
     }
 
     function CarregaCondominio(){
+        setSpin(true)
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setCondominio(response.data)
+            setSpin(false)
         }).catch((error) =>{
+            setSpin(false)
             if(error.response != undefined){
                 console.log(error.response.data.message)
             }
@@ -81,7 +86,8 @@ export default function Confirmacao({navigation, route}) {
                 <Button
                     buttonStyle= {styles.buttons.buttonConfirmarStyle}
                     style={{alignSelf:"center"}}
-                    title="Confirmar"
+                    title={spin != false ?
+                        <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />: 'Confirmar'}
                     onPress={()=>DetelarCondominio()}
                     raised="true"
                     containerStyle={styles.buttons.containerStyle}

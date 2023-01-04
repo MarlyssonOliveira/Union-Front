@@ -66,14 +66,6 @@ export default function NovoCondominio({navigation}) {
         validarCampos()
     })
 
-    // useEffect(()=>{
-    //     validaNome()
-    // })
-
-    // useEffect(()=>{
-    //     validaEndereco()
-    // })
-
 
       if (!loaded) {
         return null;
@@ -82,6 +74,7 @@ export default function NovoCondominio({navigation}) {
       function CriarCondominio(){
         if(validar){
             setSpin(true)
+            setValidar(false)
             var novoCondominio = {
                 "name": Nome,
                 "address": Endereco,
