@@ -149,9 +149,9 @@ export default function AdmCondominio({navigation, route}) {
                                                     <Avatar
                                                         rounded
                                                         size="medium"
-                                                        source={require('../../assets/images/user.jpg')}
+                                                        source={{uri:mensagem.user.urlPhotoProfile}}
                                                     />
-                                                    <Text  style={styles.card.titulo}>{mensagem.condominium.owner.name}</Text>
+                                                    <Text  style={styles.card.titulo}>{mensagem.user.name}</Text>
                                                 </View>
                                                 <Text style={styles.card.subtitulo}>{mensagem.message}</Text>
                                             </View>

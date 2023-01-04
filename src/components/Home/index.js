@@ -9,6 +9,7 @@ export default function Home({navigation}) {
     const isFocused = useIsFocused();
     const [open, setOpen] = useState(false);
     const [nomeUsuario, setnomeUsuario] = useState();
+    const [UrlFotoUsuario, setUrlFotoUsuario] = useState();
     const [CondominiosDono, setCondominiosDono] = useState([]);
     const [CondominiosMorador, setCondominiosMorador] = useState([]);
     const [Pesquisa,setPesquisa] = useState('');
@@ -31,6 +32,7 @@ export default function Home({navigation}) {
         axios.get(global.baseURL+":8080/union/user",{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setnomeUsuario(response.data.name.split(" ")[0])
+            setUrlFotoUsuario(response.data.urlPhotoProfile)
         }).catch((error) =>{
             if(error.response != undefined){
                 console.log(error.response.data.message)
@@ -80,7 +82,8 @@ export default function Home({navigation}) {
                             onPress={()=>{navigation.navigate("AletrarImgUsuario")}}
                             rounded
                             size="medium"
-                            source={require('../../assets/images/user.jpg')}
+                            title="US"
+                            source={{uri: UrlFotoUsuario != undefined ? UrlFotoUsuario : ""}}
                         />
                         <Text  style={styles.areaLogado.boasVindas}>Olá {nomeUsuario}</Text>
                     </View>

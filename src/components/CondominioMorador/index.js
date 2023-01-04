@@ -153,7 +153,7 @@ export default function CondominioMorador({navigation,route}) {
                                                     <Avatar
                                                         rounded
                                                         size="medium"
-                                                        source={require('../../assets/images/user.jpg')}
+                                                        source={{uri:mensagem.user.urlPhotoProfile}}
                                                     />
                                                     <Text  style={styles.card.tituloCard}>{mensagem.user.name}</Text>
                                                 </View>

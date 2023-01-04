@@ -29,7 +29,46 @@ export default function AletrarImgUsuario({navigation, route}) {
     }
 
     function AlterarFoto(imagem){
-        console.log(imagem)
+        var bodyFormData = new FormData();
+            bodyFormData.append("file", {
+                uri: imagem.uri,
+                name: imagem.name,
+                type: mime.getType(imagem.uri)
+            })
+            bodyFormData.append("unionIdentifier", global.sessionID)
+
+            var axionConfig = { 
+                method: "post",
+                url: global.baseURL+":8080/union/user/photo-profile",
+                responseType: "json",
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                transformRequest: (bodyFormData) => { return bodyFormData},
+                data: bodyFormData,
+            };
+
+            axios.request(axionConfig)
+            .then((response) => {
+                navigation.navigate("Feedback", {
+                    tipo : true,
+                    retornoEspecifico: true,
+                    mensagem : "Foto de perfil alterada com sucesso!",
+                    textoBotao : "Página Inicial",
+                    destinoBotao : "Home"
+                })
+            }).catch((error) =>{
+                if(error.response != undefined){
+                    console.log(error.response.data.message)
+                }
+                navigation.navigate("Feedback", {
+                    tipo : false,
+                    retornoEspecifico: true,
+                    mensagem : "Ocorreu um erro inesperado no sistema!",
+                    textoBotao : "Pagina Inicial",
+                    destinoBotao: "Home"
+                })
+            })
     }
 
     return (
