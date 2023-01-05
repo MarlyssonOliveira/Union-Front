@@ -7,7 +7,7 @@ import * as Progress from 'react-native-progress'
 
 export default function CodigoVerificacao({navigation}) {
 
-    const [Codigo,setCodigo] = useState();
+    const [Codigo,setCodigo] = useState('');
     const [spin, setSpin] = useState(false);
     const [erroCod, setErroCod] = useState(false);
     

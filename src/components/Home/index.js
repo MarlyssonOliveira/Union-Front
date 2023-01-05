@@ -146,7 +146,7 @@ export default function Home({navigation}) {
                                     </Card> 
                             )) : 
                                 <View style={styles.container2}>
-                                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />
+                                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#ADADAD'} />
                                 </View>
                             
                         }
