@@ -145,21 +145,26 @@ export default function CondominioMorador({navigation,route}) {
                     <View style={styles.feed.divScroll}>
                         <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
                             {
-                                Mensagens.map((mensagem) => (
-                                    <Card key={mensagem.unionIdentifier} containerStyle={styles.card.cardContainerStyle}>
-                                        <View backgroundColor="#EFF3FF" style={styles.card.backgroundStyle}>
-                                            <View style={styles.card.cardConteudo}>
-                                                <Avatar
-                                                    rounded
-                                                    size="medium"
-                                                    source={require('../../assets/images/user.jpg')}
-                                                />
-                                                <Text  style={styles.card.tituloCard}>{mensagem.user.name}</Text>
+                                Mensagens.length > 0 ?
+                                    Mensagens.map((mensagem) => (
+                                        <Card key={mensagem.unionIdentifier} containerStyle={styles.card.cardContainerStyle}>
+                                            <View backgroundColor="#EFF3FF" style={styles.card.backgroundStyle}>
+                                                <View style={styles.card.cardConteudo}>
+                                                    <Avatar
+                                                        rounded
+                                                        size="medium"
+                                                        source={{uri: mensagem.user.urlPhotoProfile != undefined ? mensagem.user.urlPhotoProfile : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
+                                                    />
+                                                    <Text  style={styles.card.tituloCard}>{mensagem.user.name}</Text>
+                                                </View>
+                                                <Text style={styles.card.textoCard}>{mensagem.message}</Text>
                                             </View>
-                                            <Text style={styles.card.textoCard}>{mensagem.message}</Text>
-                                        </View>
-                                    </Card> 
-                                ))
+                                        </Card> 
+                                    ))
+                                :
+                                    <View>
+                                        <Text>Sem mensagens no condominio.</Text>
+                                    </View>
                             }
                         </ScrollView>
                     </View>
@@ -192,7 +197,9 @@ export default function CondominioMorador({navigation,route}) {
                     icon={styles.speedDial.iconExit}
                     iconContainerStyle= {styles.speedDial.iconExitContainer}
                     title="Sair do condomínio" 
-                    onPress={() => SairDoCondominio()}
+                    onPress={() => navigation.navigate('ConfirmacaoSairCondominio', {
+                        idCondominio : route.params.idCondominio
+                    })}
                 />
             </SpeedDial>
     </>
@@ -203,7 +210,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         justifyContent: 'center'
     },
 
@@ -214,7 +221,6 @@ const styles = StyleSheet.create({
             border: 0,
             borderWidth: 0, 
             marginTop:15, 
-            marginEnd: 30, 
             margin:0, 
             borderRadius: 10
         },
@@ -321,6 +327,8 @@ const styles = StyleSheet.create({
     },
     feed:{
         divConteudo:{
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop:30
         },
         titleConteudo:{
@@ -328,6 +336,9 @@ const styles = StyleSheet.create({
             fontFamily:"PoppinsExtraBold"
         },
         divScroll:{
+            justifyContent: 'center',
+            alignItems: 'center',
+            width:'100%',
             height:300, 
             paddingVertical:10,
         }

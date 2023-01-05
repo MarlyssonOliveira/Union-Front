@@ -140,22 +140,27 @@ export default function AdmCondominio({navigation, route}) {
                     <Text style={styles.feed.titulo}>Últimas atualizações</Text>
                     <View style={styles.feed.post}>
                         <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
-                            {
-                                Mensagens.map((mensagem) => (
-                                    <Card key={mensagem.unionIdentifier} containerStyle={styles.card.containerStyle}>
-                                        <View onTouchEnd={() => toggleOverlaySet(mensagem)} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                            <View style={styles.card.topoCard}>
-                                                <Avatar
-                                                    rounded
-                                                    size="medium"
-                                                    source={require('../../assets/images/user.jpg')}
-                                                />
-                                                <Text  style={styles.card.titulo}>{mensagem.condominium.owner.name}</Text>
+                            { 
+                                Mensagens.length > 0 ?
+                                    Mensagens.map((mensagem) => (
+                                        <Card key={mensagem.unionIdentifier} containerStyle={styles.card.containerStyle}>
+                                            <View onTouchEnd={() => toggleOverlaySet(mensagem)} backgroundColor="#EFF3FF" style={styles.card.background}>
+                                                <View style={styles.card.topoCard}>
+                                                    <Avatar
+                                                        rounded
+                                                        size="medium"
+                                                        source={{uri: mensagem.user.urlPhotoProfile != undefined ? mensagem.user.urlPhotoProfile : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
+                                                    />
+                                                    <Text  style={styles.card.titulo}>{mensagem.user.name}</Text>
+                                                </View>
+                                                <Text style={styles.card.subtitulo}>{mensagem.message}</Text>
                                             </View>
-                                            <Text style={styles.card.subtitulo}>{mensagem.message}</Text>
-                                        </View>
-                                    </Card> 
-                                ))
+                                        </Card> 
+                                    ))
+                                :
+                                    <View>
+                                        <Text>Sem mensagens no condominio.</Text>
+                                    </View>
                             }
                         </ScrollView>
                     </View>
@@ -239,7 +244,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         width: "100%",
-        alignItems: 'flex-end',
+        alignItems: 'center',
         justifyContent: 'center'
     },
     overlay:{
@@ -285,9 +290,8 @@ const styles = StyleSheet.create({
             border: 0,
             borderWidth: 0, 
             marginTop:15, 
-            marginEnd: 30, 
             margin:0, 
-            borderRadius: 10
+            borderRadius: 10,
         },
         background:{
             borderRadius:10, 
@@ -318,6 +322,7 @@ const styles = StyleSheet.create({
         },
         conteudo:{
             flexDirection:'row', 
+            alignSelf: 'center', 
             justifyContent: 'space-between'
         },
         imagem:{
@@ -350,6 +355,8 @@ const styles = StyleSheet.create({
 
     feed:{
         conteudo:{
+            justifyContent: 'center',
+            alignItems: 'center',
             marginTop:30
         },
         titulo:{
@@ -357,6 +364,11 @@ const styles = StyleSheet.create({
             fontFamily:"PoppinsExtraBold"
         },
         post:{
+            
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            width: '100%',
             height:450, 
             paddingVertical:10
         }

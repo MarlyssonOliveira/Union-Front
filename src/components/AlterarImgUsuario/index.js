@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
-import { Button, Icon, Image, Input } from 'react-native-elements';
+import { Avatar, Button, Icon, Image, Input } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
@@ -11,6 +11,7 @@ export default function AletrarImgUsuario({navigation, route}) {
 
     const [Imagem,setImagem] = useState('')
     const [nomeImagem, setNomeImagem] = useState();
+    const [idUsuario, setidUsuario] = useState();
     const [erroForm, setErroForm] = useState('');
     const [validar, setValidar] = useState(false);
     const [spin, setSpin] = useState(false);
@@ -27,13 +28,17 @@ export default function AletrarImgUsuario({navigation, route}) {
     useEffect(()=>{
         validarCampos()
     })
-
+    
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
         PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf")
 
       });
+      
+    useEffect(() => {
+        CarregaUsuarioLogado()
+    }, [])
       if (!loaded) {
         return null;
       }
@@ -48,22 +53,78 @@ export default function AletrarImgUsuario({navigation, route}) {
         }catch(err){
             console.log(err)
             setErroForm('Selecione um arquivo válido')
-        }
-        
+        } 
+    }
+    function CarregaUsuarioLogado(){
+
+        axios.get(global.baseURL+":8080/union/user",{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            console.log(response.data)
+            setidUsuario(response.data.unionIdentifier)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
+        })
     }
 
     function AlterarFoto(imagem){
-        if(validar){
-            console.log(imagem)
+      if(validar){
+        var bodyFormData = new FormData();
+            bodyFormData.append("file", {
+                uri: imagem.uri,
+                name: imagem.name,
+                type: mime.getType(imagem.uri)
+            })
+            bodyFormData.append("unionIdentifier", idUsuario)
+            var axionConfig = { 
+                method: "post",
+                url: global.baseURL+":8080/union/user/photo-profile",
+                responseType: "json",
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                transformRequest: (bodyFormData) => { return bodyFormData},
+                data: bodyFormData,
+            };
+
+            axios.request(axionConfig)
+            .then((response) => {
+                navigation.navigate("Feedback", {
+                    tipo : true,
+                    retornoEspecifico: true,
+                    mensagem : "Foto de perfil alterada com sucesso!",
+                    textoBotao : "Página Inicial",
+                    destinoBotao : "Home"
+                })
+            }).catch((error) =>{
+                if(error.response != undefined){
+                    console.log(error.response.data.message)
+                }
+                navigation.navigate("Feedback", {
+                    tipo : false,
+                    retornoEspecifico: true,
+                    mensagem : "Ocorreu um erro inesperado no sistema!",
+                    textoBotao : "Pagina Inicial",
+                    destinoBotao: "Home"
+                })
+            })
         }else{
-            setErroForm('Selecione um atquivo válido')
+            setErroForm('Selecione um arquivo válido')
         }
     }
 
     return (
         <View style={styles.container}>
             <Icon
-                name="file-table-outline"
+                name="account"
                 type='material-community'
                 color="#1DB954"
                 size={200}

@@ -52,8 +52,9 @@ export default function GerenciamentoTaxas({navigation, route}) {
                 <Text style={styles.titulo}>Taxas Criadas</Text>
                 <View style={styles.viewDebitos}>
                     <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>
-                        {
-                            Taxas.map((taxa) => (
+                        { 
+                            Taxas.length > 0 ?
+                                Taxas.map((taxa) => (
                                     <Card key={taxa.unionIdentifier} containerStyle={styles.card.containerHistoricoStyle}>
                                         <View onTouchEnd={() => {navigation.navigate("DetalhamentoTaxa",{idDebito : taxa.unionIdentifier})}} style={styles.card.viewTituloCard}>
                                             <Text style={styles.card.tituloDebito}>{taxa.title}</Text>
@@ -64,6 +65,10 @@ export default function GerenciamentoTaxas({navigation, route}) {
                                         </View>
                                     </Card> 
                                 ))
+                                :
+                                    <View>
+                                        <Text>Sem taxas criadas no condominio.</Text>
+                                    </View>
 
                         }
                     </ScrollView>

@@ -10,6 +10,7 @@ export default function Home({navigation}) {
     const isFocused = useIsFocused();
     const [open, setOpen] = useState(false);
     const [nomeUsuario, setnomeUsuario] = useState();
+    const [UrlFotoUsuario, setUrlFotoUsuario] = useState();
     const [CondominiosDono, setCondominiosDono] = useState([]);
     const [CondominiosMorador, setCondominiosMorador] = useState([]);
     const [Pesquisa,setPesquisa] = useState('');
@@ -33,6 +34,7 @@ export default function Home({navigation}) {
         axios.get(global.baseURL+":8080/union/user",{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setnomeUsuario(response.data.name.split(" ")[0])
+            setUrlFotoUsuario(response.data.urlPhotoProfile)
         }).catch((error) =>{
             if(error.response != undefined){
                 console.log(error.response.data.message)
@@ -71,25 +73,6 @@ export default function Home({navigation}) {
         })
     }
 
-
-    function Logout(){
-        axios.post(global.baseURL+":8080/union/user/logout",null,{headers:{'Content-Type': 'application/json', 'token': global.sessionID}})
-        .then(() =>{
-            navigation.navigate("Index")
-        }).catch((error)=>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
-            navigation.navigate("Feedback", {
-                tipo : false,
-                retornoEspecifico: true,
-                mensagem : "Ocorreu um erro inesperado no sistema!",
-                textoBotao : "Inicio",
-                destinoBotao: "Index"
-            })
-        })
-    }
-
     function Pesquisar(nome){
         // console.log(nome)
         setPesquisa(nome)
@@ -104,12 +87,13 @@ export default function Home({navigation}) {
                             onPress={()=>{navigation.navigate("AletrarImgUsuario")}}
                             rounded
                             size="medium"
-                            source={require('../../assets/images/user.jpg')}
+                            title="US"
+                            source={{uri: UrlFotoUsuario != undefined ? UrlFotoUsuario : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
                         />
                         <Text  style={styles.areaLogado.boasVindas}>Olá, {nomeUsuario}</Text>
                     </View>
                     <Icon
-                        onPress={()=>{Logout()}}
+                        onPress={()=>{navigation.navigate("ConfirmacaoLogout")}}
                         name='logout'
                         type='material'
                         color='#000'
@@ -148,7 +132,7 @@ export default function Home({navigation}) {
                                 <View style={styles.container2}>
                                     <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#ADADAD'} />
                                 </View>
-                            
+                        
                         }
                         </ScrollView>
                     </View>
@@ -157,8 +141,9 @@ export default function Home({navigation}) {
                         <Text style={styles.caixaGerencio.titulo}>Condomínios que faço parte</Text>
                         <View style={styles.caixaGerencio.tamanhoScroll}>
                             <ScrollView contentContainerStyle={styles.caixaGerencio.scroll} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
-                            {
-                                CondominiosMorador.map((condominio) => (
+                            { 
+                                CondominiosMorador.length > 0 ?
+                                    CondominiosMorador.map((condominio) => (
                                         <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
                                             <Card.Image  onPress={()=>{navigation.navigate("CondominioMorador", {idCondominio : condominio.unionIdentifier})}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
                                                 <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
@@ -167,7 +152,11 @@ export default function Home({navigation}) {
                                                 </View>
                                             </Card.Image>
                                         </Card> 
-                                ))
+                                    ))
+                                :
+                                <View style={styles.cardFeedback.container}>
+                                    <Text style={styles.cardFeedback.mensagem}>Você nao faz parte de nenhum condomínio.</Text>
+                                </View>
 
                             }
                             </ScrollView>
@@ -256,6 +245,26 @@ const styles = StyleSheet.create({
             color: "#ADADAD"
         }
 
+    },
+    cardFeedback:{ 
+        container:{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            maxWidth: 300,
+            
+        },
+        mensagem:{
+            fontSize: 18,
+            fontFamily:"PoppinsExtraBold",
+            textAlign: 'center',
+            borderColor: "#ADADAD",
+            borderWidth: 1,
+            borderRadius: 20,
+            padding: 5,
+            backgroundColor: "#F0F1F5"
+        }
     },
 
     areaLogado:{

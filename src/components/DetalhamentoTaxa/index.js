@@ -115,13 +115,18 @@ export default function DetalhamentoTaxa({navigation, route}) {
                         <View style={styles.lista.post}>
                             <ScrollView bounces={true} showsVerticalScrollIndicator={false} centerContent={true}>                           
                                 {
-                                    Moradores.map((morador) => (
-                                        <Card key={morador.unionIdentifier} containerStyle={styles.card.containerStyle}>
-                                            <View onTouchEnd={() => toggleOverlaySet(morador)} backgroundColor="#EFF3FF" style={styles.card.background}>
-                                                <Text style={styles.card.titulo}>{morador.name}</Text>
-                                            </View>
-                                        </Card> 
-                                    ))
+                                    Moradores.length > 0 ?
+                                        Moradores.map((morador) => (
+                                            <Card key={morador.unionIdentifier} containerStyle={styles.card.containerStyle}>
+                                                <View onTouchEnd={() => toggleOverlaySet(morador)} backgroundColor="#EFF3FF" style={styles.card.background}>
+                                                    <Text style={styles.card.titulo}>{morador.name}</Text>
+                                                </View>
+                                            </Card> 
+                                        ))
+                                    :
+                                        <View>
+                                            <Text>Esta taxa não possui pagamentos pendentes.</Text>
+                                        </View>
                                 }
                             </ScrollView>
                         </View>

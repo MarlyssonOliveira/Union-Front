@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
   global.baseURL = "http://192.168.137.183"
+
   return (
       <NavigationContainer>
         <StackNavigator></StackNavigator>
