@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import axios from "axios";
+import * as Progress from 'react-native-progress'
 
 export default function NovoCondominio({navigation}) {
 
@@ -15,6 +16,7 @@ export default function NovoCondominio({navigation}) {
     const [count, setCount] = useState(0);
     const [countNome, setCountNome] = useState(0);
     const [countEndereco, setCountEndereco] = useState(0);
+    const [spin, setSpin] = useState(false);
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -64,14 +66,6 @@ export default function NovoCondominio({navigation}) {
         validarCampos()
     })
 
-    // useEffect(()=>{
-    //     validaNome()
-    // })
-
-    // useEffect(()=>{
-    //     validaEndereco()
-    // })
-
 
       if (!loaded) {
         return null;
@@ -79,12 +73,15 @@ export default function NovoCondominio({navigation}) {
     
       function CriarCondominio(){
         if(validar){
+            setSpin(true)
+            setValidar(false)
             var novoCondominio = {
                 "name": Nome,
                 "address": Endereco,
             }
             axios.post(global.baseURL+":8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
         .then((response) => {
+            setSpin(false)
             navigation.navigate("Feedback", {
                 tipo : true,
                 retornoEspecifico: true,
@@ -94,6 +91,7 @@ export default function NovoCondominio({navigation}) {
 
             })
             }).catch((error) =>{
+                setSpin(false)
                 if(error.response != undefined){
                     console.log(error.response.data.message)
                 }
@@ -159,7 +157,8 @@ export default function NovoCondominio({navigation}) {
             <Button
                 buttonStyle= {styles.button.buttonStyle}
                 style={styles.input.style}
-                title="Salvar"
+                title={spin != false ?
+                <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />: 'Entrar'}
                 raised="true"
                 onPress={()=>CriarCondominio()}
                 containerStyle={styles.button.containerStyle}

@@ -3,6 +3,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button  } from 'react-native-elements';
 import { useState, useEffect } from 'react';
+import * as Progress from 'react-native-progress'
 import axios from "axios";
 
 export default function Home({navigation}) {
@@ -13,6 +14,7 @@ export default function Home({navigation}) {
     const [CondominiosDono, setCondominiosDono] = useState([]);
     const [CondominiosMorador, setCondominiosMorador] = useState([]);
     const [Pesquisa,setPesquisa] = useState('');
+    const [spin, setSpin] = useState(false);
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -48,13 +50,16 @@ export default function Home({navigation}) {
     }
 
     function CarregaCondominios(nome){
+        setSpin(true)
         axios.get(global.baseURL+":8080/union/condominium?name="+nome,{headers: {'token' : global.sessionID}})
         .then((response) =>{ 
             setCondominiosDono(response.data.filter((cond) => {return cond.userIsOwner == true}))
             setCondominiosMorador(response.data.filter((cond) => {return cond.userIsOwner == false}))
+            setSpin(false)
 
         }).catch((error) =>{
             if(error.response != undefined){
+                setSpin(false)
                 console.log(error.response.data.message)
             }
             navigation.navigate("Feedback", {
@@ -69,7 +74,7 @@ export default function Home({navigation}) {
     }
 
     function Pesquisar(nome){
-        console.log(nome)
+        // console.log(nome)
         setPesquisa(nome)
     }
 
@@ -85,7 +90,7 @@ export default function Home({navigation}) {
                             title="US"
                             source={{uri: UrlFotoUsuario != undefined ? UrlFotoUsuario : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
                         />
-                        <Text  style={styles.areaLogado.boasVindas}>Olá {nomeUsuario}</Text>
+                        <Text  style={styles.areaLogado.boasVindas}>Olá, {nomeUsuario}</Text>
                     </View>
                     <Icon
                         onPress={()=>{navigation.navigate("ConfirmacaoLogout")}}
@@ -111,9 +116,10 @@ export default function Home({navigation}) {
                     <Text  style={styles.caixaGerencio.titulo}>Condomínios que gerencio</Text>
                     <View style={styles.caixaGerencio.tamanhoScroll}>
                         <ScrollView contentContainerStyle={styles.caixaGerencio.scroll} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
-                        { 
-                            CondominiosDono.length > 0 ?
-                                CondominiosDono.map((condominio) => (
+                        {
+                            spin == false ?
+
+                            CondominiosDono.map((condominio) => (
                                     <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
                                         <Card.Image  onPress={()=>{navigation.navigate("AdmCondominio", {idCondominio : condominio.unionIdentifier})}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
                                             <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
@@ -122,13 +128,11 @@ export default function Home({navigation}) {
                                             </View>
                                         </Card.Image>
                                     </Card> 
-                                ))
-                            :
-                                <View style={styles.cardFeedback.container}>
-                                    <Text style={styles.cardFeedback.mensagem}>Você nao gerencia nenhum condomínio.</Text>
+                            )) : 
+                                <View style={styles.container2}>
+                                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#ADADAD'} />
                                 </View>
-
-                                
+                        
                         }
                         </ScrollView>
                     </View>
@@ -200,6 +204,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'space-evenly'
+    },
+    container2: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 200
     },
 
     card:{
@@ -306,13 +317,14 @@ const styles = StyleSheet.create({
         titulo:{
             fontSize: 20, 
             fontFamily:"PoppinsExtraBold", 
-            paddingHorizontal:20
+            paddingHorizontal:20,
         },
         tamanhoScroll:{
             height: 200
         },
         scroll:{
-            paddingHorizontal:20
+            paddingHorizontal:20,
+            margin: 10,
         }
     },
     SpeedDialStyle:{

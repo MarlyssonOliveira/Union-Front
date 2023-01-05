@@ -9,15 +9,33 @@ import mime from 'mime';
 
 export default function AletrarImgUsuario({navigation, route}) {
 
-    const [Imagem,setImagem] = useState()
+    const [Imagem,setImagem] = useState('')
     const [nomeImagem, setNomeImagem] = useState();
     const [idUsuario, setidUsuario] = useState();
+    const [erroForm, setErroForm] = useState('');
+    const [validar, setValidar] = useState(false);
+    const [spin, setSpin] = useState(false);
+
+
+    function validarCampos(){
+        if(erroForm=='' && Imagem!= ''){
+            setValidar(true);
+        }else{
+            setValidar(false)
+        }
+    }
+
+    useEffect(()=>{
+        validarCampos()
+    })
+    
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
         PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf")
 
       });
+      
     useEffect(() => {
         CarregaUsuarioLogado()
     }, [])
@@ -25,11 +43,17 @@ export default function AletrarImgUsuario({navigation, route}) {
         return null;
       }
     async function CapturaIMGUsuario() {
-        const  res = await DocumentPicker.getDocumentAsync({type:'image/jpeg',})
-        if(res.name != null){
-            setNomeImagem(res.name)
-            setImagem(res)       
-        }
+        setErroForm('')
+        try{
+            const  res = await DocumentPicker.getDocumentAsync({type:'image/jpeg',})
+            if(res.name != null){
+                setNomeImagem(res.name)
+                setImagem(res)                
+            }
+        }catch(err){
+            console.log(err)
+            setErroForm('Selecione um arquivo válido')
+        } 
     }
     function CarregaUsuarioLogado(){
 
@@ -52,7 +76,7 @@ export default function AletrarImgUsuario({navigation, route}) {
     }
 
     function AlterarFoto(imagem){
-        console.log(idUsuario)
+      if(validar){
         var bodyFormData = new FormData();
             bodyFormData.append("file", {
                 uri: imagem.uri,
@@ -92,6 +116,9 @@ export default function AletrarImgUsuario({navigation, route}) {
                     destinoBotao: "Home"
                 })
             })
+        }else{
+            setErroForm('Selecione um arquivo válido')
+        }
     }
 
     return (
@@ -131,6 +158,7 @@ export default function AletrarImgUsuario({navigation, route}) {
                             }
                         />
                     </View>
+                    <Text style={styles.errorMessage}>{erroForm}</Text>
                 </TouchableOpacity>
             </View>
             <View>
@@ -214,5 +242,10 @@ const styles = StyleSheet.create({
             fontFamily:"PoppinsExtraBold"
         }
     },
+    errorMessage:{
+        color:'red',
+        alignSelf: 'center',
+        marginTop: 10
+    }
 
 });

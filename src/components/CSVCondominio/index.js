@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import * as DocumentPicker from 'expo-document-picker';
+import * as Progress from 'react-native-progress'
 import axios from "axios";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import mime from 'mime';
@@ -13,6 +14,7 @@ export default function CSVCondominio({navigation, route}) {
     const [nomeCsv, setNomeCSV] = useState();
     const [erroForm, setErroForm] = useState('');
     const [validar, setValidar] = useState(false);
+    const [spin, setSpin] = useState(false);
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -20,7 +22,7 @@ export default function CSVCondominio({navigation, route}) {
 
       });
     function validarCampos(){
-        console.log(validar)
+        // console.log(validar)
         // console.log(nomeCsv)
         if(erroForm==''){
             setValidar(true);
@@ -37,6 +39,8 @@ export default function CSVCondominio({navigation, route}) {
       }
     function AdicionarMoradores(csvMoradores){
         if(csvMoradores != null && validar){
+            setSpin(true)
+            setValidar(false)
             var bodyFormData = new FormData();
             bodyFormData.append("tenants", {
                 uri: csvMoradores.uri,
@@ -155,7 +159,8 @@ export default function CSVCondominio({navigation, route}) {
             <Button
                 buttonStyle= {styles.button.buttonStyle}
                 style={styles.input.style}
-                title="Adicionar Moradores"
+                title={spin != false ?
+                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />: 'Adicionar Moradores'}
                 raised="true"
                 onPress={()=>AdicionarMoradores(Csv)}
                 containerStyle={styles.button.containerStyle}

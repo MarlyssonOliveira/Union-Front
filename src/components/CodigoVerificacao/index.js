@@ -3,10 +3,14 @@ import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
 import { useState } from 'react';
 import axios from "axios";
+import * as Progress from 'react-native-progress'
 
 export default function CodigoVerificacao({navigation}) {
 
-    const [Codigo,setCodigo] = useState();
+    const [Codigo,setCodigo] = useState('');
+    const [spin, setSpin] = useState(false);
+    const [erroCod, setErroCod] = useState(false);
+    
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -16,8 +20,13 @@ export default function CodigoVerificacao({navigation}) {
       });
     
       function VerificaCodigo(){
+        if(Codigo.length<6){
+            setErroCod('O código enviado contém 6 dígitos')
+        }else{
+            setSpin(true);
         axios.post(global.baseURL+":8080/union/user/account-confirmation",Codigo,{headers:{'Content-Type': 'application/json'}})
         .then((response)=>{
+            setSpin(false);
             navigation.navigate("Feedback", {
                 tipo : true,
                 retornoEspecifico: true,
@@ -26,6 +35,7 @@ export default function CodigoVerificacao({navigation}) {
                 destinoBotao : "Login"
             })
         }).catch((error)=>{
+            setSpin(false);
             if(error.response != undefined){
                 console.log(error.response.data.message)
             }
@@ -37,6 +47,8 @@ export default function CodigoVerificacao({navigation}) {
                 destinoBotao: "Index"
             })
         })
+        }
+        
       }
       if (!loaded) {
         return null;
@@ -59,10 +71,14 @@ export default function CodigoVerificacao({navigation}) {
                     <Input
                         placeholder='00-00-00-00'
                         inputContainerStyle={styles.divInput.inputcontainerStyle}
-                        onChangeText={(codigo)=>{setCodigo(codigo)}}
+                        onChangeText={(codigo)=>{
+                            setCodigo(codigo)
+                            setErroCod('')
+                        }}
                         inputStyle={styles.divInput.inputStyle}
                         containerStyle={styles.divInput.ContainerStyle}
                         style={styles.divInput.style}
+                        errorMessage={erroCod}
                     />
                 </View>
             </View>
@@ -71,7 +87,8 @@ export default function CodigoVerificacao({navigation}) {
                 <Button
                     buttonStyle= {styles.divButtons.buttonVerificarStyle}
                     style={styles.divButtons.style}
-                    title="Verificar código"
+                    title={spin != false ?
+                        <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} /> : 'Verificar Código'}
                     onPress={()=>{VerificaCodigo()}}
                     raised="true"
                     containerStyle={styles.divButtons.containerStyle}

@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
+import * as Progress from 'react-native-progress'
 import { Button, Image } from 'react-native-elements';
 
 export default function Index({navigation}) {
@@ -17,6 +18,7 @@ export default function Index({navigation}) {
                 source={require('../../assets/images/teste.jpg')}
                 style={styles.imageStyle}
             />
+            
             <View style={styles.botoes}>
                 <Button
                     buttonStyle= {styles.botaoEntrar.buttonStyle}
