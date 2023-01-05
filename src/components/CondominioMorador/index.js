@@ -153,7 +153,7 @@ export default function CondominioMorador({navigation,route}) {
                                                     <Avatar
                                                         rounded
                                                         size="medium"
-                                                        source={{uri:mensagem.user.urlPhotoProfile}}
+                                                        source={{uri: mensagem.user.urlPhotoProfile != undefined ? mensagem.user.urlPhotoProfile : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
                                                     />
                                                     <Text  style={styles.card.tituloCard}>{mensagem.user.name}</Text>
                                                 </View>
@@ -197,7 +197,9 @@ export default function CondominioMorador({navigation,route}) {
                     icon={styles.speedDial.iconExit}
                     iconContainerStyle= {styles.speedDial.iconExitContainer}
                     title="Sair do condomínio" 
-                    onPress={() => SairDoCondominio()}
+                    onPress={() => navigation.navigate('ConfirmacaoSairCondominio', {
+                        idCondominio : route.params.idCondominio
+                    })}
                 />
             </SpeedDial>
     </>

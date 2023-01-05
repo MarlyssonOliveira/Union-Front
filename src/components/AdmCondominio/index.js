@@ -149,7 +149,7 @@ export default function AdmCondominio({navigation, route}) {
                                                     <Avatar
                                                         rounded
                                                         size="medium"
-                                                        source={{uri:mensagem.user.urlPhotoProfile}}
+                                                        source={{uri: mensagem.user.urlPhotoProfile != undefined ? mensagem.user.urlPhotoProfile : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
                                                     />
                                                     <Text  style={styles.card.titulo}>{mensagem.user.name}</Text>
                                                 </View>

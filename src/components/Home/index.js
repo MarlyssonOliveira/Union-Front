@@ -83,7 +83,7 @@ export default function Home({navigation}) {
                             rounded
                             size="medium"
                             title="US"
-                            source={{uri: UrlFotoUsuario != undefined ? UrlFotoUsuario : ""}}
+                            source={{uri: UrlFotoUsuario != undefined ? UrlFotoUsuario : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
                         />
                         <Text  style={styles.areaLogado.boasVindas}>Olá {nomeUsuario}</Text>
                     </View>

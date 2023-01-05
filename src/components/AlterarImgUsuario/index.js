@@ -11,12 +11,16 @@ export default function AletrarImgUsuario({navigation, route}) {
 
     const [Imagem,setImagem] = useState()
     const [nomeImagem, setNomeImagem] = useState();
+    const [idUsuario, setidUsuario] = useState();
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
         PoppinsMedium: require("../../assets/fonts/Poppins-Medium.ttf")
 
       });
+    useEffect(() => {
+        CarregaUsuarioLogado()
+    }, [])
       if (!loaded) {
         return null;
       }
@@ -24,19 +28,38 @@ export default function AletrarImgUsuario({navigation, route}) {
         const  res = await DocumentPicker.getDocumentAsync({type:'image/jpeg',})
         if(res.name != null){
             setNomeImagem(res.name)
-            setImagem(res)                
+            setImagem(res)       
         }
+    }
+    function CarregaUsuarioLogado(){
+
+        axios.get(global.baseURL+":8080/union/user",{headers: {'token' : global.sessionID}})
+        .then((response) =>{
+            console.log(response.data)
+            setidUsuario(response.data.unionIdentifier)
+        }).catch((error) =>{
+            if(error.response != undefined){
+                console.log(error.response.data.message)
+            }
+            navigation.navigate("Feedback", {
+                tipo : false,
+                retornoEspecifico: true,
+                mensagem : "Ocorreu um erro inesperado no sistema!",
+                textoBotao : "Inicio",
+                destinoBotao: "Index"
+            })
+        })
     }
 
     function AlterarFoto(imagem){
+        console.log(idUsuario)
         var bodyFormData = new FormData();
             bodyFormData.append("file", {
                 uri: imagem.uri,
                 name: imagem.name,
                 type: mime.getType(imagem.uri)
             })
-            bodyFormData.append("unionIdentifier", global.sessionID)
-
+            bodyFormData.append("unionIdentifier", idUsuario)
             var axionConfig = { 
                 method: "post",
                 url: global.baseURL+":8080/union/user/photo-profile",
