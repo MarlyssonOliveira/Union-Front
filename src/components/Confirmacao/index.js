@@ -24,8 +24,10 @@ export default function Confirmacao({navigation, route}) {
         return null;
     }
     function DetelarCondominio(){
+        setSpin(true)
         axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
+            setSpin(false)
             navigation.navigate("Feedback", {
                 tipo : true,
                 retornoEspecifico: true,
@@ -34,6 +36,7 @@ export default function Confirmacao({navigation, route}) {
                 destinoBotao : "Home"
             })
         }).catch((error) =>{
+            setSpin(false)
             if(error.response != undefined){
                 console.log(error.response.data.message)
             }
