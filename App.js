@@ -4,7 +4,7 @@ import StackNavigator from './src/components/Navigator/stackNavigator'
 import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
-  global.baseURL = "http://192.168.137.183"
+  global.baseURL = "http://192.168.137.155"
 
   return (
       <NavigationContainer>

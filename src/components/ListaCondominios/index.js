@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import { Image, Input, Icon, Avatar, SpeedDial, Card, Button, Overlay  } from 'react-native-elements';
 import { useEffect, useState } from 'react';
 import axios from "axios";
+import * as Progress from 'react-native-progress'
 
 export default function ListaCondominios({navigation}) {
     const isFocused = useIsFocused();
@@ -12,6 +13,7 @@ export default function ListaCondominios({navigation}) {
     const [IdCondominio, setIdCondominio] = useState();
     const [NomeCondominio, setNomeCondominio] = useState();
     const [Pesquisa,setPesquisa] = useState('');
+    const [spin, setSpin] = useState(false);
 
     const toggleOverlaySet = (condominio) => {
         setIdCondominio(condominio.unionIdentifier)
@@ -26,8 +28,11 @@ export default function ListaCondominios({navigation}) {
     };
 
     function EntrarNoCondominio(){
+        setSpin(true)
         axios.put(global.baseURL+":8080/union/condominium/" + IdCondominio + "/tenant",null,{headers: {'token' : global.sessionID}})
         .then((response) =>{
+            setSpin(false)
+
             navigation.navigate("Feedback", {
                 tipo : true,
                 retornoEspecifico: true,
@@ -36,6 +41,8 @@ export default function ListaCondominios({navigation}) {
                 destinoBotao : "Home"
             })
         }).catch((error) =>{
+            setSpin(false)
+
            if(error.response != undefined){
                 console.log(error.response.data.message)
             }
@@ -131,7 +138,8 @@ export default function ListaCondominios({navigation}) {
 
                     <Button
                         buttonStyle= {styles.overlay.button.buttonStyle}
-                        title="Ingressar"
+                        title={spin != false ?
+                            <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />: 'Ingressar'}
                         raised="true"
                         onPress={() => EntrarNoCondominio()}
                         containerStyle={styles.overlay.button.containerStyle}

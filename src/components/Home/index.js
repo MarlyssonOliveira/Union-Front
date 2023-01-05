@@ -13,6 +13,7 @@ export default function Home({navigation}) {
     const [UrlFotoUsuario, setUrlFotoUsuario] = useState();
     const [CondominiosDono, setCondominiosDono] = useState([]);
     const [CondominiosMorador, setCondominiosMorador] = useState([]);
+    const [OnUpdateImage, setOnUpdateImage] = useState();
     const [Pesquisa,setPesquisa] = useState('');
     const [spin, setSpin] = useState(false);
 
@@ -35,6 +36,7 @@ export default function Home({navigation}) {
         .then((response) =>{
             setnomeUsuario(response.data.name.split(" ")[0])
             setUrlFotoUsuario(response.data.urlPhotoProfile)
+            setOnUpdateImage(Math.random())
         }).catch((error) =>{
             if(error.response != undefined){
                 console.log(error.response.data.message)
@@ -88,7 +90,7 @@ export default function Home({navigation}) {
                             rounded
                             size="medium"
                             title="US"
-                            source={{uri: UrlFotoUsuario != undefined ? UrlFotoUsuario : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
+                            source={{uri: UrlFotoUsuario != undefined ? UrlFotoUsuario + "?" + OnUpdateImage : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
                         />
                         <Text  style={styles.areaLogado.boasVindas}>Olá, {nomeUsuario}</Text>
                     </View>
@@ -117,7 +119,7 @@ export default function Home({navigation}) {
                     <View style={styles.caixaGerencio.tamanhoScroll}>
                         <ScrollView contentContainerStyle={styles.caixaGerencio.scroll} horizontal={true} alwaysBounceHorizontal={true} showsHorizontalScrollIndicator={false} centerContent={true}>
                         {
-                            spin == false ?
+                            CondominiosDono.length > 0 ?
 
                             CondominiosDono.map((condominio) => (
                                     <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
@@ -128,10 +130,10 @@ export default function Home({navigation}) {
                                             </View>
                                         </Card.Image>
                                     </Card> 
-                            )) : 
-                                <View style={styles.container2}>
-                                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#ADADAD'} />
-                                </View>
+                            )) :
+                            <View style={styles.cardFeedback.container}>
+                                <Text style={styles.cardFeedback.mensagem}>Você nao faz parte de nenhum condomínio.</Text>
+                            </View>
                         
                         }
                         </ScrollView>

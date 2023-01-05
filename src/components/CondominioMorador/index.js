@@ -10,6 +10,8 @@ export default function CondominioMorador({navigation,route}) {
     const [open, setOpen] = useState(false);
     const [Condominio, setCondominioMorador] = useState();
     const [Mensagens, setMensagensCondominio] = useState([]);
+    const [OnUpdateImage, setOnUpdateImage] = useState();
+
     const [PossuiNumero, setPossuiNumero] = useState(false);
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -53,6 +55,8 @@ export default function CondominioMorador({navigation,route}) {
         axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setMensagensCondominio(response.data)
+            setOnUpdateImage(Math.random())
+
         }).catch((error) =>{
             if(error.response != undefined){
                 console.log(error.response.data.message)
@@ -153,7 +157,7 @@ export default function CondominioMorador({navigation,route}) {
                                                     <Avatar
                                                         rounded
                                                         size="medium"
-                                                        source={{uri: mensagem.user.urlPhotoProfile != undefined ? mensagem.user.urlPhotoProfile : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
+                                                        source={{uri: mensagem.user.urlPhotoProfile != undefined ? mensagem.user.urlPhotoProfile + "?" + OnUpdateImage : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
                                                     />
                                                     <Text  style={styles.card.tituloCard}>{mensagem.user.name}</Text>
                                                 </View>

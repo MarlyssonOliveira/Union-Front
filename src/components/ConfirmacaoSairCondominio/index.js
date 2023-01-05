@@ -4,6 +4,7 @@ import { Button, Icon, Image, Input } from 'react-native-elements';
 import axios from "axios";
 import { useEffect } from 'react';
 import { useState } from 'react';
+import * as Progress from 'react-native-progress'
 
 export default function ConfirmacaoSairCondominio({navigation, route}) {
     const [loaded] = useFonts({
@@ -13,6 +14,7 @@ export default function ConfirmacaoSairCondominio({navigation, route}) {
 
     });
     const [Condominio, setCondominio] = useState();
+    const [spin, setSpin] = useState(false);
 
     useEffect(()=>{
         CarregaCondominio()
@@ -22,8 +24,10 @@ export default function ConfirmacaoSairCondominio({navigation, route}) {
         return null;
     }
     function SairDoCondominio(){
+        setSpin(true)
         axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant/leave" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
+            setSpin(false)
             navigation.navigate("Feedback", {
                 tipo : true,
                 retornoEspecifico: true,
@@ -32,6 +36,7 @@ export default function ConfirmacaoSairCondominio({navigation, route}) {
                 destinoBotao : "Home"
             })
         }).catch((error) =>{
+            setSpin(false)
             if(error.response != undefined){
                 console.log(error.response.data.message)
             }
@@ -80,7 +85,8 @@ export default function ConfirmacaoSairCondominio({navigation, route}) {
                 <Button
                     buttonStyle= {styles.buttons.buttonConfirmarStyle}
                     style={{alignSelf:"center"}}
-                    title="Confirmar"
+                    title={spin != false ?
+                        <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />: 'Confirmar'}
                     onPress={()=>SairDoCondominio()}
                     raised="true"
                     containerStyle={styles.buttons.containerStyle}
