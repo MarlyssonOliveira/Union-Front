@@ -79,7 +79,7 @@ export default function NovoCondominio({navigation}) {
                 "name": Nome,
                 "address": Endereco,
             }
-            axios.post(global.baseURL+":8080/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
+            axios.post(global.baseURL+"/union/condominium",novoCondominio,{headers:{'Content-Type': 'application/json', 'token' : global.sessionID}})
         .then((response) => {
             setSpin(false)
             navigation.navigate("Feedback", {

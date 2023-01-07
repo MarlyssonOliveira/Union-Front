@@ -24,7 +24,8 @@ export default function CodigoVerificacao({navigation}) {
             setErroCod('O código enviado contém 6 dígitos')
         }else{
             setSpin(true);
-        axios.post(global.baseURL+":8080/union/user/account-confirmation",Codigo,{headers:{'Content-Type': 'application/json'}})
+
+        axios.post(global.baseURL+"/union/user/account-confirmation",Codigo.trim(),{headers:{'Content-Type': 'application/json'}})
         .then((response)=>{
             setSpin(false);
             navigation.navigate("Feedback", {

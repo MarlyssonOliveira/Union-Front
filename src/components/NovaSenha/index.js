@@ -15,7 +15,7 @@ export default function NovaSenha({navigation}) {
             "password": Senha,
             "code": Codigo
         }
-        axios.put(global.baseURL+":8080/union/user/new-password",novaSenhaObj,{headers:{'Content-Type': 'application/json'}})
+        axios.put(global.baseURL+"/union/user/new-password",novaSenhaObj,{headers:{'Content-Type': 'application/json'}})
         .then((response) => {
             navigation.navigate("Feedback", {
                 tipo : true,

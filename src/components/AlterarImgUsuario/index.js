@@ -6,8 +6,9 @@ import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import mime from 'mime';
+import * as Progress from 'react-native-progress'
 
-export default function AletrarImgUsuario({navigation, route}) {
+export default function AlterarImgUsuario({navigation, route}) {
 
     const [Imagem,setImagem] = useState('')
     const [nomeImagem, setNomeImagem] = useState();
@@ -25,6 +26,7 @@ export default function AletrarImgUsuario({navigation, route}) {
         }
     }
 
+    
     useEffect(()=>{
         validarCampos()
     })
@@ -57,9 +59,8 @@ export default function AletrarImgUsuario({navigation, route}) {
     }
     function CarregaUsuarioLogado(){
 
-        axios.get(global.baseURL+":8080/union/user",{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/user",{headers: {'token' : global.sessionID}})
         .then((response) =>{
-            console.log(response.data)
             setidUsuario(response.data.unionIdentifier)
         }).catch((error) =>{
             if(error.response != undefined){
@@ -77,6 +78,7 @@ export default function AletrarImgUsuario({navigation, route}) {
 
     function AlterarFoto(imagem){
       if(validar){
+        setSpin(true)
         var bodyFormData = new FormData();
             bodyFormData.append("file", {
                 uri: imagem.uri,
@@ -86,7 +88,7 @@ export default function AletrarImgUsuario({navigation, route}) {
             bodyFormData.append("unionIdentifier", idUsuario)
             var axionConfig = { 
                 method: "post",
-                url: global.baseURL+":8080/union/user/photo-profile",
+                url: global.baseURL+"/union/user/photo-profile",
                 responseType: "json",
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -97,6 +99,8 @@ export default function AletrarImgUsuario({navigation, route}) {
 
             axios.request(axionConfig)
             .then((response) => {
+                setSpin(false)
+
                 navigation.navigate("Feedback", {
                     tipo : true,
                     retornoEspecifico: true,
@@ -105,6 +109,8 @@ export default function AletrarImgUsuario({navigation, route}) {
                     destinoBotao : "Home"
                 })
             }).catch((error) =>{
+                setSpin(false)
+
                 if(error.response != undefined){
                     console.log(error.response.data.message)
                 }
@@ -168,7 +174,8 @@ export default function AletrarImgUsuario({navigation, route}) {
             <Button
                 buttonStyle= {styles.button.buttonStyle}
                 style={styles.input.style}
-                title="Alterar Foto"
+                title={spin != false ?
+                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />: 'Alterar Foto'}
                 raised="true"
                 onPress={()=>AlterarFoto(Imagem)}
                 containerStyle={styles.button.containerStyle}

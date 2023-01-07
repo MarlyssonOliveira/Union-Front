@@ -29,7 +29,7 @@ export default function GerenciamentoTaxas({navigation, route}) {
 
     
     function CarregaTaxas(){
-        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt",{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/debt",{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setTaxas(response.data)
         }).catch((error) =>{

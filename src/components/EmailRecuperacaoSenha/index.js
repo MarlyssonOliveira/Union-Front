@@ -23,7 +23,6 @@ export default function EmailRecuperacaoSenha({navigation}) {
         }else{
             setValidar(false)
         }
-        // console.log(validar)
     }
 
     function validadorEmail(email){
@@ -41,7 +40,7 @@ export default function EmailRecuperacaoSenha({navigation}) {
     
       function EnviaEmail(){
         if(validar){
-            axios.post(global.baseURL+":8080/union/user/request-new-password",Email,{headers:{'Content-Type': 'text/html'}})
+            axios.post(global.baseURL+"/union/user/request-new-password",Email,{headers:{'Content-Type': 'text/html'}})
         .then((response)=>{
             navigation.navigate("NovaSenha")
         }).catch((error)=>{

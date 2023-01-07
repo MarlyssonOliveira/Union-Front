@@ -32,16 +32,14 @@ export default function Login({navigation}) {
     function Logar(){
         if(validar){
             setValidar(false)
-            console.log('asdasdasd')
             setSpin(true)
-            axios.post(global.baseURL+":8080/union/user/login",
+            axios.post(global.baseURL+"/union/user/login",
             {
                 email:Email,
                 password:Senha
             },
             {headers:{'Content-Type': 'application/json'}})
             .then((response)=>{
-                    console.log(response.data)
                     global.sessionID = response.data
                     setSpin(false)
                     navigation.navigate("Home")

@@ -75,7 +75,7 @@ export default function NovaTaxa({navigation,route}) {
       function CadastrarTaxa(){
         if(validar){
             setSpin(true)
-            axios.post(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt" ,{
+            axios.post(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/debt" ,{
                 title: TituloTaxa,
                 expirationDate: VencimentoTaxa,
                 value: ValorTaxa,

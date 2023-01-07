@@ -18,7 +18,7 @@ export default function ConfirmacaoLogout({navigation}) {
     }
 
     function Logout(){
-        axios.post(global.baseURL+":8080/union/user/logout",null,{headers:{'Content-Type': 'application/json', 'token': global.sessionID}})
+        axios.post(global.baseURL+"/union/user/logout",null,{headers:{'Content-Type': 'application/json', 'token': global.sessionID}})
         .then(() =>{
             global.sessionID = ""
             navigation.navigate("Index")

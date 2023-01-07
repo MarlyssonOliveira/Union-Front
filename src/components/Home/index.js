@@ -32,7 +32,7 @@ export default function Home({navigation}) {
 
     function CarregaUsuarioLogado(){
 
-        axios.get(global.baseURL+":8080/union/user",{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/user",{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setnomeUsuario(response.data.name.split(" ")[0])
             setUrlFotoUsuario(response.data.urlPhotoProfile)
@@ -53,7 +53,7 @@ export default function Home({navigation}) {
 
     function CarregaCondominios(nome){
         setSpin(true)
-        axios.get(global.baseURL+":8080/union/condominium?name="+nome,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium?name="+nome,{headers: {'token' : global.sessionID}})
         .then((response) =>{ 
             setCondominiosDono(response.data.filter((cond) => {return cond.userIsOwner == true}))
             setCondominiosMorador(response.data.filter((cond) => {return cond.userIsOwner == false}))
@@ -76,7 +76,6 @@ export default function Home({navigation}) {
     }
 
     function Pesquisar(nome){
-        // console.log(nome)
         setPesquisa(nome)
     }
 
@@ -90,7 +89,7 @@ export default function Home({navigation}) {
                             rounded
                             size="medium"
                             title="US"
-                            source={{uri: UrlFotoUsuario != undefined ? UrlFotoUsuario + "?" + OnUpdateImage : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
+                            source={{uri: UrlFotoUsuario != undefined ? UrlFotoUsuario + "?" + OnUpdateImage : global.genericUserUrl}}
                         />
                         <Text  style={styles.areaLogado.boasVindas}>Olá, {nomeUsuario}</Text>
                     </View>
@@ -123,7 +122,7 @@ export default function Home({navigation}) {
 
                             CondominiosDono.map((condominio) => (
                                     <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
-                                        <Card.Image  onPress={()=>{navigation.navigate("AdmCondominio", {idCondominio : condominio.unionIdentifier})}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
+                                        <Card.Image  onPress={()=>{navigation.navigate("AdmCondominio", {idCondominio : condominio.unionIdentifier})}} source={{ uri:condominio.urlPhotoProfile != undefined ? condominio.urlPhotoProfile + "?" + OnUpdateImage : global.genericBuildingUrl}} style={styles.card.image}>
                                             <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
                                                 <Text style={styles.card.titulo}>{condominio.name}</Text>
                                                 <Text style={styles.card.subtitulo}>{condominio.tenantsCount} moradores</Text>
@@ -147,7 +146,7 @@ export default function Home({navigation}) {
                                 CondominiosMorador.length > 0 ?
                                     CondominiosMorador.map((condominio) => (
                                         <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
-                                            <Card.Image  onPress={()=>{navigation.navigate("CondominioMorador", {idCondominio : condominio.unionIdentifier})}} source={require('../../assets/images/predio.jpg')} style={styles.card.image}>
+                                            <Card.Image  onPress={()=>{navigation.navigate("CondominioMorador", {idCondominio : condominio.unionIdentifier})}} source={{ uri:condominio.urlPhotoProfile != undefined ? condominio.urlPhotoProfile + "?" + OnUpdateImage : global.genericBuildingUrl}} style={styles.card.image}>
                                                 <View backgroundColor="#EFF3FF" style={styles.card.fundoCard}>
                                                     <Text style={styles.card.titulo}>{condominio.name}</Text>
                                                     <Text style={styles.card.subtitulo}>{condominio.tenantsCount} moradores</Text>

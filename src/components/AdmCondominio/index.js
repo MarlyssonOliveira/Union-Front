@@ -45,9 +45,10 @@ export default function AdmCondominio({navigation, route}) {
     }
 
     function CarregaCondominio(){
-        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setCondominio(response.data)
+            setOnUpdateImage(Math.random())
         }).catch((error) =>{
             if(error.response != undefined){
                 console.log(error.response.data.message)
@@ -63,7 +64,7 @@ export default function AdmCondominio({navigation, route}) {
     }
 
     function CarregaMensagens(){
-        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setMensagens(response.data)
             setOnUpdateImage(Math.random())
@@ -82,7 +83,7 @@ export default function AdmCondominio({navigation, route}) {
     }
     
     function DeletarMensagem(){
-        axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication/" + IdMensagem,{headers: {'token' : global.sessionID}})
+        axios.delete(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/publication/" + IdMensagem,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             toggleOverlayUnSet()
             navigation.navigate("Feedback", {
@@ -111,7 +112,7 @@ export default function AdmCondominio({navigation, route}) {
                 <View style={styles.detalhesCondominio.flexConteudo}>
                     <View style={styles.detalhesCondominio.conteudo}>
                         <Image
-                            source={require('../../assets/images/predio.jpg')}
+                            source={{uri: Condominio != undefined ? Condominio.urlPhotoProfile != undefined ? Condominio.urlPhotoProfile  + "?" + OnUpdateImage : global.genericBuildingUrl : global.genericBuildingUrl}}
                             style={styles.detalhesCondominio.imagem}
                             
                         />
@@ -128,7 +129,7 @@ export default function AdmCondominio({navigation, route}) {
                                         color="#FFF"  
                                     />
                                 }
-                                onPress={() => navigation.navigate("AletrarImgCondominio")}
+                                onPress={() => navigation.navigate("AlterarImgCondominio", {idCondominio : Condominio.unionIdentifier })}
                                 title="Alterar Imagem"
                                 raised="true"
                                 containerStyle={styles.detalhesCondominio.containerStyle}
@@ -151,7 +152,7 @@ export default function AdmCondominio({navigation, route}) {
                                                     <Avatar
                                                         rounded
                                                         size="medium"
-                                                        source={{uri: mensagem.user.urlPhotoProfile != undefined ? mensagem.user.urlPhotoProfile + "?" + OnUpdateImage : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
+                                                        source={{uri: mensagem.user.urlPhotoProfile != undefined ? mensagem.user.urlPhotoProfile + "?" + OnUpdateImage : global.genericUserUrl}}
                                                     />
                                                     <Text  style={styles.card.titulo}>{mensagem.user.name}</Text>
                                                 </View>

@@ -42,7 +42,7 @@ export default function DetalhamentoTaxa({navigation, route}) {
     }
 
     function CarregaDebito(){
-        axios.get(global.baseURL+":8080/union/debt/" + route.params.idDebito,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/debt/" + route.params.idDebito,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setDebito(response.data)
         }).catch((error) =>{
@@ -59,7 +59,7 @@ export default function DetalhamentoTaxa({navigation, route}) {
         })
     }
     function CarregaMoradores(){
-        axios.get(global.baseURL+":8080/union/debt/" + route.params.idDebito + "/user" ,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/debt/" + route.params.idDebito + "/user" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setMoradores(response.data)
         }).catch((error) =>{
@@ -77,7 +77,7 @@ export default function DetalhamentoTaxa({navigation, route}) {
     }
 
     function ConfirmarPagamento(){
-        axios.put(global.baseURL+":8080/union/debt/" + route.params.idDebito + "/user/" + IdMorador + "/payment" ,null,{headers: {'token' : global.sessionID}})
+        axios.put(global.baseURL+"/union/debt/" + route.params.idDebito + "/user/" + IdMorador + "/payment" ,null,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             navigation.navigate("Feedback",{
                 tipo : true,

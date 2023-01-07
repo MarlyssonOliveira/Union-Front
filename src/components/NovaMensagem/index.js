@@ -32,7 +32,7 @@ export default function NovaMensagem({navigation,route}) {
         if(validar){
             setValidar(false)
             setSpin(true)
-            axios.post(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication",{"message": Mensagem},{headers: {'token' : global.sessionID}})
+            axios.post(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/publication",{"message": Mensagem},{headers: {'token' : global.sessionID}})
                 .then((response) => {
                     setSpin(false)
                     navigation.navigate("AdmCondominio", {

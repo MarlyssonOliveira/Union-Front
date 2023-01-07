@@ -22,8 +22,6 @@ export default function CSVCondominio({navigation, route}) {
 
       });
     function validarCampos(){
-        // console.log(validar)
-        // console.log(nomeCsv)
         if(erroForm==''){
             setValidar(true);
         }else{
@@ -49,7 +47,7 @@ export default function CSVCondominio({navigation, route}) {
             })
             var axionConfig = { 
                 method: "post",
-                url: global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant",
+                url: global.baseURL+"/union/condominium/" + route.params.idCondominio + "/tenant",
                 responseType: "json",
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -92,8 +90,6 @@ export default function CSVCondominio({navigation, route}) {
             const  res = await DocumentPicker.getDocumentAsync({type:'text/comma-separated-values',})
 
             if(res.name != null){
-                // console.log(res.name)
-                // console.log(res)
                 if(res.name.indexOf('.csv') == -1){
                     setErroForm('Formato de arquivo não suportado')
                     setNomeCSV('')

@@ -31,9 +31,11 @@ export default function CondominioMorador({navigation,route}) {
     }
 
     function CarregaCondominio(){
-        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setCondominioMorador(response.data)
+            setOnUpdateImage(Math.random())
+
             if(response.data.owner.phone != null && response.data.owner.phone != undefined && response.data.owner.phone != ""){
                 setPossuiNumero(true)
             }
@@ -52,7 +54,7 @@ export default function CondominioMorador({navigation,route}) {
     }
 
     function CarregaMensagens(){
-        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/publication" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setMensagensCondominio(response.data)
             setOnUpdateImage(Math.random())
@@ -84,7 +86,7 @@ export default function CondominioMorador({navigation,route}) {
     }
 
     function SairDoCondominio(){
-        axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant/leave" ,{headers: {'token' : global.sessionID}})
+        axios.delete(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/tenant/leave" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             navigation.navigate("Feedback", {
                 tipo : true,
@@ -115,7 +117,7 @@ export default function CondominioMorador({navigation,route}) {
                 <View style={styles.detalhesCondominio.flexConteudo}>
                     <View style={styles.detalhesCondominio.conteudo}>
                         <Image
-                            source={require('../../assets/images/predio.jpg')}
+                            source={{uri: Condominio != undefined ? Condominio.urlPhotoProfile != undefined ? Condominio.urlPhotoProfile  + "?" + OnUpdateImage : global.genericBuildingUrl : global.genericBuildingUrl}}
                             style={styles.detalhesCondominio.imageStyle}
                         />
                         <View>
@@ -157,7 +159,7 @@ export default function CondominioMorador({navigation,route}) {
                                                     <Avatar
                                                         rounded
                                                         size="medium"
-                                                        source={{uri: mensagem.user.urlPhotoProfile != undefined ? mensagem.user.urlPhotoProfile + "?" + OnUpdateImage : "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"}}
+                                                        source={{uri: mensagem.user.urlPhotoProfile != undefined ? mensagem.user.urlPhotoProfile + "?" + OnUpdateImage : global.genericUserUrl}}
                                                     />
                                                     <Text  style={styles.card.tituloCard}>{mensagem.user.name}</Text>
                                                 </View>

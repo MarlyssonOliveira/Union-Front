@@ -43,7 +43,7 @@ export default function ListaMoradores({navigation, route}) {
     }
 
     function CarregaMoradores(){
-        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant" ,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/tenant" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setMoradores(response.data)
         }).catch((error) =>{
@@ -61,7 +61,7 @@ export default function ListaMoradores({navigation, route}) {
     }
     
     function RemoverMorador(){
-        axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/tenant/" + IdMorador,{headers: {'token' : global.sessionID}})
+        axios.delete(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/tenant/" + IdMorador,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             toggleOverlayUnSet()
             navigation.navigate("Feedback", {

@@ -25,7 +25,7 @@ export default function Confirmacao({navigation, route}) {
     }
     function DetelarCondominio(){
         setSpin(true)
-        axios.delete(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
+        axios.delete(global.baseURL+"/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setSpin(false)
             navigation.navigate("Feedback", {
@@ -52,7 +52,7 @@ export default function Confirmacao({navigation, route}) {
 
     function CarregaCondominio(){
         setSpin(true)
-        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium/" + route.params.idCondominio ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setCondominio(response.data)
             setSpin(false)

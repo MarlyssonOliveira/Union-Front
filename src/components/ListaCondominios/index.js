@@ -29,7 +29,7 @@ export default function ListaCondominios({navigation}) {
 
     function EntrarNoCondominio(){
         setSpin(true)
-        axios.put(global.baseURL+":8080/union/condominium/" + IdCondominio + "/tenant",null,{headers: {'token' : global.sessionID}})
+        axios.put(global.baseURL+"/union/condominium/" + IdCondominio + "/tenant",null,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setSpin(false)
 
@@ -73,7 +73,7 @@ export default function ListaCondominios({navigation}) {
     }
 
     function CarregaCondominiosDisponiveis(nome){
-        axios.get(global.baseURL+":8080/union/condominium/availables?name="+nome,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium/availables?name="+nome,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setListaDisponiveis(response.data)
         }).catch((error) =>{
@@ -113,7 +113,7 @@ export default function ListaCondominios({navigation}) {
                                 ListaDisponiveis.length > 0 ?
                                     ListaDisponiveis.map((condominio) => (
                                         <Card key={condominio.unionIdentifier} containerStyle={styles.card.containerStyle}>
-                                            <Card.Image onPress={() => toggleOverlaySet(condominio)} source={require('../../assets/images/predio.jpg')} style={styles.card.cardImage}>
+                                            <Card.Image onPress={() => toggleOverlaySet(condominio)} source={{ uri:condominio.urlPhotoProfile != undefined ? condominio.urlPhotoProfile + "?" + OnUpdateImage : global.genericBuildingUrl}} style={styles.card.cardImage}>
                                                 <View backgroundColor="#EFF3FF" style={styles.card.divTitulos}>
                                                     <Text style={styles.card.titulo}>{condominio.name}</Text>
                                                     <Text style={styles.card.subtitulo}>{condominio.tenantsCount == null ? "0" : condominio.tenantsCount} moradores</Text>

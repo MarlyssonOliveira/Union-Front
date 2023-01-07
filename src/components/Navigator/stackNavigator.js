@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import AdmCondominio from '../AdmCondominio/index';
-import AletrarImgCondominio from '../AlterarImgCondominio';
-import AletrarImgUsuario from '../AlterarImgUsuario';
+import AlterarImgCondominio from '../AlterarImgCondominio';
+import AlterarImgUsuario from '../AlterarImgUsuario';
 import CadastroDados from '../CadastroDados/index';
 import CadastroSeguranca from '../CadastroSeguranca/index';
 import CodigoVerificacao from '../CodigoVerificacao/index';
@@ -51,8 +51,8 @@ export default function StackNavigator() {
     <Stack.Screen name="ListaCondominios" component={ListaCondominios} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="EmailRecuperacaoSenha" component={EmailRecuperacaoSenha} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="NovaSenha" component={NovaSenha} options={{headerShown:true, headerTitle:""}}/>
-    <Stack.Screen name="AletrarImgCondominio" component={AletrarImgCondominio} options={{headerShown:true, headerTitle:""}}/>
-    <Stack.Screen name="AletrarImgUsuario" component={AletrarImgUsuario} options={{headerShown:true, headerTitle:""}}/>
+    <Stack.Screen name="AlterarImgCondominio" component={AlterarImgCondominio} options={{headerShown:true, headerTitle:""}}/>
+    <Stack.Screen name="AletrarImgUsuario" component={AlterarImgUsuario} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="ConfirmacaoLogout" component={ConfirmacaoLogout} options={{headerShown:true, headerTitle:""}}/>
     <Stack.Screen name="ConfirmacaoSairCondominio" component={ConfirmacaoSairCondominio} options={{headerShown:true, headerTitle:""}}/>
 

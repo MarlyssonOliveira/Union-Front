@@ -42,7 +42,7 @@ export default function Debitos({navigation,route}) {
       }
 
     function CarregaHistorico(){
-        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt/history" ,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/debt/history" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setHistorico(response.data)
         }).catch((error) =>{
@@ -64,7 +64,7 @@ export default function Debitos({navigation,route}) {
       };
 
     function CarregaDebitosAbertos(){
-        axios.get(global.baseURL+":8080/union/condominium/" + route.params.idCondominio + "/debt/open" ,{headers: {'token' : global.sessionID}})
+        axios.get(global.baseURL+"/union/condominium/" + route.params.idCondominio + "/debt/open" ,{headers: {'token' : global.sessionID}})
         .then((response) =>{
             setDebitosAbertos(response.data)
         }).catch((error) =>{

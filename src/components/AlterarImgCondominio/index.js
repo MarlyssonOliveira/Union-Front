@@ -6,11 +6,16 @@ import * as DocumentPicker from 'expo-document-picker';
 import axios from "axios";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import mime from 'mime';
+import * as Progress from 'react-native-progress'
 
-export default function AletrarImgCondominio({navigation, route}) {
+export default function AlterarImgCondominio({navigation, route}) {
 
     const [Imagem,setImagem] = useState()
     const [nomeImagem, setNomeImagem] = useState();
+    const [validar, setValidar] = useState(false);
+    const [erroForm, setErroForm] = useState('');
+
+    const [spin, setSpin] = useState(false);
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
         PoppinsRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
@@ -18,20 +23,85 @@ export default function AletrarImgCondominio({navigation, route}) {
 
       });
 
+      function validarCampos(){
+        if(erroForm=='' && Imagem!= ''){
+            setValidar(true);
+        }else{
+            setValidar(false)
+        }
+    }
+
+    useEffect(()=>{
+        validarCampos()
+    })
+
       if (!loaded) {
         return null;
       }
     async function CapturaImgCondominio() {
-        const  res = await DocumentPicker.getDocumentAsync({type:'image/jpeg',})
-        if(res.name != null){
-            setNomeImagem(res.name)
-            setImagem(res)                
+      setErroForm("");
+      try {
+        const res = await DocumentPicker.getDocumentAsync({
+          type: "image/jpeg",
+        });
+        if (res.name != null) {
+          setNomeImagem(res.name);
+          setImagem(res);
         }
+      } catch (err) {
+        console.log(err);
+        setErroForm("Selecione um arquivo válido");
+      }
     }
 
     function AlterarFoto(imagem){
-        console.log(imagem)
-    }
+        if(validar){
+            setSpin(true)
+          var bodyFormData = new FormData();
+              bodyFormData.append("file", {
+                  uri: imagem.uri,
+                  name: imagem.name,
+                  type: mime.getType(imagem.uri)
+              })
+              bodyFormData.append("unionIdentifier", route.params.idCondominio)
+              var axionConfig = { 
+                  method: "post",
+                  url: global.baseURL+"/union/condominium/photo-profile",
+                  responseType: "json",
+                  headers: {
+                      'Content-Type': 'multipart/form-data',
+                  },
+                  transformRequest: (bodyFormData) => { return bodyFormData},
+                  data: bodyFormData,
+              };
+  
+              axios.request(axionConfig)
+              .then((response) => {
+                    setSpin(false)
+                  navigation.navigate("Feedback", {
+                      tipo : true,
+                      retornoEspecifico: true,
+                      mensagem : "Foto alterada com sucesso!",
+                      textoBotao : "Página Inicial",
+                      destinoBotao : "Home"
+                  })
+              }).catch((error) =>{
+                setSpin(false)
+                  if(error.response != undefined){
+                      console.log(error.response.data.message)
+                  }
+                  navigation.navigate("Feedback", {
+                      tipo : false,
+                      retornoEspecifico: true,
+                      mensagem : "Ocorreu um erro inesperado no sistema!",
+                      textoBotao : "Pagina Inicial",
+                      destinoBotao: "Home"
+                  })
+              })
+          }else{
+              setErroForm('Selecione um arquivo válido')
+          }
+      }
 
     return (
         <View style={styles.container}>
@@ -78,7 +148,8 @@ export default function AletrarImgCondominio({navigation, route}) {
             <Button
                 buttonStyle= {styles.button.buttonStyle}
                 style={styles.input.style}
-                title="Alterar Foto"
+                title={spin != false ?
+                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />: 'Alterar Foto'}
                 raised="true"
                 onPress={()=>AlterarFoto(Imagem)}
                 containerStyle={styles.button.containerStyle}
