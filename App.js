@@ -5,8 +5,8 @@ import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
   global.baseURL = "http://192.168.0.105:8080"
-  global.genericUserUrl = "https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
-  global.genericBuildingUrl = "https://sonharemorar.com.br/wp-content/uploads/2020/12/condominio-1-750x490.jpg"
+  global.genericUserUrl = "https://union-profile-images.s3.amazonaws.com/photo-default-user"
+  global.genericBuildingUrl = "https://union-profile-images.s3.amazonaws.com/photo-default-condominium"
 
   return (
       <NavigationContainer>
