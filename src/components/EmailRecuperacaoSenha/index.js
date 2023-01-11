@@ -1,14 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from "expo-font";
 import { Button, Icon, Image, Input } from 'react-native-elements';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from "axios";
+import * as Progress from 'react-native-progress'
 
 export default function EmailRecuperacaoSenha({navigation}) {
 
     const [Email,setEmail] = useState();
     const [erroEmail,setErroEmail] = useState();
     const [validar, setValidar] = useState(false);
+    const [spin, setSpin] = useState(false);
 
     const [loaded] = useFonts({
         PoppinsExtraBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
@@ -40,10 +42,13 @@ export default function EmailRecuperacaoSenha({navigation}) {
     
       function EnviaEmail(){
         if(validar){
+            setSpin(true)
             axios.post(global.baseURL+"/union/user/request-new-password",Email,{headers:{'Content-Type': 'text/html'}})
         .then((response)=>{
+            setSpin(false)
             navigation.navigate("NovaSenha")
         }).catch((error)=>{
+            setSpin(false)
             if(error.response != undefined){
                 console.log(error.response.data.message)
             }
@@ -95,7 +100,8 @@ export default function EmailRecuperacaoSenha({navigation}) {
                 <Button
                     buttonStyle= {styles.divButtons.buttonEnviarStyle}
                     style={styles.divButtons.style}
-                    title="Enviar código"
+                    title={spin != false ?
+                        <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />: 'Enviar código'}
                     onPress={()=>{EnviaEmail()}}
                     raised="true"
                     containerStyle={styles.divButtons.containerStyle}

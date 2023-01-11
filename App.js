@@ -4,7 +4,7 @@ import StackNavigator from './src/components/Navigator/stackNavigator'
 import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
-  global.baseURL = "http://192.168.0.105:8080"
+  global.baseURL = "http://ec2-18-204-202-42.compute-1.amazonaws.com:8080"
   global.genericUserUrl = "https://union-profile-images.s3.amazonaws.com/photo-default-user"
   global.genericBuildingUrl = "https://union-profile-images.s3.amazonaws.com/photo-default-condominium"
 

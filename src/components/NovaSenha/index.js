@@ -3,20 +3,25 @@ import { useFonts } from "expo-font";
 import { Button, Image, Input } from 'react-native-elements';
 import { useState } from 'react';
 import axios from "axios";
+import * as Progress from 'react-native-progress'
 
 export default function NovaSenha({navigation}) {
 
     const [Email,setEmail] = useState();
     const [Senha,setSenha] = useState();
     const [Codigo,setCodigo] = useState();
+    const [spin, setSpin] = useState(false);
+
     function RedefinirSenha(){
         var novaSenhaObj = {
             "email": Email,
             "password": Senha,
             "code": Codigo
         }
+        setSpin(true)
         axios.put(global.baseURL+"/union/user/new-password",novaSenhaObj,{headers:{'Content-Type': 'application/json'}})
         .then((response) => {
+            setSpin(false)
             navigation.navigate("Feedback", {
                 tipo : true,
                 retornoEspecifico: true,
@@ -25,6 +30,7 @@ export default function NovaSenha({navigation}) {
                 destinoBotao : "Login"
             })
         }).catch((error) =>{
+            setSpin(false)
             if(error.response != undefined){
                 console.log(error.response.data.message)
             }
@@ -100,8 +106,8 @@ export default function NovaSenha({navigation}) {
                     width: 350
                 }}
                 style={{alignSelf:"center"}}
-                title="Redefinir senha"
-                raised="true"
+                title={spin != false ?
+                    <Progress.Circle size={25} indeterminate={true} borderWidth={3} color={'#f6f7f9'} />: 'Redefinir Senha'}                raised="true"
                 onPress={()=>{RedefinirSenha()}}
                 containerStyle={{
                     borderRadius:10
