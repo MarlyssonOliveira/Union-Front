@@ -47,9 +47,6 @@ export default function ListaMoradores({navigation, route}) {
         .then((response) =>{
             setMoradores(response.data)
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -71,9 +68,6 @@ export default function ListaMoradores({navigation, route}) {
                 textoBotao : "Voltar",
             })
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,

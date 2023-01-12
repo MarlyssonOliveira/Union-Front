@@ -38,9 +38,6 @@ export default function Home({navigation}) {
             setUrlFotoUsuario(response.data.urlPhotoProfile)
             setOnUpdateImage(Math.random())
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -60,10 +57,7 @@ export default function Home({navigation}) {
             setSpin(false)
 
         }).catch((error) =>{
-            if(error.response != undefined){
-                setSpin(false)
-                console.log(error.response.data.message)
-            }
+            setSpin(false)
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,

@@ -37,9 +37,6 @@ export default function CodigoVerificacao({navigation}) {
             })
         }).catch((error)=>{
             setSpin(false);
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -162,7 +159,7 @@ const styles = StyleSheet.create({
     divButtons:{
         alignment:{
             height:120, 
-            justifyContent: 'space-between'
+            justifyContent: 'flex-end'
         },
         style:{
             alignSelf:"center"
@@ -175,13 +172,13 @@ const styles = StyleSheet.create({
         buttonReenviarStyle:{
             backgroundColor: "#fff",
             borderRadius:10,
-            width: 340,
+            width: 350,
             borderColor:"#ADADAD",
             borderWidth: 1
         },
         containerStyle:{
             borderRadius:10,
-            width: 340
+            width: 350
         },
         titleVerificarStyle:{
             color:"#FFF", 

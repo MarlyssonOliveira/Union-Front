@@ -49,9 +49,6 @@ export default function EmailRecuperacaoSenha({navigation}) {
             navigation.navigate("NovaSenha")
         }).catch((error)=>{
             setSpin(false)
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -166,7 +163,7 @@ const styles = StyleSheet.create({
     divButtons:{
         alignment:{
             height:120, 
-            justifyContent: 'space-between'
+            justifyContent: 'flex-end'
         },
         style:{
             alignSelf:"center"
@@ -178,7 +175,7 @@ const styles = StyleSheet.create({
         },
         containerStyle:{
             borderRadius:10,
-            width: 340
+            width: 350
         },
         titleEnviarStyle:{
             color:"#FFF", 

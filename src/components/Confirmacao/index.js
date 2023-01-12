@@ -37,9 +37,6 @@ export default function Confirmacao({navigation, route}) {
             })
         }).catch((error) =>{
             setSpin(false)
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -58,9 +55,6 @@ export default function Confirmacao({navigation, route}) {
             setSpin(false)
         }).catch((error) =>{
             setSpin(false)
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,

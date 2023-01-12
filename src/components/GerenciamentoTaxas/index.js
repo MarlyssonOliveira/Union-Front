@@ -33,9 +33,6 @@ export default function GerenciamentoTaxas({navigation, route}) {
         .then((response) =>{
             setTaxas(response.data)
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,

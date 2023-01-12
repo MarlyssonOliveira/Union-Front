@@ -50,9 +50,6 @@ export default function AdmCondominio({navigation, route}) {
             setCondominio(response.data)
             setOnUpdateImage(Math.random())
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -69,9 +66,6 @@ export default function AdmCondominio({navigation, route}) {
             setMensagens(response.data)
             setOnUpdateImage(Math.random())
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -93,9 +87,6 @@ export default function AdmCondominio({navigation, route}) {
                 textoBotao : "Voltar",
             })
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,

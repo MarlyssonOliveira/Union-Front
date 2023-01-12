@@ -68,9 +68,6 @@ export default function CSVCondominio({navigation, route}) {
                     destinoBotao : "Home"
                 })
             }).catch((error) =>{
-                if(error.response != undefined){
-                    console.log(error.response.data.message)
-                }
                 navigation.navigate("Feedback", {
                     tipo : false,
                     retornoEspecifico: true,
@@ -103,7 +100,6 @@ export default function CSVCondominio({navigation, route}) {
                 setErroForm('Selecione um arquivo válido')
             }
         }catch (err){
-            console.log(err)
             setErroForm('Selecione um arquivo válido')
         }
     }

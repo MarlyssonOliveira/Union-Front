@@ -31,9 +31,6 @@ export default function NovaSenha({navigation}) {
             })
         }).catch((error) =>{
             setSpin(false)
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,

@@ -45,11 +45,19 @@ export default function AlterarImgCondominio({navigation, route}) {
           type: "image/jpeg",
         });
         if (res.name != null) {
-          setNomeImagem(res.name);
-          setImagem(res);
+            if(res.size > 2000000){
+                navigation.navigate("Feedback", {
+                    tipo : false,
+                    mensagem : "A imagem selecionada excede o limite permitido (2Mb)!",
+                    textoBotao : "Voltar",
+                })
+                
+            }else{
+                setNomeImagem(res.name)
+                setImagem(res) 
+            }
         }
       } catch (err) {
-        console.log(err);
         setErroForm("Selecione um arquivo válido");
       }
     }
@@ -87,9 +95,6 @@ export default function AlterarImgCondominio({navigation, route}) {
                   })
               }).catch((error) =>{
                 setSpin(false)
-                  if(error.response != undefined){
-                      console.log(error.response.data.message)
-                  }
                   navigation.navigate("Feedback", {
                       tipo : false,
                       retornoEspecifico: true,

@@ -40,9 +40,6 @@ export default function CondominioMorador({navigation,route}) {
                 setPossuiNumero(true)
             }
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -60,9 +57,6 @@ export default function CondominioMorador({navigation,route}) {
             setOnUpdateImage(Math.random())
 
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -81,7 +75,6 @@ export default function CondominioMorador({navigation,route}) {
 
             }
         } catch (error) {
-            console.log(error)
         }
     }
 
@@ -96,9 +89,6 @@ export default function CondominioMorador({navigation,route}) {
                 destinoBotao : "Home"
             })
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,

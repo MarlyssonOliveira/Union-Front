@@ -42,10 +42,6 @@ export default function ListaCondominios({navigation}) {
             })
         }).catch((error) =>{
             setSpin(false)
-
-           if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -77,9 +73,6 @@ export default function ListaCondominios({navigation}) {
         .then((response) =>{
             setListaDisponiveis(response.data)
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,

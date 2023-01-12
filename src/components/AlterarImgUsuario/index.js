@@ -46,14 +46,25 @@ export default function AlterarImgUsuario({navigation, route}) {
       }
     async function CapturaIMGUsuario() {
         setErroForm('')
+        setNomeImagem('')
+        setImagem('') 
         try{
-            const  res = await DocumentPicker.getDocumentAsync({type:'image/jpeg',})
+            const  res = await DocumentPicker.getDocumentAsync({type:'image/jpeg'})
             if(res.name != null){
-                setNomeImagem(res.name)
-                setImagem(res)                
+                if(res.size > 2000000){
+                    navigation.navigate("Feedback", {
+                        tipo : false,
+                        mensagem : "A imagem selecionada excede o limite permitido (2Mb)!",
+                        textoBotao : "Voltar",
+                    })
+                    
+                }else{
+                    setNomeImagem(res.name)
+                    setImagem(res) 
+                }
+                              
             }
         }catch(err){
-            console.log(err)
             setErroForm('Selecione um arquivo válido')
         } 
     }
@@ -63,9 +74,6 @@ export default function AlterarImgUsuario({navigation, route}) {
         .then((response) =>{
             setidUsuario(response.data.unionIdentifier)
         }).catch((error) =>{
-            if(error.response != undefined){
-                console.log(error.response.data.message)
-            }
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
@@ -92,9 +100,11 @@ export default function AlterarImgUsuario({navigation, route}) {
                 responseType: "json",
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    "cache-control": "no-cache",
                 },
                 transformRequest: (bodyFormData) => { return bodyFormData},
                 data: bodyFormData,
+                processData: false,
             };
 
             axios.request(axionConfig)
@@ -110,19 +120,13 @@ export default function AlterarImgUsuario({navigation, route}) {
                 })
             }).catch((error) =>{
                 setSpin(false)
-                console.log(error)
-                if(error.response != undefined){
-                    console.log(error.response)
-                    console.log(error.response.data.message)
-                }else{
-                    navigation.navigate("Feedback", {
-                        tipo : false,
-                        retornoEspecifico: true,
-                        mensagem : "Ocorreu um erro inesperado no sistema!",
-                        textoBotao : "Pagina Inicial",
-                        destinoBotao: "Home"
-                    })
-                }
+                navigation.navigate("Feedback", {
+                    tipo : false,
+                    retornoEspecifico: true,
+                    mensagem : "Ocorreu um erro inesperado no sistema!",
+                    textoBotao : "Pagina Inicial",
+                    destinoBotao: "Home"
+                })
             })
         }else{
             setErroForm('Selecione um arquivo válido')
