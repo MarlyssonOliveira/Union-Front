@@ -110,17 +110,19 @@ export default function AlterarImgUsuario({navigation, route}) {
                 })
             }).catch((error) =>{
                 setSpin(false)
-
+                console.log(error)
                 if(error.response != undefined){
+                    console.log(error.response)
                     console.log(error.response.data.message)
+                }else{
+                    navigation.navigate("Feedback", {
+                        tipo : false,
+                        retornoEspecifico: true,
+                        mensagem : "Ocorreu um erro inesperado no sistema!",
+                        textoBotao : "Pagina Inicial",
+                        destinoBotao: "Home"
+                    })
                 }
-                navigation.navigate("Feedback", {
-                    tipo : false,
-                    retornoEspecifico: true,
-                    mensagem : "Ocorreu um erro inesperado no sistema!",
-                    textoBotao : "Pagina Inicial",
-                    destinoBotao: "Home"
-                })
             })
         }else{
             setErroForm('Selecione um arquivo válido')

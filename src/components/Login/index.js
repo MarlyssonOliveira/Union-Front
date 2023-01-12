@@ -45,8 +45,8 @@ export default function Login({navigation}) {
                     navigation.navigate("Home")
             }).catch((error)=>{
                 if(error.response != undefined){
-                    setSpin(false)
                     console.log(error.response.data.message)
+                    setSpin(false)
                     if(error.response.data.message.toLowerCase().includes("password")){
                         navigation.navigate("Feedback", {
                             tipo : false,
