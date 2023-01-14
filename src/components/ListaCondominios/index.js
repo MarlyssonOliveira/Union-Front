@@ -12,6 +12,7 @@ export default function ListaCondominios({navigation}) {
     const [ListaDisponiveis, setListaDisponiveis] = useState([]);
     const [IdCondominio, setIdCondominio] = useState();
     const [NomeCondominio, setNomeCondominio] = useState();
+    const [OnUpdateImage, setOnUpdateImage] = useState();
     const [Pesquisa,setPesquisa] = useState('');
     const [spin, setSpin] = useState(false);
 
@@ -31,6 +32,7 @@ export default function ListaCondominios({navigation}) {
         setSpin(true)
         axios.put(global.baseURL+"/union/condominium/" + IdCondominio + "/tenant",null,{headers: {'token' : global.sessionID}})
         .then((response) =>{
+            toggleOverlayUnSet()
             setSpin(false)
 
             navigation.navigate("Feedback", {
@@ -41,6 +43,7 @@ export default function ListaCondominios({navigation}) {
                 destinoBotao : "Home"
             })
         }).catch((error) =>{
+            toggleOverlayUnSet()
             setSpin(false)
             navigation.navigate("Feedback", {
                 tipo : false,

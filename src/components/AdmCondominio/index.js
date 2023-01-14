@@ -87,6 +87,7 @@ export default function AdmCondominio({navigation, route}) {
                 textoBotao : "Voltar",
             })
         }).catch((error) =>{
+            toggleOverlayUnSet()
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,

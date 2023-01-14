@@ -73,6 +73,7 @@ export default function DetalhamentoTaxa({navigation, route}) {
     function ConfirmarPagamento(){
         axios.put(global.baseURL+"/union/debt/" + route.params.idDebito + "/user/" + IdMorador + "/payment" ,null,{headers: {'token' : global.sessionID}})
         .then((response) =>{
+            toggleOverlayUnSet()
             navigation.navigate("Feedback",{
                 tipo : true,
                 retornoEspecifico: false,
@@ -80,6 +81,7 @@ export default function DetalhamentoTaxa({navigation, route}) {
                 textoBotao : "Voltar",
         })
         }).catch((error) =>{
+            toggleOverlayUnSet()
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,

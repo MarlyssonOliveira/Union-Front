@@ -68,6 +68,7 @@ export default function ListaMoradores({navigation, route}) {
                 textoBotao : "Voltar",
             })
         }).catch((error) =>{
+            toggleOverlayUnSet()
             navigation.navigate("Feedback", {
                 tipo : false,
                 retornoEspecifico: true,
